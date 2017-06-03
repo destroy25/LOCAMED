@@ -41,7 +41,7 @@ if ($conn->IsOpen)
 		$Ent = $conn->FactoryDocumentVente->CreateType(0);
 		$Clt = $conn->CptaApplication->FactoryClient->ReadNumero($_GET['client']);
 		$Ent->SetDefaultClient($Clt);
-		            $Ent->Souche = $conn->FactorySoucheVente->ReadIntitule($_GET['souche']);
+		            $Ent->Souche = $conn->FactorySoucheVente->ReadIntitule(utf8_encode($_GET['souche']));
 					$Ent->SetDefaultDO_Piece();
 					$Ent->SetDefault();
 					$Ent->Write();
