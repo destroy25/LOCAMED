@@ -166,7 +166,7 @@ include('connexion.php');
 				<?php $sqlsouche='select * from P_SOUCHEVENTE';
 				                    $rq = odbc_exec($connection,$sqlsouche);
                     while ($rep=odbc_fetch_array($rq)) {
-								echo '<option value="'.$rep['S_Intitule'].'">'.utf8_encode($rep['S_Intitule']).'</option>';
+								echo '<option value="'.$rep['cbIndice'].'">'.utf8_encode($rep['S_Intitule']).'</option>';
 		
 					}
 					?>
@@ -306,6 +306,8 @@ include('connexion.php');
 		});
 	</script>
 	<script>
+
+	
 	function showUser() {
                                str=document.forms['entete'].souche.value;
                                str1=document.forms['entete'].client.value;

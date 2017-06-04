@@ -8,7 +8,13 @@ if(isset($_GET['q']))
 	{
 		
 	$client=$_GET['client'];
-	$q=$_GET['souche'];
+	$souche=$_GET['souche'];
+	
+	$sqlsouche='select * from P_SOUCHEVENTE where CbIndice='.$souche;
+				                    $rq = odbc_exec($connection,$sqlsouche);
+                    if ($rep=odbc_fetch_array($rq)) {
+						$souche=$rep['S_Intitule'];
+					}
 
 		
 /*Chaine de connexion*/		
@@ -41,7 +47,7 @@ if ($conn->IsOpen)
 		$Ent = $conn->FactoryDocumentVente->CreateType(0);
 		$Clt = $conn->CptaApplication->FactoryClient->ReadNumero($_GET['client']);
 		$Ent->SetDefaultClient($Clt);
-		            $Ent->Souche = $conn->FactorySoucheVente->ReadIntitule(utf8_encode($_GET['souche']));
+		            $Ent->Souche = $conn->FactorySoucheVente->ReadIntitule($souche);
 					$Ent->SetDefaultDO_Piece();
 					$Ent->SetDefault();
 					$Ent->Write();
@@ -109,19 +115,19 @@ echo '			<h5 class="m-t-lg with-border">Devis</h5>
 					<div class="col-lg-4">
 						<fieldset class="form-group">
 							<label class="form-label" for="exampleInputEmail1">Article</label>
-							<input type="text" class="form-control" id="exampleInputEmail1"  >
+							<input onchange="validation_article()" type="text" class="form-control" id="article"  >
 						</fieldset>
 					</div>
-					<div class="col-lg-4">
+					<div id="designation" class="col-lg-4">
 						<fieldset class="form-group">
 							<label class="form-label" for="desgination">Designation</label>
-							<input type="designation" disabled class="form-control" id="desgination" >
+							<input type="text" disabled class="form-control"  >
 						</fieldset>
 					</div>
 										<div class="col-lg-4">
 						<fieldset class="form-group">
-							<label class="form-label" for="desgination">Quantité</label>
-							<input type="designation"  class="form-control" id="desgination" value="1" >
+							<label class="form-label" for="Quantité">Quantité</label>
+							<input type="text"  class="form-control"  value="1" >
 						</fieldset>
 					</div>
 					
@@ -237,13 +243,13 @@ echo '			<h5 class="m-t-lg with-border">Devis</h5>
 
 			
 					
-					<div class="col-lg-4">
+					<!--<div class="col-lg-4">
 						<fieldset class="form-group">
-							<label class="form-label" for="exampleInputEmail1">Article</label>
-							<input type="text" class="form-control" id="exampleInputEmail1"  >
+							<label class="form-label" for="article">Article</label>
+							<input onchange="myFunction()"  type="text" class="form-control" id="articlxe"  >
 						</fieldset>
 					</div>
-					<div class="col-lg-4">
+					<div class="col-lg-4" id="designation">
 						<fieldset class="form-group">
 							<label class="form-label" for="desgination">Designation</label>
 							<input type="designation" disabled class="form-control" id="desgination" >
@@ -254,7 +260,16 @@ echo '			<h5 class="m-t-lg with-border">Devis</h5>
 							<label class="form-label" for="desgination">Quantité</label>
 							<input type="designation"  class="form-control" id="desgination" value="1" >
 						</fieldset>
-					</div>
+					</div>-->
+					
+					<p id="demo"></p>
+
+<script>
+function myFunction() {
+    var x = document.getElementById("article").value;
+    document.getElementById("demo").innerHTML = "You selected: " + x;
+}
+</script>
 					
 <!--						<div class="col-lg-4">
 						<div class="form-group">
@@ -266,7 +281,7 @@ echo '			<h5 class="m-t-lg with-border">Devis</h5>
 				</div><!--.row-->
 
 
-							<section class="card">
+					<!--		<section class="card">
 				<header class="card-header card-header-lg">
 					Devis
 				</header>
@@ -398,3 +413,30 @@ echo '			<h5 class="m-t-lg with-border">Devis</h5>
 				</div>
 			</section>
 
+-->
+
+	<script>
+
+	
+	function validation_article() {
+		    var x = document.getElementById("article").value;
+
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+                    url: "ajax/article.php?article="+x,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        $("#designation").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+            };
+</script>
