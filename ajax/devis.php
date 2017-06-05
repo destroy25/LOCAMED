@@ -105,31 +105,14 @@ $sqlclient='select * from f_comptet where ct_num=\''.$client.'\'';
 		
 					}
 
-echo '			<h5 class="m-t-lg with-border">Devis</h5>
+echo '			
 
 				<div class="row">
 				
 
 			
 					
-					<div class="col-lg-4">
-						<fieldset class="form-group">
-							<label class="form-label" for="exampleInputEmail1">Article</label>
-							<input onchange="validation_article()" type="text" class="form-control" id="article"  >
-						</fieldset>
-					</div>
-					<div id="designation" class="col-lg-4">
-						<fieldset class="form-group">
-							<label class="form-label" for="desgination">Designation</label>
-							<input type="text" disabled class="form-control"  >
-						</fieldset>
-					</div>
-										<div class="col-lg-4">
-						<fieldset class="form-group">
-							<label class="form-label" for="Quantité">Quantité</label>
-							<input type="text"  class="form-control"  value="1" >
-						</fieldset>
-					</div>
+		
 					
 <!--						<div class="col-lg-4">
 						<div class="form-group">
@@ -168,9 +151,41 @@ echo '			<h5 class="m-t-lg with-border">Devis</h5>
 
 
 						</div>
+					
+					
+					
+					
 					</div>
+					
+					
 					<div class="row table-details">
-						<div class="col-lg-12">
+
+			                            <form action="#" method="post" class="main" enctype="multipart/form-data" id="ligne_form">
+
+								<div class="col-lg-4">
+						<fieldset class="form-group">
+							<label class="form-label" for="exampleInputEmail1">Article</label>
+							<input name="article" onchange="validation_article()" type="text" class="form-control" id="article"  >
+						</fieldset>
+					</div>
+					<div id="designation" class="col-lg-4">
+						<fieldset class="form-group">
+							<label class="form-label" for="desgination">Designation</label>
+							<input name="designation" type="text" disabled class="form-control"  >
+						</fieldset>
+					</div>
+										<div class="col-lg-4">
+						<fieldset class="form-group">
+							<label class="form-label" for="Quantité">Quantité</label>
+							<input name="quantity" type="text"  class="form-control"  value="1" >
+						</fieldset>
+					</div>			
+					<input type="hidden" name="piece" value="'.$do_piece.'" />
+                            <a style="float:right;" class="btn btn-rounded btn-inline" onclick="validation_ligne()">Valider</a>
+					
+</form>
+<div id="ligne_devis">
+					<div class="col-lg-12">
 							<table class="table table-bordered">
 								<thead>
 									<tr>
@@ -207,10 +222,10 @@ echo '			<h5 class="m-t-lg with-border">Devis</h5>
 								</tbody>
 							</table>
 						</div>
-					</div>
+					<br/>
 					<div class="row">
 						
-						<div class="col-lg-8 clearfix">
+						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div>Sub - Total amount: <b>$4,800</b></div>
 								<div>VAT: $35</div>
@@ -221,6 +236,7 @@ echo '			<h5 class="m-t-lg with-border">Devis</h5>
 								</div>
 							</div>
 						</div>
+					</div>
 					</div>
 				</div>
 			</section>
@@ -236,8 +252,7 @@ echo '			<h5 class="m-t-lg with-border">Devis</h5>
 ?>
 		
 		
-							<h5 class="m-t-lg with-border">Ligne Devis</h5>
-
+				
 				<div class="row">
 				
 
@@ -262,14 +277,6 @@ echo '			<h5 class="m-t-lg with-border">Devis</h5>
 						</fieldset>
 					</div>-->
 					
-					<p id="demo"></p>
-
-<script>
-function myFunction() {
-    var x = document.getElementById("article").value;
-    document.getElementById("demo").innerHTML = "You selected: " + x;
-}
-</script>
 					
 <!--						<div class="col-lg-4">
 						<div class="form-group">
@@ -415,6 +422,38 @@ function myFunction() {
 
 -->
 
+
+	<script>
+
+	
+	function validation_ligne() {
+		                               str1=document.forms['ligne_form'].article.value;
+		                               str2=document.forms['ligne_form'].quantity.value;
+		                               str3=document.forms['ligne_form'].piece.value;
+
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+                    url: "ajax/ligne.php?q=1&article="+str1+"&quantity="+str2+"&piece="+str3,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+            };
+</script>
+
+
+
+
 	<script>
 
 	
@@ -440,3 +479,17 @@ function myFunction() {
                 });
             };
 </script>
+
+        <script type="text/javascript">
+
+            function hideLoadingImage()
+            {
+                $("#loading").css("display", "none");
+
+            }
+
+            function showLoadingImage(){
+                $("#loading").css("display", "block");
+            }
+
+        </script>

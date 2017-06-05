@@ -3,6 +3,7 @@ include('connexion.php');
 
 
 
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,10 +25,9 @@ include('connexion.php');
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
-	<link rel="stylesheet" href="css/separate/vendor/bootstrap-select/bootstrap-select.min.css">
-<link rel="stylesheet" href="css/separate/vendor/select2.min.css">
+	<link rel="stylesheet" href="css/lib/datatables-net/datatables.min.css">
+<link rel="stylesheet" href="css/separate/vendor/datatables-net.min.css">
 
-<link rel="stylesheet" href="css/separate/pages/invoice.min.css">
     <link rel="stylesheet" href="css/lib/font-awesome/font-awesome.min.css">
     <link rel="stylesheet" href="css/lib/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
@@ -82,7 +82,7 @@ include('connexion.php');
 	<nav class="side-menu">
 	    <ul class="side-menu-list">
 
-					<?php
+						<?php
 			$query = "SELECT * FROM menu where id_parent=0";
 				$reponse = $bdd->query($query);
 
@@ -128,208 +128,86 @@ include('connexion.php');
 
 // echo afficher_menu(0, 0, $categories);
 ?>
+
 		
     </ul>
 	
 	</nav><!--.side-menu-->
 
-	<div class="page-content">
-	
-			<div class="container-fluid">
+		<div class="page-content">
+		<div class="container-fluid">
 			<header class="section-header">
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h3>Création Devis</h3>
-							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="#">Gestion Devis</a></li>
-								<li><a href="#">Création Devis</a></li>
-							</ol>
+							<h2>Devis</h2>
+							<div class="subtitle">Devis en cours</div>
 						</div>
 					</div>
 				</div>
 			</header>
-
-			<div class="box-typical box-typical-padding">
-			
-
-				
-
-
-				<div class="row">
-				                            <form action="#" method="post" class="main" enctype="multipart/form-data" id="entete">
-
-				<div class="col-lg-4">
-							<label class="form-label semibold" for="exampleInput">Souche</label>
-
-				<select name="souche" class="select2">
-				<?php $sqlsouche='select * from P_SOUCHEVENTE';
-				                    $rq = odbc_exec($connection,$sqlsouche);
-                    while ($rep=odbc_fetch_array($rq)) {
-								echo '<option value="'.$rep['cbIndice'].'">'.utf8_encode($rep['S_Intitule']).'</option>';
+			<section class="card">
+				<div class="card-block">
+					<table id="example" class="display table table-bordered" cellspacing="0" width="100%">
+						<thead>
+						<tr>
+							<th>N° Devis</th>
+							<th>Date</th>
+							<th>Client</th>
+							<th>Statut</th>
+							<th>Action</th>
+						</tr>
+						</thead>
+												<tfoot>
+						<tr>
+							<th>N° Devis</th>
+							<th>Date</th>
+							<th>Client</th>
+							<th>Statut</th>
+							<th>Action</th>
+						</tr>
+						</tfoot>
+						<tbody>
+						<?php
+						$sql='select * from f_docentete where do_domaine=0 and do_type=0';
+		                $rq = odbc_exec($connection,$sql);
+						while ($rep=odbc_fetch_array($rq)) {
+								echo '<tr>
+								<td>'.$rep['DO_Piece'].'</td>
+								<td>'.$rep['DO_Date'].'</td>
+								<td>'.$rep['DO_Tiers'].'</td>
+								<td>'.$rep['DO_Statut'].'</td>
+								<td></td>
+								</tr>';
 		
-					}
-					?>
-							</select>
-							<br/>
-							<br/>
-						</div>
-						
-							<div class="col-lg-4">
-							<label class="form-label semibold" for="exampleInput">Client</label>
-
-				<select name="client" class="select2">
-				<?php $sqlclient='select CT_Num,CT_Intitule from F_COMPTET where CT_Type=0';
-				                    $rq = odbc_exec($connection,$sqlclient);
-                    while ($rep=odbc_fetch_array($rq)) {
-								echo '<option value="'.$rep['CT_Num'].'">'.utf8_encode($rep['CT_Intitule']).'</option>';
+						}?>
 		
-					}
-					?>
-							</select>
-							<br/>
-							<br/>
-						</div>
-					
-					
-					<div class="col-lg-4">
-						<fieldset class="form-group">
-		<label class="form-label semibold" for="exampleInput">&nbsp;</label>
-                            <a style="float:right;" class="btn btn-rounded btn-inline" onclick="validation_entete()">Valider</a>
-	
-						</fieldset>
-					</div>
-					</form>
-				</div><!--.row-->
-
-
-				<div id="box">
+											</tbody>
+					</table>
 				</div>
-	
-
-				</div><!--.box-typical-->
-
-				
-	</div><!--.container-fluid-->
-	
-	
-	
-	
+			</section>
+		</div><!--.container-fluid-->
 	</div><!--.page-content-->
 
+<!--.page-content-->
 
-	
-		<script src="js/lib/jquery/jquery.min.js"></script>
+	<script src="js/lib/jquery/jquery.min.js"></script>
 	<script src="js/lib/tether/tether.min.js"></script>
 	<script src="js/lib/bootstrap/bootstrap.min.js"></script>
 	<script src="js/plugins.js"></script>
+	<script src="js/lib/datatables-net/datatables.min.js"></script>
 
-		<script src="js/lib/bootstrap-select/bootstrap-select.min.js"></script>
-	<script src="js/lib/select2/select2.full.min.js"></script>
-
-	<script src="js/lib/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
 	<script>
-		$(document).ready(function() {
-			$("input[name='demo1']").TouchSpin({
-				min: 0,
-				max: 100,
-				step: 0.1,
-				decimals: 2,
-				boostat: 5,
-				maxboostedstep: 10,
-				postfix: '%'
+		$(function() {
+			$('#example').DataTable({
+				responsive: true
 			});
 		});
 	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo2']").TouchSpin({
-				min: -1000000000,
-				max: 1000000000,
-				stepinterval: 50,
-				maxboostedstep: 10000000,
-				prefix: '$'
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo_vertical']").TouchSpin({
-				verticalbuttons: true
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo_vertical2']").TouchSpin({
-				verticalbuttons: true,
-				verticalupclass: 'glyphicon glyphicon-plus',
-				verticaldownclass: 'glyphicon glyphicon-minus'
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo3']").TouchSpin();
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo4']").TouchSpin({
-				postfix: "a button",
-				postfix_extraclass: "btn btn-default"
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo4_2']").TouchSpin({
-				postfix: "a button",
-				postfix_extraclass: "btn btn-default"
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo6']").TouchSpin({
-				buttondown_class: "btn btn-default-outline",
-				buttonup_class: "btn btn-default-outline"
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo5']").TouchSpin({
-				prefix: "pre",
-				postfix: "post"
-			});
-		});
-	</script>
-	<script>
 
 	
-	function validation_entete() {
-                               str=document.forms['entete'].souche.value;
-                               str1=document.forms['entete'].client.value;
- 
-/*                showLoadingImage();*/
-                $.ajax({
-                    url: "ajax/devis.php?q=1&client="+str1+"&souche="+str,
-                    context: document.body,
-                    success: function(responseText) {
-
-                        $("#box").html(responseText);
-
-                    },
-                    complete: function() {
-                        // no matter the result, complete will fire, so it's a good place
-                        // to do the non-conditional stuff, like hiding a loading image.
-                $("#entete").css("display", "none");
-                       /* hideLoadingImage();*/
-                    }
-                });
-            };
-</script>
+	
+	
 <script src="js/app.js"></script>
 </body>
 </html>
