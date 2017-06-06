@@ -30,13 +30,23 @@ if ($conn->IsOpen)
 
             $Lig = $Ent->FactoryDocumentLigne->Create;
             $Lig->SetDefaultArticleReference($article,$qte);
-//			$Lig->InfoLibre->Item('Colisage')='Remis sur place';
             $Lig->SetDefault();
             $Lig->Write();					
 					
 			
 } catch (Exception $e) {
-    echo 'Exception reçue : ',  utf8_encode($e->getMessage()), "\n";
+	echo'
+	
+	
+	
+	<div class="alert alert-danger alert-icon alert-close alert-dismissible fade in" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+							<i class="font-icon font-icon-warning"></i>
+							Exception reçue : '.utf8_encode($e->getMessage()).' 
+						</div>';
+
 }
 
 
@@ -44,7 +54,7 @@ $conn->Close();
 
 $conn = null;
 
-							$sqlligne='update f_docligne set Commentaires=\'Remis sur place\' where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\' and DL_Ligne=(select max(DL_Ligne) from f_docligne where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\') ';
+							$sqlligne='update f_docligne set condition_enlevement=\'Remis sur place\' where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\' and DL_Ligne=(select max(DL_Ligne) from f_docligne where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\') ';
 										odbc_exec($connection,$sqlligne);
 		
 	
@@ -59,36 +69,104 @@ $conn = null;
 										<th>Prix Unitaire</th>
 										<th>Remise</th>
 										<th>Condition Enlevement</th>
+										<th>Statut Stock</th>
 										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>';
-						$totalqte=0;		
-						$totalht=0;		
-						$totalttc=0;		
-								$sqlligne='select * from f_docligne where DO_Piece=\''.$num_piece.'\'';
+								/*Affichage des Lignes du document */
+						$totalqte=0;		//Total Quantité
+						$totalht=0;			//Totat HT
+						$totalttc=0;		//Tota TTC
+								$sqlligne='select AR_Ref,DL_Design,DL_Qte,DL_PrixUnitaire,DL_Remise01REM_Valeur,DL_MontantHT,DL_MontantTTC,condition_enlevement,cbMarq
+								from f_docligne where DO_Piece=\''.$num_piece.'\'';
 								    $rqligne = odbc_exec($connection,$sqlligne);
-                    while ($repligne=odbc_fetch_array($rqligne)) {
-						$totalqte=$totalqte+$repligne['DL_Qte'];
-						$totalht=$totalht+$repligne['DL_MontantHT'];
-						$totalttc=$totalttc+$repligne['DL_MontantTTC'];
+									while ($data[] = odbc_fetch_array($rqligne));
+									
+									
+									$val=count($data);
+									$val2=0;
+									foreach($data as $dat)
+									{
+										$val2++;
+										if($val2==$val) continue;
+										
+										$totalqte=$totalqte+$dat['DL_Qte'];
+										$totalht=$totalht+$dat['DL_MontantHT'];
+										$totalttc=$totalttc+$dat['DL_MontantTTC'];
+
+										
+										
+						//odbc_close($connection);
+						/*Statut du Stock */
+						$stock=0;
+						$sqlstock='select * from f_artstock where de_no=1 and ar_ref=\''.$dat['AR_Ref'].'\'';
+						$rqstock = odbc_exec($connection2,$sqlstock);
+						if ($repstock=odbc_fetch_array($rqstock)) {
+						$stock=$repstock['AS_QteSto'];
+						}
+						
+						if($dat['DL_Qte']<=$stock)
+						{
+							$infostock='<span class="label label-success">Livrable</span>';
+						}
+						else
+						{
+							$infostock='<span class="label label-danger">Non Livrable</span>';
+						}
+						
+						/*Fin Statut du Stock */
+						
+						
 						echo'
-									<tr>
+									<tr id="'.$dat['cbMarq'].'" >
 										<td>#</td>
-										<td>'.$repligne['AR_Ref'].'</td>
-										<td>'.$repligne['DL_Design'].'</td>
-										<td>'.$repligne['DL_Qte'].'</td>
-										<td>'.$repligne['DL_PrixUnitaire'].'</td>
-										<td>'.$repligne['DL_Remise01REM_Valeur'].'</td>
-										<td>'.$repligne['Commentaires'].'</td>
-										<td>Total</td>
+										<td>'.$dat['AR_Ref'].'</td>
+										<td>'.$dat['DL_Design'].'</td>
+										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
+										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
+										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
+										<td>'.$dat['condition_enlevement'].'</td>
+										<td>'.$infostock.'</td>
+										<td><a href="#" data-toggle="modal"data-target="#myModal"><i class="fa fa-pencil"></i></a> <a href="#"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
-		
-					}
+										
+									}
+
+
 						
 											echo'
 								</tbody>
 							</table>
+							
+
+				<div class="modal fade"
+					 id="myModal"
+					 tabindex="-1"
+					 role="dialog"
+					 aria-labelledby="myModalLabel"
+					 aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+									<i class="font-icon-close-2"></i>
+								</button>
+								<h4 class="modal-title" id="myModalLabel">Modification Ligne</h4>
+							</div>
+							<div class="modal-body">
+								...
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-rounded btn-primary">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div><!--.modal-->
+							
+							
+							
 						</div>
 					</div>
 	<div class="payment-details">
@@ -117,6 +195,7 @@ $conn = null;
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
+									<button class="btn btn-rounded btn-inline">Fin de Saisie</button>
 									<button class="btn btn-rounded btn-inline">Valider</button>
 									<button class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
 								</div>
@@ -141,3 +220,29 @@ else
 }
 
 ?>
+
+
+                <script type="text/javascript">
+// delete row in a table
+jQuery('.modifrow').click(function(){
+ 
+		 var y = $(this).closest('tr').attr('id');
+ 
+ $.ajax({
+                    url: "ajax/modification_client.php?&q="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+  // return false;
+});     </script>

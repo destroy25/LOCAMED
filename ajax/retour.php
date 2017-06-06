@@ -27,24 +27,10 @@ $conn->Open();
 if ($conn->IsOpen) 
 {
 	
-	//echo "Commerciale ouverte '$nom' \n";
-
-	
 	
 	try {
 
-		
-	//echo "compta ouverte '$nom' \n";
-
-//            Ent = base.FactoryDocumentAchat.CreateType(DocumentType.DocumentTypeAchatFacture)
-
-//	$Ent = $conn->FactoryDocumentVente->createType(20);
-	//$Frs = $conn->CptaApplication->FactoryTiers->readNumero("BAGUES");
-	
-	
-	
-//	echo $_GET['client'];
-		$Ent = $conn->FactoryDocumentVente->CreateType(0);
+		$Ent = $conn->FactoryDocumentVente->CreateType(40);
 		$Clt = $conn->CptaApplication->FactoryClient->ReadNumero($_GET['client']);
 		$Ent->SetDefaultClient($Clt);
 		            $Ent->Souche = $conn->FactorySoucheVente->ReadIntitule($souche);
@@ -64,15 +50,7 @@ if ($conn->IsOpen)
 
 	
 } catch (Exception $e) {
-	echo'
-	<div class="alert alert-danger alert-icon alert-close alert-dismissible fade in" role="alert">
-							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-								<span aria-hidden="true">×</span>
-							</button>
-							<i class="font-icon font-icon-warning"></i>
-							Exception reçue : '.utf8_encode($e->getMessage()).' "\n"
-						</div>';
-
+    echo 'Exception reçue : ',  utf8_encode($e->getMessage()), "\n";
 }
 	
 	
@@ -134,7 +112,7 @@ echo '
 
 							<section class="card">
 				<header class="card-header card-header-lg">
-					Devis
+					Retour
 				</header>
 				<div class="card-block invoice">
 					<div class="row">
@@ -153,7 +131,7 @@ echo '
 						</div>
 						<div class="col-lg-6 clearfix invoice-info">
 							<div class="text-lg-right">
-								<h5>DEVIS #'.$do_piece.'</h5>
+								<h5>Retour #'.$do_piece.'</h5>
 								<div>Date: '.$date.'</div>
 							</div>
 
@@ -192,7 +170,8 @@ echo '
                             <a style="float:right;" class="btn btn-rounded btn-inline" onclick="validation_ligne()">Valider</a>
 					
 </form>
-<div id="ligne_devis">
+<div id="ligne_retour">
+					
 						</div>
 			
 					</div>
@@ -248,7 +227,7 @@ echo '
 
 					<!--		<section class="card">
 				<header class="card-header card-header-lg">
-					Devis
+					Retour
 				</header>
 				<div class="card-block invoice">
 					<div class="row">
@@ -392,11 +371,11 @@ echo '
  
 /*                showLoadingImage();*/
                 $.ajax({
-                    url: "ajax/ligne.php?q=1&article="+str1+"&quantity="+str2+"&piece="+str3,
+                    url: "ajax/ligne_retour.php?q=1&article="+str1+"&quantity="+str2+"&piece="+str3,
                     context: document.body,
                     success: function(responseText) {
 
-                        $("#ligne_devis").html(responseText);
+                        $("#ligne_retour").html(responseText);
 
                     },
                     complete: function() {

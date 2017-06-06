@@ -18,6 +18,7 @@ if (!isset($_SESSION)) session_start();
     $password='sage';
   
 	  $connection = odbc_connect("Driver={SQL Server Native Client 10.0};Server=$server;Database=BIJOU", $user, $password,SQL_CUR_USE_ODBC);
+	  $connection2 = odbc_connect("Driver={SQL Server Native Client 10.0};Server=$server;Database=BIJOU", $user, $password,SQL_CUR_USE_ODBC);
 
 
     
