@@ -19,14 +19,10 @@ $conn->Open();
 if ($conn->IsOpen) 
 {
 	
-
-	
-	
 	try {
 
  $Ent = $conn->FactoryDocumentVente->ReadPiece(0, $num_piece);
             $Ent->CouldModified();
-		
 
             $Lig = $Ent->FactoryDocumentLigne->Create;
             $Lig->SetDefaultArticleReference($article,$qte);
@@ -56,7 +52,6 @@ $conn = null;
 
 							$sqlligne='update f_docligne set condition_enlevement=\'Remis sur place\' where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\' and DL_Ligne=(select max(DL_Ligne) from f_docligne where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\') ';
 										odbc_exec($connection,$sqlligne);
-		
 	
 	echo '					<div class="col-lg-12">
 							<table class="table table-bordered">
@@ -94,8 +89,6 @@ $conn = null;
 										$totalqte=$totalqte+$dat['DL_Qte'];
 										$totalht=$totalht+$dat['DL_MontantHT'];
 										$totalttc=$totalttc+$dat['DL_MontantTTC'];
-
-										
 										
 						//odbc_close($connection);
 						/*Statut du Stock */
@@ -117,7 +110,6 @@ $conn = null;
 						
 						/*Fin Statut du Stock */
 						
-						
 						echo'
 									<tr id="'.$dat['cbMarq'].'" >
 										<td>#</td>
@@ -126,19 +118,16 @@ $conn = null;
 										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
 										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
-										<td>'.$dat['condition_enlevement'].'</td>
+										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
 										<td>'.$infostock.'</td>
-										<td><a href="#" data-toggle="modal"data-target="#myModal"><i class="fa fa-pencil"></i></a> <a href="#"><i class="fa fa-remove"></i> </a></td>
+										<td><a class="modifrow" href="#" data-toggle="modal"data-target="#myModal"><i class="fa fa-pencil"></i></a> <a href="#"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 										
 									}
-
-
 						
 											echo'
 								</tbody>
 							</table>
-							
 
 				<div class="modal fade"
 					 id="myModal"
@@ -152,20 +141,21 @@ $conn = null;
 								<button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
 									<i class="font-icon-close-2"></i>
 								</button>
-								<h4 class="modal-title" id="myModalLabel">Modification Ligne</h4>
+								<h4 class="modal-title" id="myModalLabel">Modification Condition Enlevement</h4>
 							</div>
 							<div class="modal-body">
-								...
+							<form id="modif_condition">
+							<div id="modif">
+							</div>
+							</form>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-rounded btn-primary">Save changes</button>
+								<button class="modifcondition" type="button" class="btn btn-rounded btn-primary">Valider</button>
 							</div>
 						</div>
 					</div>
 				</div><!--.modal-->
-							
-							
 							
 						</div>
 					</div>
@@ -187,10 +177,6 @@ $conn = null;
 								</table>
 							</div>
 					<div class="row">
-					
-					
-					
-
 					
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
@@ -214,12 +200,10 @@ else
 	echo "Erreur d ouverture \n";
 }
 
-
-
-	
 }
 
 ?>
+
 
 
                 <script type="text/javascript">
@@ -227,9 +211,10 @@ else
 jQuery('.modifrow').click(function(){
  
 		 var y = $(this).closest('tr').attr('id');
+//		 var x = $(this).closest('tr').attr('id');
  
  $.ajax({
-                    url: "ajax/modification_client.php?&q="+y,
+                    url: "ajax/modification_ligne.php?&q="+y,
                     context: document.body,
                     success: function(responseText) {
 
@@ -245,4 +230,36 @@ jQuery('.modifrow').click(function(){
                     }
                 });
   // return false;
+});     </script>
+
+
+
+
+
+                <script type="text/javascript">
+// delete row in a table
+jQuery('.modifcondition').click(function(){
+ 
+  str1=document.forms['modif_condition'].date_enlevement.value;
+  str2=document.forms['modif_condition'].cbMarq.value;
+
+ 
+ $.ajax({
+                    url: "ajax/modification_condition.php?&q="+str1+"&q2="+str2,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif").html(responseText);
+
+                    },
+                    complete: function() {
+						
+	 document.getElementById('id'+str2+'').innerHTML='A Livrer Le '+str1+''; 
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+                    }
+                });
+  // return false;*/
 });     </script>

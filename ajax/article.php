@@ -13,7 +13,7 @@ $sql='select * from f_article where ar_ref=\''.$article.'\'';
 					
 					$sql2='select * from f_article where ar_codebarre=\''.$article.'\'';
 
-				                    $rq = odbc_exec($connection,$sql);
+				                    $rq = odbc_exec($connection,$sql2);
                     if ($rep=odbc_fetch_array($rq)) {
 						$designation=$rep['AR_Design'];
 					}
