@@ -96,7 +96,7 @@ $conn = null;
 						/*Statut du Stock */
 						$stock=0;
 						$sqlstock='select * from f_artstock where de_no=1 and ar_ref=\''.$dat['AR_Ref'].'\'';
-						$rqstock = odbc_exec($connection2,$sqlstock);
+						$rqstock = odbc_exec($connection,$sqlstock);
 						if ($repstock=odbc_fetch_array($rqstock)) {
 						$stock=$repstock['AS_QteSto'];
 						}
