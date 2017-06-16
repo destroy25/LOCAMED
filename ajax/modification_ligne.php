@@ -1,6 +1,9 @@
 
 
 <?php
+
+/* Mise à jour des condition d'envelevement au niveau des lignes */
+
 include('../connexion.php');
 
 $q=$_GET['q'];

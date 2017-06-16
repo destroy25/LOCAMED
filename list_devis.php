@@ -146,6 +146,8 @@ include('connexion.php');
 					</div>
 				</div>
 			</header>
+			<div id="modif">
+			</div>
 			<section class="card">
 				<div class="card-block">
 					<table id="example" class="display table table-bordered" cellspacing="0" width="100%">
@@ -172,12 +174,12 @@ include('connexion.php');
 						$sql='select * from f_docentete where do_domaine=0 and do_type=0';
 		                $rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
-								echo '<tr>
+								echo '<tr id="'.$rep['DO_Piece'].'">
 								<td>'.$rep['DO_Piece'].'</td>
 								<td>'.$rep['DO_Date'].'</td>
 								<td>'.$rep['DO_Tiers'].'</td>
 								<td>'.$rep['DO_Statut'].'</td>
-								<td></td>
+								<td><a class="transformation_devis"><span class="font-icon font-icon-cogwheel"></span></a></td>
 								</tr>';
 		
 						}?>
@@ -205,6 +207,36 @@ include('connexion.php');
 		});
 	</script>
 
+	
+	
+                <script type="text/javascript">
+// delete row in a table
+jQuery('.transformation_devis').click(function(){
+ 
+		 var y = $(this).closest('tr').attr('id');
+//		 var x = $(this).closest('tr').attr('id');
+ 
+ $.ajax({
+                    url: "ajax/transformation_devis.php?&q="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+  // return false;
+});     </script>
+
+
+	
 	
 	
 	

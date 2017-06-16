@@ -53,7 +53,9 @@ $conn = null;
 							$sqlligne='update f_docligne set condition_enlevement=\'Remis sur place\' where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\' and DL_Ligne=(select max(DL_Ligne) from f_docligne where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\') ';
 										odbc_exec($connection,$sqlligne);
 	
-	echo '					<div class="col-lg-12">
+	echo '			
+<input type="hidden" id="num_piece" value="'.$num_piece.'"/>
+	<div class="col-lg-12">
 							<table class="table table-bordered">
 								<thead>
 									<tr>
@@ -181,9 +183,9 @@ $conn = null;
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
-									<button class="btn btn-rounded btn-inline">Fin de Saisie</button>
-									<button class="btn btn-rounded btn-inline">Valider</button>
-									<button class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+									<a href="list_devis.php" class="btn btn-rounded btn-inline">Fin de Saisie</a>
+									<a onclick="validation_devis()" class="btn btn-rounded btn-inline">Valider</a>
+									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
 								</div>
 							</div>
 						</div>
@@ -263,3 +265,30 @@ jQuery('.modifcondition').click(function(){
                 });
   // return false;*/
 });     </script>
+
+
+	<script>
+
+	
+	function validation_devis() {
+		    var x = document.getElementById("num_piece").value;
+
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+                    url: "ajax/validation_devis.php?q="+x,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        $("#ligne_form").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+            };
+</script>
