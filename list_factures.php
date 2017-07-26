@@ -2,6 +2,8 @@
 include('connexion.php');
 
 
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -138,8 +140,8 @@ include('connexion.php');
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h2>Devis</h2>
-							<div class="subtitle">Devis en cours</div>
+							<h2>Factures</h2>
+							<div class="subtitle">Facture en cours</div>
 						</div>
 					</div>
 				</div>
@@ -151,18 +153,19 @@ include('connexion.php');
 					<table id="example" class="display table table-bordered" cellspacing="0" width="100%">
 						<thead>
 						<tr>
-							<th>N° Devis</th>
+							<th>N° Facture</th>
 							<th>Date</th>
 							<th>Client</th>
 							<th>Statut</th>
 							<th>Action</th>
 						</tr>
 						</thead>
+
 						<tbody>
 						<?php
 						$sql='select DO_Piece,DO_Date,CT_Intitule,DO_Statut,CT_Intitule,DO_Statut from f_docentete 
 						inner join f_comptet on f_docentete.do_tiers=f_comptet.ct_num 
-						where do_domaine=0 and do_type=0
+						where do_domaine=0 and do_type=6 and do_provenance=0
 						';
 		                $rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
@@ -176,18 +179,17 @@ include('connexion.php');
 								$statut='<span class="label label-success">Validé</span>';
 	
 							}
-								/*Conversion de date*/
-								$d=date_create($rep['DO_Date']);
-								
+	
+$d=date_create($rep['DO_Date']);
 								echo '<tr id="'.$rep['DO_Piece'].'">
 								<td>'.$rep['DO_Piece'].'</td>
 								<td>'.date_format($d,'d/m/Y').'</td>
 								<td>'.$rep['CT_Intitule'].'</td>
 								<td>'.$statut.'</td>
 								<td>
-								<a title="Consultation Devis" href="devis.php?q='.$rep['DO_Piece'].'"><span class="fa fa-eye"></span></a>
-								<a title="Transformation en Facture" class="transformation_devis"><span class="fa fa-cogs"></span></a>
-								<a title="Impression" class="transformation_devis"><span class="fa fa-print"></span></a></td>
+								<a title="Consultation Facture" href="facture.php?q='.$rep['DO_Piece'].'"><span class="fa fa-eye"></span></a>
+								<a title="Saisie Règlement" ><span class="fa fa-cogs"></span></a>
+								<a title="Impression Facture" ><span class="fa fa-print"></span></a></td>
 								</tr>';
 		
 						}?>

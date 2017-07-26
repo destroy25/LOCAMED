@@ -2,6 +2,8 @@
 include('connexion.php');
 
 
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -158,11 +160,20 @@ include('connexion.php');
 							<th>Action</th>
 						</tr>
 						</thead>
+												<tfoot>
+						<tr>
+							<th>N° Devis</th>
+							<th>Date</th>
+							<th>Client</th>
+							<th>Statut</th>
+							<th>Action</th>
+						</tr>
+						</tfoot>
 						<tbody>
 						<?php
 						$sql='select DO_Piece,DO_Date,CT_Intitule,DO_Statut,CT_Intitule,DO_Statut from f_docentete 
 						inner join f_comptet on f_docentete.do_tiers=f_comptet.ct_num 
-						where do_domaine=0 and do_type=0
+						where do_domaine=0 and do_type=6 and do_provenance=0
 						';
 		                $rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
@@ -176,9 +187,8 @@ include('connexion.php');
 								$statut='<span class="label label-success">Validé</span>';
 	
 							}
-								/*Conversion de date*/
-								$d=date_create($rep['DO_Date']);
-								
+	
+$d=date_create($rep['DO_Date']);
 								echo '<tr id="'.$rep['DO_Piece'].'">
 								<td>'.$rep['DO_Piece'].'</td>
 								<td>'.date_format($d,'d/m/Y').'</td>

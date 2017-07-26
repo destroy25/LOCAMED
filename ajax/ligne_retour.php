@@ -9,41 +9,38 @@ $num_piece=$_GET['piece'];
 $article=$_GET['article'];
 $qte=$_GET['quantity'];
 
-/*Chaine de connexion*/		
-$conn = new COM('Objets100.Cial.Stream.3') or die("Impossible de démarrer");
-$nom=$conn->Name = "C:\wamp\www\Sage\BIJOU.gcm";
-$user=$conn->loggable->userName="<Administrateur>";
-$mdp=$conn->loggable->userPwd="";
-$conn->Open();
-
-if ($conn->IsOpen) 
-{
-	
-
-	
-	
-	try {
-
- $Ent = $conn->FactoryDocumentVente->ReadPiece(40, $num_piece);
-            $Ent->CouldModified();
-		
-
-            $Lig = $Ent->FactoryDocumentLigne->Create;
-            $Lig->SetDefaultArticleReference($article,$qte);
-//			$Lig->InfoLibre->Item('Colisage')='Remis sur place';
-            $Lig->SetDefault();
-            $Lig->Write();					
-					
-			
-} catch (Exception $e) {
-    echo 'Exception reçue : ',  utf8_encode($e->getMessage()), "\n";
-}
 
 
-$conn->Close();
-
-$conn = null;
-
+	$client = new nusoap_client($wsdl,true);
+	$err = $client->getError();
+	if ($err) 
+	{
+			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
+			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
+			exit();
+	}
+	// Exécution de la Methode 
+//	$result = $client->call('HelloUser',$theVariable);
+	$result = $client->call('ligne_document',
+	array('num'=>$num_piece,'type'=>4,'article'=>$article,'qte'=>$qte));
+ 
+	if ($client->fault) 
+	{
+		echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
+	} 
+	else 
+	{
+		$err = $client->getError();
+		if ($err) 
+		{
+			echo '<h2>Error</h2><pre>' . $err . '</pre>';
+		} 
+		else
+		{
+//		echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
+			$msg=$result;
+		}
+	}
 							
 		
 	
@@ -55,6 +52,7 @@ $conn = null;
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
+										<th>Prix Unitaire</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -73,8 +71,9 @@ $conn = null;
 										<td>#</td>
 										<td>'.$repligne['AR_Ref'].'</td>
 										<td>'.$repligne['DL_Design'].'</td>
-										<td>'.$repligne['DL_Qte'].'</td>
-										<td>Total</td>
+										<td>'.number_format($repligne['DL_Qte'],2,',',' ').'</td>
+										<td>'.number_format($repligne['DL_PrixUnitaire'],2,',',' ').'</td>
+			<td><a class="modifrow" href="#" data-toggle="modal"data-target="#myModal"><i class="fa fa-pencil"></i></a> <a href="#"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 		
 					}
@@ -122,11 +121,7 @@ $conn = null;
 	
 	
 	
-	}
-else 
-{
-	echo "Erreur d ouverture \n";
-}
+
 
 
 

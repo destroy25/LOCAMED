@@ -2,126 +2,200 @@
 
 <?php
 
-/*Validation Devis : Changement de Staut DO_Statut */
 
 include('../connexion.php');
 
 
 
-/*Chaine de connexion*/		
-$conn = new COM('Objets100.Cial.Stream.3') or die("Impossible de démarrer");
-$nom=$conn->Name = "C:\wamp\www\Sage\BIJOU.gcm";
-$user=$conn->loggable->userName="<Administrateur>";
-$mdp=$conn->loggable->userPwd="";
-$conn->Open();
-
-
 $q=$_GET['q']; //Num piece
 
+
+$sqlinfo='select DO_Tiers,do_piece,S_Intitule from f_docentete inner join
+P_SOUCHEVENTE on F_DOCENTETE.DO_Souche=(P_SOUCHEVENTE.cbIndice-1) where do_piece=\''.$q.'\'';
+		                $rqinfo = odbc_exec($connection,$sqlinfo);
+						if ($repinfo=odbc_fetch_array($rqinfo)) {
+						$souche=$repinfo['S_Intitule'];
+						$client1=$repinfo['DO_Tiers'];
+						$devis=$repinfo['do_piece'];
+						
+						}
+
+						
+						/*Mise à Zero des livraisons*/
+						$sqlup='update f_docligne
+						set DL_QteBC=0
+						 where do_piece=\''.$q.'\'';
+						odbc_exec($connection,$sqlup);
+
 $sql='select distinct(condition_enlevement) as condition from f_docligne where DO_Piece=\''.$q.'\'';
-$condition[]='';
+//$condition[]='';
 		                $rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
 						$condition[]=$rep['condition'];	
 						}
-
-foreach($condition as $cond)
-{
-
-if ($conn->IsOpen) 
-{
-	
-	//echo "Commerciale ouverte '$nom' \n";
-
-	
-	
-	try {
-
-		
-	//echo "compta ouverte '$nom' \n";
-
-//            Ent = base.FactoryDocumentAchat.CreateType(DocumentType.DocumentTypeAchatFacture)
-
-//	$Ent = $conn->FactoryDocumentVente->createType(20);
-	//$Frs = $conn->CptaApplication->FactoryTiers->readNumero("BAGUES");
-	
-	
-	
-//	echo $_GET['client'];
-		$Ent = $conn->FactoryDocumentVente->CreateType(30);
-		$Clt = $conn->CptaApplication->FactoryClient->ReadNumero('BAGUES');
-		$Ent->SetDefaultClient($Clt);
-		            //$Ent->Souche = $conn->FactorySoucheVente->ReadIntitule('N° pièce');
-					$Ent->SetDefaultDO_Piece();
-					$Ent->SetDefault();
-					$Ent->Write();
-					$Ent->CouldModified();
-					
-					$do_piece=$Ent->DO_Piece();
-
-					
-				//$DOC_ORIG1 = $conn->FactoryDocumentVente->ReadPiece(10, $do_piece);
-				$PROC_TRANS = $conn->Transformation->Vente->CreateProcess_Livrer;
-					
-	echo $cond.'<br/>';
-	$sqlc='select * from f_docligne where do_piece=\''.$q.'\' and condition_enlevement=\''.$cond.'\'';
-   $rq = odbc_exec($connection,$sqlc);
 						
-					while ($rep=odbc_fetch_array($rq)) {
-				echo $rep['AR_Ref'].' '.$rep['DL_Ligne'].'<br/>';
-
-				$Ligne=$rep['DL_Ligne']/1000;
 				
-				echo $Ligne;
-				
+	$client = new nusoap_client($wsdl,true);
+	$err = $client->getError();
+			
+	// Création Facture
+	$result = $client->call('creation_facture',
+	array('num'=>$client1,'souche'=>$souche));
+ 
+	if ($client->fault) 
+	{
+		echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
+	} 
+	else 
+	{
+		$err = $client->getError();
+		if ($err) 
+		{
+			echo '<h2>Error</h2><pre>' . $err . '</pre>';
+		} 
+		else
+		{
+			$facture=$result;
+		}
+	}
+
+	foreach($condition as $cond)
+	{
+	
+	
+		$client = new nusoap_client($wsdl,true);
+		$err = $client->getError();
+	
+		// Création BL
+		$result = $client->call('creation_bl',
+		array('num'=>$client1,'souche'=>$souche));
+		if ($err) 
+		{
+			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
+			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
+			exit();
+		}
+ 
+		if ($client->fault) 
+		{
+			echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
+		} 
+		else 
+		{
+			$err = $client->getError();
+			if ($err) 
+			{
+			echo '<h2>Error</h2><pre>' . $err . '</pre>';
+			} 
+			else
+			{
+			$bl=$result;
+			}
+		}
+	
+	
+							$sqlup2='update f_docligne
+						set DL_QteBC=DL_Qte
+						where do_piece=\''.$q.'\' and condition_enlevement=\''.$cond.'\'';
+						odbc_exec($connection,$sqlup2);
 
 
-                $X = $DOC_ORIG1->FactoryDocumentLigne->List->Item($Ligne);
-
-				
-				
-
-
-$PROC_TRANS->AddDocumentLigne($X);
-
-                
-				
-				
-					}
-
-                $DOC_FINAL = $conn->FactoryDocumentVente->ReadPiece(30, "BL00011");
-
-				$PROC_TRANS->AddDocumentDestination($DOC_FINAL);
-
-
-
-//$PROC_TRANS->Process();                
-					
-					
+	
+		$client = new nusoap_client($wsdl,true);
+	$err = $client->getError();
+	if ($err) 
+	{
+			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
+			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
+			exit();
+	}
 		
-	//	echo 'Transofrmation Reussie';
-
+					
+	echo $bl.' '.$cond.'<br/>';
 	
-} catch (Exception $e) {
-	echo'
-	<div class="alert alert-danger alert-icon alert-close alert-dismissible fade in" role="alert">
-							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-								<span aria-hidden="true">×</span>
-							</button>
-							<i class="font-icon font-icon-warning"></i>
-							Exception reçue : '.utf8_encode($e->getMessage()).' "\n"
-						</div>';
+	
+	$client = new nusoap_client($wsdl,true);
+	$err = $client->getError();
+	if ($err) 
+	{
+			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
+			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
+			exit();
+	}
+	// Exécution de la Methode 
+//	$result = $client->call('HelloUser',$theVariable);
+	$result = $client->call('transformation_ligne',
+	array('bl'=>$bl,'devis'=>$devis,'item'=>1));
+ 
+	if ($client->fault) 
+	{
+		echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
+	} 
+	else 
+	{
+		$err = $client->getError();
+		if ($err) 
+		{
+			echo '<h2>Error</h2><pre>' . $err . '</pre>';
+		} 
+		else
+		{
+//		echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
+//			$do_piece=$result;
+		echo $result;
+		
+		}
+	}
+	
+	
+	
+	
+	
+	
+			$client2 = new nusoap_client($wsdl,true);
+	$err = $client2->getError();
+	if ($err) 
+	{
+			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
+			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client2->getDebug(), ENT_QUOTES) . '</pre>';
+			exit();
+	}
+	echo 'bl : '.$bl;
+	echo 'Facture : '.$facture;
+	
+	// Exécution de la Methode 
+//	$result = $client->call('HelloUser',$theVariable);
+	$result2 = $client2->call('transformation_bl_facture',
+	array('bl'=>$bl,'facture'=>$facture));
+ 
+	if ($client2->fault) 
+	{
+		echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result2); echo '</pre>';
+	} 
+	else 
+	{
+		$err = $client2->getError();
+		if ($err) 
+		{
+			echo '<h2>Error</h2><pre>' . $err . '</pre>';
+		} 
+		else
+		{
+		//		echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
+		//			$do_piece=$result;
+		echo 'Erreur test '.$result2;
+		}
+	}
+	
+	
+
 
 }
-}
+
+
+
 				
 	
-	
-
-
-}				
-				//print_r($condition);
-
  
  
 

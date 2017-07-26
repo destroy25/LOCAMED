@@ -7,7 +7,7 @@ if(isset($_GET['q']))
 	if($q==1)
 	{
 		
-	$client=$_GET['client'];
+	$client1=$_GET['client'];
 	$souche=$_GET['souche'];
 	
 	$sqlsouche='select * from P_SOUCHEVENTE where CbIndice='.$souche;
@@ -16,61 +16,44 @@ if(isset($_GET['q']))
 						$souche=$rep['S_Intitule'];
 					}
 
-		
-/*Chaine de connexion*/		
-$conn = new COM('Objets100.Cial.Stream.3') or die("Impossible de démarrer");
-$nom=$conn->Name = "C:\wamp\www\Sage\BIJOU.gcm";
-$user=$conn->loggable->userName="<Administrateur>";
-$mdp=$conn->loggable->userPwd="";
-$conn->Open();
-
-if ($conn->IsOpen) 
-{
-	
-	
-	try {
-
-		$Ent = $conn->FactoryDocumentVente->CreateType(40);
-		$Clt = $conn->CptaApplication->FactoryClient->ReadNumero($_GET['client']);
-		$Ent->SetDefaultClient($Clt);
-		            $Ent->Souche = $conn->FactorySoucheVente->ReadIntitule($souche);
-					$Ent->SetDefaultDO_Piece();
-					$Ent->SetDefault();
-					$Ent->Write();
-					$Ent->CouldModified();
-					
-					$do_piece=$Ent->DO_Piece();
-
 
 					
 					
-					
-		
-	//	echo 'Transofrmation Reussie';
-
-	
-} catch (Exception $e) {
-    echo 'Exception reçue : ',  utf8_encode($e->getMessage()), "\n";
-}
-	
-	
-	
-
-	
-	
-	
-	
-	
+											$client = new nusoap_client($wsdl,true);
+	$err = $client->getError();
+	if ($err) 
+	{
+			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
+			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
+			exit();
 	}
-else 
-{
-	echo "Erreur d ouverture \n";
-}
+	// Exécution de la Methode 
+//	$result = $client->call('HelloUser',$theVariable);
+	$result = $client->call('creation_document',
+	array('num'=>$client1,'souche'=>$souche,'type'=>4));
+ 
+	if ($client->fault) 
+	{
+		echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
+	} 
+	else 
+	{
+		$err = $client->getError();
+		if ($err) 
+		{
+			echo '<h2>Error</h2><pre>' . $err . '</pre>';
+		} 
+		else
+		{
+		//echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
+			$do_piece=$result;
+		}
+	}
 
-$conn->Close();
-
-$conn = null;
-
+					
+					
+					
+					
 
 $sql='select * from F_Docentete where DO_Piece=\''.$do_piece.'\'';
 
@@ -80,7 +63,7 @@ $sql='select * from F_Docentete where DO_Piece=\''.$do_piece.'\'';
 		
 					}
 					
-$sqlclient='select * from f_comptet where ct_num=\''.$client.'\'';
+$sqlclient='select * from f_comptet where ct_num=\''.$client1.'\'';
 
 				                    $rqclient = odbc_exec($connection,$sqlclient);
                     if ($repclient=odbc_fetch_array($rqclient)) {
@@ -117,7 +100,7 @@ echo '
 				<div class="card-block invoice">
 					<div class="row">
 						<div class="col-lg-6 company-info">
-							<h5>'.$client.'</h5>
+							<h5>'.$client1.'</h5>
 							<p>'.$intitule_client.'</p>
 
 							<div class="invoice-block">
