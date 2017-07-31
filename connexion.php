@@ -3,11 +3,21 @@
 if (!isset($_SESSION)) session_start();
 
 
-    $expire = 3600; // on définit la durée du cookie, 1 jour
+
+
+if(!isset($_SESSION['compte_logged']) || $_SESSION['compte_logged']!='on'){
+	//echo 'OK';
+//	header('Location:login.php?error=1');
+}
+
+
+
+
+/*    $expire = 3600; // on définit la durée du cookie, 1 jour
     $page = substr($_SERVER['PHP_SELF'],10);
     if(substr($page, 0,4)!='ajax' and substr($page, 0,4)!='expor' and substr($page, 0,4)!='logi' ){
         setcookie("page",$page,time()+$expire);  // on l'envoi
-    }
+    }*/
 
 
     $bdd = new PDO('mysql:host=localhost;dbname=locamed_bdd', 'root', '');

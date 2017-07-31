@@ -2,7 +2,6 @@
 
 if (isset($_POST['MM_Insert'])) {
 	
-	echo 'aaa';
  // $loginUsername=mysql_real_escape_string($_POST['login']);
   
   $MM_fldUserAuthorization = "";
@@ -16,16 +15,16 @@ if (isset($_POST['MM_Insert'])) {
     //GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
 	
 	$sql='SELECT * FROM user WHERE login =\''.$_POST['login'].'\' AND mdp = \''.md5($_POST['mdp']).'\'';
-							
-			$reponse = $bdd->query($sql);
+	
+		                $rq = odbc_exec($connection,$sql);
+	
 
   
 //  $LoginRS = mysql_query($sql, $database) or die(mysql_error()) ;
   //$loginFoundUser = mysql_num_rows($LoginRS);
   
 		$i=0;
-			while($row = $reponse->fetch()) 
-			{
+			if ($row=odbc_fetch_array($rq)) {
 
 			$sql2='SELECT version FROM global_system';
 							
@@ -42,7 +41,7 @@ if (isset($_POST['MM_Insert'])) {
 	if (PHP_VERSION >= 5.1) {session_regenerate_id(true);} else {session_regenerate_id();}
     //declare two session variables and assign them
 	$_SESSION['compte_logged']='on';
-    $_SESSION['compte_login'] = $row['idfiscal'];
+    $_SESSION['compte_login'] = $row['login'];
 
 	
 	/*Evenement Historique - */

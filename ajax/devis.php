@@ -146,7 +146,15 @@ echo '
 					<input type="hidden" name="piece" value="'.$do_piece.'" />
                             <a style="float:right;" class="btn btn-rounded btn-inline" onclick="validation_ligne()">Valider</a>
 					
-</form>
+
+					
+							<id id="loading" style="text-align:center;display:none;">
+				<img src="img/fancybox_loading@2x.gif" alt="loading"/>
+				</id>		
+					
+					</form>
+
+
 <div id="ligne_devis">
 						</div>
 			
@@ -165,11 +173,13 @@ echo '
 ?>
 		
 		
-				
+	
+			
 				<div class="row">
 				
 
 			
+
 					
 					<!--<div class="col-lg-4">
 						<fieldset class="form-group">
@@ -212,7 +222,7 @@ echo '
 		                               str3=document.forms['ligne_form'].piece.value;
 
  
-/*                showLoadingImage();*/
+                showLoadingImage();
                 $.ajax({
                     url: "ajax/ligne.php?q=1&article="+str1+"&quantity="+str2+"&piece="+str3,
                     context: document.body,
@@ -225,7 +235,7 @@ echo '
                         // no matter the result, complete will fire, so it's a good place
                         // to do the non-conditional stuff, like hiding a loading image.
 
-                       /* hideLoadingImage();*/
+                        hideLoadingImage();
                     }
                 });
             };

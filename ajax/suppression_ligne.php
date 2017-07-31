@@ -183,3 +183,35 @@ $item=$_GET['item'];
 
 
 ?>
+
+
+           <script type="text/javascript">
+// Suppresion Ligne
+jQuery('.suppression_ligne').click(function(){
+
+// var y = $(this).closest('tr').attr('id');
+if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
+	
+		    var x = document.getElementById("num_piece").value;
+			var y = $(this).closest('tr').attr('class');
+ 
+ $.ajax({
+                    url: "suppression_ligne.php?&num="+x+"&item="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif1").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+ 
+} 
+ // return false;
+});     </script>
