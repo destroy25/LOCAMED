@@ -7,7 +7,7 @@ if (!isset($_SESSION)) session_start();
 
 if(!isset($_SESSION['compte_logged']) || $_SESSION['compte_logged']!='on'){
 	//echo 'OK';
-//	header('Location:login.php?error=1');
+	header('Location : login.php?error=1');
 }
 
 

@@ -1,10 +1,6 @@
 <?php 
 include('connexion.php');
 
-include('connexion.php');
-
-
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -82,53 +78,7 @@ include('connexion.php');
 	<nav class="side-menu">
 	    <ul class="side-menu-list">
 
-						<?php
-			$query = "SELECT * FROM menu where id_parent=0";
-				$reponse = $bdd->query($query);
-
-			while($row = $reponse->fetch()) {
-
-			if($row['uniq']==1)
-			{
-				
-				 echo '<li class="blue">
-	            <a href="'.$row['link'].'">
-	                <i class="'.$row['icon'].'"></i>
-	                <span class="lbl">'.$row['menu'].'</span>
-	            </a>
-	        </li>';
-
-				
-			}
-			else
-			{
-								 echo '<li class="blue with-sub">
-  <span>
-	                <i class="'.$row['icon'].'"></i>
-	                <span class="lbl">'.$row['menu'].'</span>
-	            </span>	          
-				<ul>
-	        ';
-	            
-				$query2='select * from menu where id_parent='.$row['id_menu'];
-				$reponse2 = $bdd->query($query2);
-				while($row2 = $reponse2->fetch()) {
-				echo '    <li><a href="'.$row2['link'].'">
-				<span class="lbl">'.$row2['menu'].'</span></a>
-				</li>';
-				}
-				echo '</ul></li>';
-				
-			}
-				
-				
-}
-
-
-
-// echo afficher_menu(0, 0, $categories);
-?>
-
+						<?php include('menu.php'); ?>
 		
     </ul>
 	
@@ -137,7 +87,7 @@ include('connexion.php');
 	<div class="page-content">
 		<div class="container-fluid">
 
-		<div >
+		<div>
 					<div class="row">
 						<div class="col-xs-3">
 							<a href="creation_devis.php"><section class="widget widget-simple-sm-fill">
@@ -147,29 +97,30 @@ include('connexion.php');
 								<div class="widget-simple-sm-fill-caption">Création Devis</div>
 							</section></a>
 						</div><!--.widget-simple-sm-fill-->
-						<div class="col-xs-3">
+						<a href="creation_retour.php"><div class="col-xs-3">
 							<section class="widget widget-simple-sm-fill red">
 								<div class="widget-simple-sm-icon">
 									<i class="font-icon font-icon-server"></i>
 								</div>
 								<div class="widget-simple-sm-fill-caption">Création Retour</div>
 							</section>
-						</div><!--.widget-simple-sm-fill-->
-								<div class="col-xs-3">
+						</div></a>
+						<!--.widget-simple-sm-fill-->
+								<a href=""><div class="col-xs-3">
 							<section class="widget widget-simple-sm-fill green">
 								<div class="widget-simple-sm-icon">
 									<i class="font-icon font-icon-facebook"></i>
 								</div>
 								<div class="widget-simple-sm-fill-caption">Validation Réception</div>
 							</section><!--.widget-simple-sm-fill-->
-						</div>
-						<div class="col-xs-3">
+						</div></a>
+						<a href="saisie_reglement.php"><div class="col-xs-3">
 							<section class="widget widget-simple-sm-fill yellow">
 								<div class="widget-simple-sm-icon">
 									<i class="font-icon font-icon-facebook"></i>
 								</div>
 								<div class="widget-simple-sm-fill-caption">Saisie des règlements</div>
-							</section><!--.widget-simple-sm-fill-->
+							</section></a><!--.widget-simple-sm-fill-->
 						</div>
 				
 					</div><!--.row-->
