@@ -215,3 +215,32 @@ if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
 } 
  // return false;
 });     </script>
+
+
+
+
+                <script type="text/javascript">
+// Modification Ligne
+jQuery('.modifrow').click(function(){
+ 
+ 
+		 var y = $(this).closest('tr').attr('id');
+ 
+ $.ajax({
+                    url: "ajax/modification_ligne.php?&q="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+  // return false;
+});     </script>

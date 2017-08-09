@@ -38,7 +38,7 @@ array('num'=>$q));
 		{
 //		echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
 //			$do_piece=$result;
-echo $result;
+//echo $result;
 		}
 	}
 

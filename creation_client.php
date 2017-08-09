@@ -1,6 +1,79 @@
 <?php 
 include('connexion.php');
 
+
+if (isset($_POST['MM_Insert'])) {
+	
+
+		$num=$_POST['num'];
+		$intitule=$_POST['intitule'];
+		$adresse=$_POST['adresse'];
+		$ville=$_POST['ville'];
+		$telephone=$_POST['telephone'];
+		$email=$_POST['email'];
+		$compteg='34210000'; // A récuperer de la base de données dépôt
+
+		
+		
+	
+/*Début méthode création Client Webservice OM*/  
+
+
+
+					
+	$client = new nusoap_client($wsdl,true);
+	$err = $client->getError();
+	if ($err) 
+	{
+			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
+			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
+			exit();
+	}
+	// Exécution de la Methode creation_client
+//	$result = $client->call('HelloUser',$theVariable);
+	$result = $client->call('creation_client',
+	array('num'=>$num,
+	'intitule'=>$intitule,
+	'compteg'=>$compteg,
+	'adresse'=>$adresse,
+	'ville'=>$ville,
+	'telephone'=>$telephone,
+	'email'=>$email
+	));
+ 
+	if ($client->fault) 
+	{
+		echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
+	} 
+	else 
+	{
+		$err = $client->getError();
+		if ($err) 
+		{			
+			$msg='<div class="alert alert-danger" role="alert">
+							<strong>Error !</strong><br>
+							'.$err.'
+						</div>';
+		} 
+		else
+		{
+		//echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
+			$msg='<div class="alert alert-info" role="alert">
+							<strong>Succes !</strong><br>
+							'.utf8_encode($result).'
+						</div>';
+		}
+	}
+					
+
+/*Fin méthode création Client Webservice OM*/  
+
+
+
+}
+
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -104,627 +177,72 @@ include('connexion.php');
 			</header>
 
 			
+			
 					<div class="box-typical box-typical-padding">
-				
-
-				<h5 class="m-t-lg with-border">Horizontal Inputs</h5>
-
-				<form>
+			
+			<!--Message de Validation -->
+			<?php if(isset($msg))
+			{
+				echo $msg;
+			}?>
+			
+          <form action="creation_client.php" method="post">
 
 										<div class="">
 						<fieldset class="form-group">
 							<label class="form-label semibold" for="exampleInput">Numéro Client</label>
-						<input type="text" disabled class="form-control" id="inputPassword" placeholder="Text Disabled">
+						<input type="text" name="num" value="CL0011" readonly class="form-control" id="inputPassword" placeholder="Text Disabled">
 						</fieldset>
 					</div>
 					<div class="">
 						<fieldset class="form-group">
 							<label class="form-label semibold" for="exampleInput">Intitulé Client</label>
-							<input type="text" class="form-control" id="exampleInput" placeholder="First Name">
+							<input type="text" name="intitule" required="required" class="form-control" id="exampleInput">
 						</fieldset>
 					</div>
-				<div class="form-group row">
-						<label class="col-sm-2 form-control-label">Intitulé Client</label>
-						<div class="col-sm-10">
-							<p class="form-control-static"><input type="text" class="form-control" id="inputPassword" placeholder="Text"></p>
-						</div>
+					
+									<div class="">
+						<fieldset class="form-group">
+							<label class="form-label semibold" for="exampleInput">Adresse</label>
+							<input name="adresse" type="text" class="form-control" id="exampleInput">
+						</fieldset>
 					</div>
-					<div class="form-group row">
-						<label for="exampleSelect" class="col-sm-2 form-control-label">Adresse</label>
-						<div class="col-sm-10">
-							<textarea rows="4" class="form-control" placeholder="Textarea"></textarea>
-						</div>
+					
+														<div class="">
+						<fieldset class="form-group">
+							<label class="form-label semibold" for="exampleInput">Ville</label>
+							<input name="ville" type="text" class="form-control" id="exampleInput">
+						</fieldset>
 					</div>
-									<div class="form-group row">
-						<label class="col-sm-2 form-control-label">Ville</label>
-						<div class="col-sm-10">
-							<p class="form-control-static"><input type="text" class="form-control" id="inputPassword" placeholder="Text"></p>
-						</div>
-						</div>
-						
-										<div class="form-group row">
-						<label class="col-sm-2 form-control-label">Téléphone</label>
-						<div class="col-sm-10">
-							<p class="form-control-static"><input type="text" class="form-control" id="inputPassword" placeholder="Text"></p>
-						</div>
+					
+																			<div class="">
+						<fieldset class="form-group">
+							<label class="form-label semibold" for="exampleInput">Téléphone</label>
+							<input name="telephone" type="text" class="form-control" id="exampleInput">
+						</fieldset>
+					</div>
+					
+																								<div class="">
+						<fieldset class="form-group">
+							<label class="form-label semibold" for="exampleInput">Email</label>
+							<input name="email" type="text" class="form-control" id="exampleInput">
+						</fieldset>
 					</div>
 
-									<div class="form-group row">
-						<label class="col-sm-2 form-control-label">Email</label>
-						<div class="col-sm-10">
-							<p class="form-control-static"><input type="text" class="form-control" id="inputPassword" placeholder="Text"></p>
-						</div>
-					</div>
+						  <input type="hidden" name="MM_Insert" />
+
+					
+                    <input type="submit" class="btn btn-rounded" value="Valider">
 
 
 				</form>
 
-				<h5 class="m-t-lg with-border">Vertical Inputs</h5>
-
-				<div class="row">
-					<div class="col-lg-4">
-						<fieldset class="form-group">
-							<label class="form-label semibold" for="exampleInput">First Name</label>
-							<input type="text" class="form-control" id="exampleInput" placeholder="First Name">
-							<small class="text-muted">We'll never share your email with anyone else.</small>
-						</fieldset>
-					</div>
-					<div class="col-lg-4">
-						<fieldset class="form-group">
-							<label class="form-label" for="exampleInputEmail1">Email address</label>
-							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" value="mail@mail.com">
-						</fieldset>
-					</div>
-					<div class="col-lg-4">
-						<fieldset class="form-group">
-							<label class="form-label" for="exampleInputPassword1">Password</label>
-							<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-						</fieldset>
-					</div>
-				</div><!--.row-->
-
-
-				<div class="row">
-					<div class="col-md-4 col-sm-6">
-						<fieldset class="form-group">
-							<label class="form-label" for="exampleInputDisabled">Disabled</label>
-							<input type="email" class="form-control" id="exampleInputDisabled" placeholder="First Name" disabled>
-						</fieldset>
-					</div>
-					<div class="col-md-4 col-sm-6">
-						<fieldset class="form-group">
-							<label class="form-label" for="exampleInputDisabled2">Readonly</label>
-							<input type="password" readonly class="form-control" id="exampleInputDisabled2">
-						</fieldset>
-					</div>
-					<div class="col-md-4 col-sm-6">
-						<fieldset class="form-group">
-							<label class="form-label" for="exampleInputError">Error</label>
-							<input type="text" class="form-control form-control-error" id="exampleInputError" placeholder="First Name" value="First Name">
-						</fieldset>
-					</div>
-				</div><!--.row-->
-
-				<h5 class="m-t-lg with-border">Dropdown &amp; Icons</h5>
-
-				<div class="row">
-					<div class="col-md-4 col-sm-6">
-						<div class="form-group input-group">
-							<input type="text" class="form-control" aria-label="Text input with dropdown button">
-							<div class="input-group-btn">
-								<button type="button" class="btn btn-default-outline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Action
-								</button>
-								<div class="dropdown-menu dropdown-menu-right">
-									<a class="dropdown-item" href="#">Action</a>
-									<a class="dropdown-item" href="#">Another action</a>
-									<a class="dropdown-item" href="#">Something else here</a>
-									<div role="separator" class="dropdown-divider"></div>
-									<a class="dropdown-item" href="#">Separated link</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 col-sm-6">
-						<div class="form-group">
-							<div class="input-group">
-								<input type="text" class="form-control" aria-label="Text input with dropdown button">
-								<div class="input-group-btn">
-									<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										Action
-									</button>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#">Action</a>
-										<a class="dropdown-item" href="#">Another action</a>
-										<a class="dropdown-item" href="#">Something else here</a>
-										<div role="separator" class="dropdown-divider"></div>
-										<a class="dropdown-item" href="#">Separated link</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div><!--.row-->
-
-				<div class="row">
-					<div class="col-md-4 col-sm-6">
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon">$</div>
-								<input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
-								<div class="input-group-addon">.00</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 col-sm-6">
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon">http://example.com/users/</div>
-								<input type="text" class="form-control">
-							</div>
-						</div>
-					</div>
-				</div><!--.row-->
-
-				<div class="row">
-					<div class="col-md-4 col-sm-6">
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon">
-									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-								</div>
-								<input type="text" class="form-control" placeholder="Amount">
-								<div class="input-group-addon">
-									<span class="glyphicon glyphicon-text-color" aria-hidden="true"></span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 col-sm-6">
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon">
-									<span class="glyphicon glyphicon-earphone"></span>
-								</div>
-								<input type="text" class="form-control" placeholder="Amount">
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 col-sm-6">
-						<div class="form-group">
-							<div class="input-group">
-								<input type="text" class="form-control">
-								<div class="input-group-addon">
-									<span class="glyphicon glyphicon-send"></span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div><!--.row-->
-				<div class="row">
-					<div class="col-xs-12">
-						<textarea rows="4" class="form-control" placeholder="Textarea"></textarea>
-					</div>
-				</div><!--.row-->
-
-				<h5 class="m-t-lg with-border">Custom Validation Styles</h5>
-
-				<div class="row">
-					<div class="col-md-4 col-sm-6">
-						<fieldset class="form-group form-group-error">
-							<label class="form-label" for="exampleError">Username</label>
-							<input type="text" class="form-control" id="exampleError">
-							<small class="text-muted">Username must not be empty</small>
-						</fieldset>
-					</div>
-					<div class="col-md-4 col-sm-6">
-						<fieldset class="form-group form-group-error">
-							<label class="form-label" for="exampleError2">Username</label>
-							<div class="form-control-wrapper">
-								<input type="text" class="form-control" id="exampleError2">
-								<div class="form-tooltip-error">Username must be between 6 and 18 characters. No special characters allowed.</div>
-							</div>
-							<small class="text-muted">Username must not be empty</small>
-						</fieldset>
-					</div>
-					<div class="col-md-4 col-sm-6">
-						<fieldset class="form-group form-group-error">
-							<label class="form-label" for="exampleError3">Password</label>
-							<div class="form-control-wrapper">
-								<input type="text" class="form-control" id="exampleError3">
-								<div class="form-tooltip-error sm">Password must be at least 6 characters</div>
-							</div>
-							<small class="text-muted">Password must not be empty</small>
-						</fieldset>
-					</div>
-				</div><!--.row-->
-
-				<h5 class="m-t-lg with-border">TouchSpin</h5>
-
-				<div class="row">
-					<div class="col-lg-3">
-						<div class="form-group">
-							<input id="demo1" type="text" value="55" name="demo1">
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<input id="demo2" type="text" value="0" name="demo2" class="col-md-8 form-control">
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<input id="demo_vertical" type="text" value="" name="demo_vertical">
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<input id="demo_vertical2" type="text" value="" name="demo_vertical2">
-						</div>
-					</div>
-				</div><!--.row-->
-				<div class="row">
-					<div class="col-lg-3">
-						<div class="form-group">
-							<input id="demo3" type="text" value="" name="demo3">
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<input id="demo4" type="text" value="" name="demo4" class="input-sm">
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<div class="input-group input-group-lg">
-								<input id="demo4_2" type="text" value="" name="demo4_2" class="form-control input-lg">
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<input id="demo6" type="text" value="" name="demo6">
-						</div>
-					</div>
-				</div><!--.row-->
-				<div class="row">
-					<div class="col-lg-6">
-						<div class="form-group">
-							<div class="input-group">
-								<input id="demo5" type="text" class="form-control" name="demo5" value="50">
-								<div class="input-group-btn">
-									<button type="button" class="btn btn-default">Action</button>
-									<button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown">
-										<span class="caret"></span>
-										<span class="sr-only">Toggle Dropdown</span>
-									</button>
-									<ul class="dropdown-menu pull-right" role="menu">
-										<li><a href="#">Action</a></li>
-										<li><a href="#">Another action</a></li>
-										<li><a href="#">Something else here</a></li>
-										<li class="divider"></li>
-										<li><a href="#">Separated link</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div><!--.row-->
-
-				<h5 class="m-t-lg with-border">Icons</h5>
-
-				<div class="row">
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Left Icon:</label>
-							<div class="form-control-wrapper form-control-icon-left">
-								<input type="text" class="form-control" placeholder="Left"/>
-								<i class="font-icon font-icon-pin"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Right Icon:</label>
-							<div class="form-control-wrapper form-control-icon-right">
-								<input type="text" class="form-control" placeholder="Right"/>
-								<i class="font-icon font-icon-github"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Left Glyphicon:</label>
-							<div class="form-control-wrapper form-control-icon-left">
-								<input type="text" class="form-control" placeholder="Left"/>
-								<i class="glyphicon glyphicon-heart"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Right Glyphicon:</label>
-							<div class="form-control-wrapper form-control-icon-right">
-								<input type="text" class="form-control" placeholder="Right"/>
-								<i class="glyphicon glyphicon-magnet"></i>
-							</div>
-						</div>
-					</div>
-				</div><!--.row-->
-				<div class="row">
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Left Font Awesome:</label>
-							<div class="form-control-wrapper form-control-icon-left">
-								<input type="text" class="form-control" placeholder="Left"/>
-								<i class="fa fa-youtube-play"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Right Font Awesome:</label>
-							<div class="form-control-wrapper form-control-icon-right">
-								<input type="text" class="form-control" placeholder="Right"/>
-								<i class="fa fa-mail-forward"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Blue Icon:</label>
-							<div class="form-control-wrapper form-control-icon-left">
-								<input type="text" class="form-control" placeholder="Left"/>
-								<i class="font-icon font-icon-comments color-blue"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Green Icon:</label>
-							<div class="form-control-wrapper form-control-icon-left">
-								<input type="text" class="form-control" placeholder="Left"/>
-								<i class="font-icon font-icon-check-bird color-green"></i>
-							</div>
-						</div>
-					</div>
-				</div><!--.row-->
-				<div class="row">
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Red Icon:</label>
-							<div class="form-control-wrapper form-control-icon-left">
-								<input type="text" class="form-control" placeholder="Left"/>
-								<i class="font-icon font-icon-close-2 color-red"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Green Icon:</label>
-							<div class="form-control-wrapper form-control-icon-left">
-								<input type="text" class="form-control" placeholder="Left"/>
-								<i class="font-icon font-icon-clock color-orange"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Purple Icon:</label>
-							<div class="form-control-wrapper form-control-icon-left">
-								<input type="text" class="form-control" placeholder="Left"/>
-								<i class="font-icon font-icon-earth color-purple"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Dark Icon:</label>
-							<div class="form-control-wrapper form-control-icon-left">
-								<input type="text" class="form-control" placeholder="Left"/>
-								<i class="font-icon font-icon-i-circle color-black-blue"></i>
-							</div>
-						</div>
-					</div>
-				</div><!--.row-->
-				<div class="row">
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Left Large:</label>
-							<div class="form-control-wrapper form-control-icon-left">
-								<input type="text" class="form-control form-control-lg" placeholder="Left"/>
-								<i class="font-icon font-icon-page"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Right Large:</label>
-							<div class="form-control-wrapper form-control-icon-right">
-								<input type="text" class="form-control form-control-lg" placeholder="Right"/>
-								<i class="font-icon font-icon-cam-video"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Left Small:</label>
-							<div class="form-control-wrapper form-control-icon-left">
-								<input type="text" class="form-control form-control-sm" placeholder="Left"/>
-								<i class="font-icon font-icon-picture"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Right Small:</label>
-							<div class="form-control-wrapper form-control-icon-right">
-								<input type="text" class="form-control form-control-sm" placeholder="Right"/>
-								<i class="font-icon font-icon-pencil"></i>
-							</div>
-						</div>
-					</div>
-				</div><!--.row-->
-				<div class="row">
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Left Rounded:</label>
-							<div class="form-control-wrapper form-control-icon-left">
-								<input type="text" class="form-control form-control-rounded" placeholder="Left"/>
-								<i class="font-icon font-icon-dropbox"></i>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="form-label semibold">Right Rounded:</label>
-							<div class="form-control-wrapper form-control-icon-right">
-								<input type="text" class="form-control form-control-rounded" placeholder="Right"/>
-								<i class="font-icon font-icon-cam-photo"></i>
-							</div>
-						</div>
-					</div>
-				</div><!--.row-->
-
-				<h5 class="m-t-lg with-border">Validation</h5>
-
-				<div class="row">
-					<div class="col-lg-4">
-						<div class="form-group has-success">
-							<label class="form-label" for="inputSuccess1">Input with success</label>
-							<input type="text" class="form-control form-control-success" id="inputSuccess1">
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="form-group has-warning">
-							<label class="form-label" for="inputWarning1">Input with warning</label>
-							<input type="text" class="form-control form-control-warning" id="inputWarning1">
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="form-group has-danger">
-							<label class="form-label" for="inputDanger1">Input with danger</label>
-							<input type="text" class="form-control form-control-danger" id="inputDanger1">
-						</div>
-					</div>
-				</div><!--.row-->
-				<div class="row">
-					<div class="col-lg-4">
-						<div class="form-group">
-							<input type="text" class="form-control form-control-blue-fill">
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="form-group">
-							<input type="text" class="form-control form-control-red-fill">
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="form-group">
-							<input type="text" class="form-control form-control-orange-fill">
-						</div>
-					</div>
-				</div><!--.row-->
-				<div class="row">
-					<div class="col-lg-4">
-						<div class="form-group">
-							<input type="text" class="form-control form-control-green-fill">
-						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="form-group">
-							<input type="text" class="form-control form-control-purple-fill">
-						</div>
-					</div>
-				</div><!--.row-->
 
 			</div><!--.box-typical-->
 		</div><!--.container-fluid-->
 	
 			
-			<div class="box-typical box-typical-padding">
-			
-
-				
-
-
-				                            <form action="#" method="post" class="main" enctype="multipart/form-data" id="entete">
-
-											<div class="form-group row">
-						<label class="col-sm-2 form-control-label">Text</label>
-						<div class="col-sm-10">
-							<p class="form-control-static"><input type="text" class="form-control" id="inputPassword" placeholder="Text"></p>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2 form-control-label">Text Disabled</label>
-						<div class="col-sm-10">
-							<p class="form-control-static"><input type="text" disabled class="form-control" id="inputPassword" placeholder="Text Disabled"></p>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2 form-control-label">Text Readonly</label>
-						<div class="col-sm-10">
-							<p class="form-control-static"><input type="text" readonly class="form-control" id="inputPassword" placeholder="Text Readonly"></p>
-						</div>
-					</div>
-											
-											
-				<div class="col-lg-4">
-							<label class="form-label semibold" for="exampleInput">Souche</label>
-
-				<select name="souche" class="select2">
-				<?php $sqlsouche='select * from P_SOUCHEVENTE';
-				                    $rq = odbc_exec($connection,$sqlsouche);
-                    while ($rep=odbc_fetch_array($rq)) {
-								echo '<option value="'.$rep['cbIndice'].'">'.utf8_encode($rep['S_Intitule']).'</option>';
-		
-					}
-					?>
-							</select>
-							<br/>
-							<br/>
-						</div>
-						
-							<div class="col-lg-4">
-							<label class="form-label semibold" for="exampleInput">Client</label>
-
-				<select name="client" class="select2">
-				<?php $sqlclient='select CT_Num,CT_Intitule from F_COMPTET where CT_Type=0';
-				                    $rq = odbc_exec($connection,$sqlclient);
-                    while ($rep=odbc_fetch_array($rq)) {
-								echo '<option value="'.$rep['CT_Num'].'">'.utf8_encode($rep['CT_Intitule']).'</option>';
-		
-					}
-					?>
-							</select>
-							<br/>
-							<br/>
-						</div>
-					
-					
-					<div class="col-lg-4">
-						<fieldset class="form-group">
-		<label class="form-label semibold" for="exampleInput">&nbsp;</label>
-                            <a style="float:right;" class="btn btn-rounded btn-inline" onclick="validation_entete()">Valider</a>
 	
-						</fieldset>
-					</div>
-					</form>
-				<!--.row-->
-
-
-				<div id="box">
-				
-				<id id="loading" style="text-align:center;display:none;">
-				<img src="img/fancybox_loading@2x.gif" alt="loading"/>
-				</id>
-				
-				</div>
-	
-
-				</div><!--.box-typical-->
-
 				
 	</div><!--.container-fluid-->
 	

@@ -111,7 +111,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 	}
 		
 					
-	echo $bl.' '.$cond.'<br/>';
+//	echo $bl.' '.$cond.'<br/>';
 	
 	
 	$client = new nusoap_client($wsdl,true);
@@ -142,7 +142,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 		{
 //		echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
 //			$do_piece=$result;
-		echo $result;
+	//	echo $result;
 		
 		}
 	}
@@ -160,8 +160,8 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client2->getDebug(), ENT_QUOTES) . '</pre>';
 			exit();
 	}
-	echo 'bl : '.$bl;
-	echo 'Facture : '.$facture;
+	//echo 'bl : '.$bl;
+	//echo 'Facture : '.$facture;
 	
 	// Exécution de la Methode 
 //	$result = $client->call('HelloUser',$theVariable);
@@ -183,14 +183,16 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 		{
 		//		echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
 		//			$do_piece=$result;
-		echo 'Erreur test '.$result2;
+		//echo 'Erreur test '.$result2;
 		}
 	}
-	
-	
-
-
 }
+
+ echo '<div class="alert alert-info" role="alert">
+							<strong>Succes !</strong><br>
+							Document transformé avec succès
+						</div>';
+
 
 
 

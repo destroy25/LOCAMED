@@ -40,7 +40,7 @@ $qte=$_GET['quantity'];
 	}
 
 	/*Mise à jour condition_enlevement*/
-	$sqlligne='update f_docligne set condition_enlevement=\'Remis sur place\' where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\' and DL_Ligne=(select max(DL_Ligne) from f_docligne where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\') ';
+	$sqlligne='update f_docligne set condition_enlevement=\'Remis sur place\',statut_livraison=\'Livré\' where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\' and DL_Ligne=(select max(DL_Ligne) from f_docligne where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\') ';
 	odbc_exec($connection,$sqlligne);
 	
 	echo '			
@@ -103,7 +103,6 @@ $qte=$_GET['quantity'];
 						}
 						
 						/*Fin Statut du Stock */
-						
 						$id++;
 						echo'
 									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
@@ -118,13 +117,10 @@ $qte=$_GET['quantity'];
 										<td><a class="modifrow" href="#" data-toggle="modal"data-target="#myModal"><i class="fa fa-pencil"></i></a> 
 										<a class="suppression_ligne"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
-										
 									}
-						
 											echo'
 								</tbody>
 							</table>
-
 				<div class="modal fade"
 					 id="myModal"
 					 tabindex="-1"
@@ -146,13 +142,11 @@ $qte=$_GET['quantity'];
 							</form>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
-								<a class="modifcondition"  class="btn btn-rounded btn-primary">Valider</a>
+								<button type="button" class="modifcondition btn btn-rounded btn-primary">Valider</button>
 							</div>
 						</div>
 					</div>
 				</div><!--.modal-->
-							
 						</div>
 							<div class="payment-details">
 								<strong>Récapitulatif</strong>
@@ -171,10 +165,7 @@ $qte=$_GET['quantity'];
 									</tr>
 								</table>
 							</div>
-
-							
 					<div class="row">
-					
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
@@ -184,14 +175,12 @@ $qte=$_GET['quantity'];
 								</div>
 							</div>
 						</div>
-					
 					</div>
+					
+					<div id="validation"></div>
 							</div>
-
 					</div>';
-	
 }
-
 ?>
 
 
@@ -200,14 +189,11 @@ $qte=$_GET['quantity'];
 // Modification Ligne
 jQuery('.modifrow').click(function(){
  
- 
 		 var y = $(this).closest('tr').attr('id');
- 
- $.ajax({
+		$.ajax({
                     url: "ajax/modification_ligne.php?&q="+y,
                     context: document.body,
                     success: function(responseText) {
-
 
                         //$("#txtHint22").html(responseText);
                         $("#modif").html(responseText);
@@ -219,7 +205,6 @@ jQuery('.modifrow').click(function(){
 
                     }
                 });
-  // return false;
 });     </script>
 
 
@@ -301,7 +286,7 @@ jQuery('.modifcondition').click(function(){
                     context: document.body,
                     success: function(responseText) {
 
-                        $("#ligne_form").html(responseText);
+                        $("#validation").html(responseText);
 
                     },
                     complete: function() {

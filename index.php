@@ -100,7 +100,7 @@ include('connexion.php');
 						<a href="creation_retour.php"><div class="col-xs-3">
 							<section class="widget widget-simple-sm-fill red">
 								<div class="widget-simple-sm-icon">
-									<i class="font-icon font-icon-server"></i>
+									<i class="font-icon font-icon-pencil"></i>
 								</div>
 								<div class="widget-simple-sm-fill-caption">Création Retour</div>
 							</section>

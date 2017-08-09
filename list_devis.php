@@ -100,6 +100,10 @@ include('connexion.php');
 				</div>
 			</header>
 			<div id="modif">
+										<id id="loading" style="text-align:center;display:none;">
+				<img src="img/fancybox_loading@2x.gif" alt="loading"/>
+				</id>		
+
 			</div>
 			<section class="card">
 				<div class="card-block">
@@ -202,8 +206,24 @@ if (confirm("Voulez vous transformer le devis N° "+y+" en facture ?") == true) 
 });     </script>
 
 
+
+
+<script type="text/javascript">
+/*JS Loading*/
+            function hideLoadingImage()
+            {
+                $("#loading").css("display", "none");
+
+            }
+
+            function showLoadingImage(){
+                $("#loading").css("display", "block");
+            }
+
+        </script>	
 	
-	
+
+
 	
 	
 <script src="js/app.js"></script>
