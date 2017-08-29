@@ -82,7 +82,10 @@ include('connexion.php');
 	<nav class="side-menu">
 	    <ul class="side-menu-list">
 
-	<?php include('menu.php');?>	
+					<?php
+					include('menu.php');
+?>
+		
     </ul>
 	
 	</nav><!--.side-menu-->
@@ -94,11 +97,7 @@ include('connexion.php');
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h3>Devis</h3>
-							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="#">Gestion Devis</a></li>
-								<li><a href="#">Création Devis</a></li>
-							</ol>
+							<h3>Bon de Livraison</h3>
 						</div>
 					</div>
 				</div>
@@ -114,14 +113,25 @@ if(isset($_GET['q']))
 				
 
 
-$sql='select * from F_Docentete where DO_Piece=\''.$q.'\'';
+$sql='select * from f_docligne where DL_PieceBL=\''.$q.'\'';
 
 				                    $rq = odbc_exec($connection,$sql);
                     if ($rep=odbc_fetch_array($rq)) {
 						$date=$rep['DO_Date'];
-						$client1=$rep['DO_Tiers'];
+						$client1=$rep['CT_Num'];
+						$stl=$rep['statut_livraison'];
+						$condition_enlevement=$rep['condition_enlevement'];
 		
 					}
+					
+						if($stl='Livré')
+						{
+							$statut_livraison='<span class="label label-success">Livré</span>';
+						}
+						else
+						{
+							$statut_livraison='<span class="label label-danger">En instance de Livraison</span>';
+						}
 					
 $sqlclient='select * from f_comptet where ct_num=\''.$client1.'\'';
 
@@ -143,19 +153,11 @@ echo '
 					
 		
 					
-<!--						<div class="col-lg-4">
-						<div class="form-group">
-													<label class="form-label" for="desgination">Quantité</label>
-
-							<input id="demo3" type="text" value="1" name="demo3">
-						</div>-->
-					</div>
-				</div><!--.row-->
 
 
 							<section class="card">
 				<header class="card-header card-header-lg">
-					Devis
+					Bon de Livraison
 				</header>
 				<div class="card-block invoice">
 					<div class="row">
@@ -174,8 +176,10 @@ echo '
 						</div>
 						<div class="col-lg-6 clearfix invoice-info">
 							<div class="text-lg-right">
-								<h5>DEVIS #'.$q.'</h5>
+								<h5>BL #'.$q.'</h5>
 								<div>Date: '.$date.'</div>
+								<h5>Statut Livraison : '.$statut_livraison.'</h5>
+								<h5>Condition Enlevement : '.$condition_enlevement.'</h5>
 							</div>
 
 
@@ -201,11 +205,6 @@ echo '
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
-										<th>Prix Unitaire</th>
-										<th>Remise</th>
-										<th>Condition Enlevement</th>
-										<th>Statut Stock</th>
-										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>';
@@ -214,7 +213,7 @@ echo '
 						$totalht=0;			//Totat HT
 						$totalttc=0;		//Tota TTC
 								$sqlligne='select AR_Ref,DL_Design,DL_Qte,DL_PrixUnitaire,DL_Remise01REM_Valeur,DL_MontantHT,DL_MontantTTC,condition_enlevement,cbMarq
-								from f_docligne where DO_Piece=\''.$q.'\'';
+								from f_docligne where DL_PieceBL=\''.$q.'\'';
 								    $rqligne = odbc_exec($connection,$sqlligne);
 									while ($data[] = odbc_fetch_array($rqligne));
 									
@@ -256,11 +255,6 @@ echo '
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
 										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
-										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
-										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
-										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
-										<td>'.$infostock.'</td>
-										<td><a class="modifrow" href="#" data-toggle="modal"data-target="#myModal"><i class="fa fa-pencil"></i></a> <a href="#"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 										
 									}
@@ -321,7 +315,6 @@ echo '
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
-									<a onclick="validation_devis()" class="btn btn-rounded btn-inline">Valider</a>
 									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
 								</div>
 							</div>
@@ -451,55 +444,7 @@ echo '
 	<script>
 
 	
-	function validation_entete() {
-                               str=document.forms['entete'].souche.value;
-                               str1=document.forms['entete'].client.value;
- 
-/*                showLoadingImage();*/
-                $.ajax({
-                    url: "ajax/devis.php?q=1&client="+str1+"&souche="+str,
-                    context: document.body,
-                    success: function(responseText) {
 
-                        $("#box").html(responseText);
-
-                    },
-                    complete: function() {
-                        // no matter the result, complete will fire, so it's a good place
-                        // to do the non-conditional stuff, like hiding a loading image.
-                $("#entete").css("display", "none");
-                       /* hideLoadingImage();*/
-                    }
-                });
-            };
-</script>
-
-
-	<script>
-/*Fonction Validation Devis*/
-	
-	function validation_devis() {
-		    var x = document.getElementById("num_piece").value;
-
- 
-/*                showLoadingImage();*/
-                $.ajax({
-                    url: "ajax/validation_devis.php?q="+x,
-                    context: document.body,
-                    success: function(responseText) {
-
-                        $("#ligne_form").html(responseText);
-
-                    },
-                    complete: function() {
-                        // no matter the result, complete will fire, so it's a good place
-                        // to do the non-conditional stuff, like hiding a loading image.
-
-                       /* hideLoadingImage();*/
-                    }
-                });
-            };
-</script>
 
 <script src="js/app.js"></script>
 </body>

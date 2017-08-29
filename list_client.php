@@ -2,8 +2,6 @@
 include('connexion.php');
 
 
-
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -82,7 +80,8 @@ include('connexion.php');
 	<nav class="side-menu">
 	    <ul class="side-menu-list">
 
-						<?php include('menu.php'); ?>
+				<?php include('menu.php'); ?>
+		
 		
     </ul>
 	
@@ -94,60 +93,47 @@ include('connexion.php');
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h2>Bon de Livraison</h2>
-							<div class="subtitle">Bon de livraison en cours</div>
+							<h2>Clients</h2>
 						</div>
 					</div>
 				</div>
 			</header>
 			<div id="modif">
+										<id id="loading" style="text-align:center;display:none;">
+				<img src="img/fancybox_loading@2x.gif" alt="loading"/>
+				</id>		
+
 			</div>
 			<section class="card">
 				<div class="card-block">
 					<table id="example" class="display table table-bordered" cellspacing="0" width="100%">
 						<thead>
 						<tr>
-							<th>N° BL</th>
-							<th>N° Facture</th>
-							<th>Client</th>
-							<th>Date</th>
-							<th>Condition Enlevement</th>
-							<th>Statut</th>
+							<th>N° Client</th>
+							<th>Intitule Client</th>
+							<th>Adresse</th>
+							<th>Téléphone</th>
 							<th>Action</th>
 						</tr>
 						</thead>
-											
 						<tbody>
 						<?php
-						$sql='select distinct(DL_PieceBL) as BL,DO_Piece as Facture,CT_Intitule,DO_Date,condition_enlevement,statut_livraison from f_docligne 
-						inner join f_comptet on f_docligne.ct_num=f_comptet.ct_num where do_type=6 and DL_PieceBL<>\'\'						';
+						$sql='select * from f_comptet
+						';
 		                $rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
 							
-							if($rep['statut_livraison']=='En instance de livraison')
-							{
-								$statut='<span class="label label-warning">En instance de livraison</span>';
-							}
-							elseif($rep['statut_livraison']=='Livré')
-							{
-								$statut='<span class="label label-success">Livré</span>';
-	
-							}
-							else
-							{
-								$statut='';
-							}
 
-							
-							$d=date_create($rep['DO_Date']);
-								echo '<tr id="'.$rep['BL'].'">
-								<td>'.$rep['BL'].'</td>
-								<td>'.$rep['Facture'].'</td>
+								/*Conversion de date*/
+//								$d=date_create($rep['DO_Date']);
+								
+								echo '<tr id="'.$rep['CT_Num'].'">
+								<td>'.$rep['CT_Num'].'</td>
 								<td>'.$rep['CT_Intitule'].'</td>
-								<td>'.date_format($d,'d/m/Y').'</td>
-								<td>'.$rep['condition_enlevement'].'</td>
-								<td>'.$statut.'</td>
-								<td>	<a title="Consultation BL" href="bl.php?q='.$rep['BL'].'"><span class="fa fa-eye"></span></a></td>
+								<td>'.utf8_encode($rep['CT_Adresse']).'</td>
+								<td>'.$rep['CT_Telephone'].'</td>
+								<td>
+</td>
 								</tr>';
 		
 						}?>
@@ -180,8 +166,9 @@ include('connexion.php');
                 <script type="text/javascript">
 // delete row in a table
 jQuery('.transformation_devis').click(function(){
- 
-		 var y = $(this).closest('tr').attr('id');
+ var y = $(this).closest('tr').attr('id');
+if (confirm("Voulez vous transformer le devis N° "+y+" en facture ?") == true) {
+		
 //		 var x = $(this).closest('tr').attr('id');
  
  $.ajax({
@@ -200,12 +187,30 @@ jQuery('.transformation_devis').click(function(){
 
                     }
                 });
-  // return false;
+ 
+} 
+ // return false;
 });     </script>
 
 
+
+
+<script type="text/javascript">
+/*JS Loading*/
+            function hideLoadingImage()
+            {
+                $("#loading").css("display", "none");
+
+            }
+
+            function showLoadingImage(){
+                $("#loading").css("display", "block");
+            }
+
+        </script>	
 	
-	
+
+
 	
 	
 <script src="js/app.js"></script>

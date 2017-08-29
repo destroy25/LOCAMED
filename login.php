@@ -14,7 +14,7 @@ if (isset($_POST['MM_Insert'])) {
   //$LoginRS__query=sprintf("SELECT * FROM compte WHERE login = %s AND mdp = %s ",
     //GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
 	
-	$sql='SELECT * FROM user WHERE login =\''.$_POST['login'].'\' AND mdp = \''.md5($_POST['mdp']).'\'';
+	$sql='SELECT * FROM user_interface WHERE login =\''.$_POST['login'].'\' AND mdp = \''.md5($_POST['mdp']).'\'';
 	
 		                $rq = odbc_exec($connection,$sql);
 	
@@ -26,15 +26,6 @@ if (isset($_POST['MM_Insert'])) {
 		$i=0;
 			if ($row=odbc_fetch_array($rq)) {
 
-			$sql2='SELECT version FROM global_system';
-							
-			$reponse2 = $bdd->query($sql2);
-
-			if($row2 = $reponse2->fetch()) 
-			{
-				$_SESSION['version']=$row2['version'];
-		
-			}
 
 		$i=1;
 	
@@ -59,10 +50,12 @@ if (isset($_POST['MM_Insert'])) {
 
   }
   
-  if($i)
-      header("Location: " . $MM_redirectLoginSuccess );
-  else 
-    header("Location: ". $MM_redirectLoginFailed );
+	  header("Location: " . $MM_redirectLoginSuccess );
+	  exit();
+  
+      
+  /*else 
+    header("Location: ". $MM_redirectLoginFailed );*/
   
 }
 
