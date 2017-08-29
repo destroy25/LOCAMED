@@ -189,7 +189,7 @@ $d=date_create($rep['DO_Date']);
 								<td>
 								<a title="Consultation Facture" href="facture.php?q='.$rep['DO_Piece'].'"><span class="fa fa-eye"></span></a>
 								<a title="Saisie Règlement" ><span class="fa fa-cogs"></span></a>
-								<a title="Impression Facture" ><span class="fa fa-print"></span></a></td>
+								<a title="Impression Facture" href="impression_facture.php?q='.$rep['DO_Piece'].'"><span class="fa fa-print"></span></a></td>
 								</tr>';
 		
 						}?>

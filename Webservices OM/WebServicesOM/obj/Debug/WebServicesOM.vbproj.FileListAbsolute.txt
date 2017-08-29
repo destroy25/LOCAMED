@@ -9,3 +9,14 @@ c:\users\cherqaoui\documents\visual studio 2012\Projects\WebServicesOM\WebServic
 C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\bin\Interop.Objets100Lib.dll
 C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\obj\Debug\Interop.Objets100Lib.dll
 C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\obj\Debug\WebServicesOM.vbproj.ResolveComReference.cache
+C:\wamp\www\LOCAMED\trunk\Webservices OM\WebServicesOM\bin\WebServicesOM.dll
+C:\wamp\www\LOCAMED\trunk\Webservices OM\WebServicesOM\bin\WebServicesOM.pdb
+C:\wamp\www\LOCAMED\trunk\Webservices OM\WebServicesOM\bin\WebServicesOM.xml
+C:\wamp\www\LOCAMED\trunk\Webservices OM\WebServicesOM\bin\Interop.Objets100Lib.dll
+C:\wamp\www\LOCAMED\trunk\Webservices OM\WebServicesOM\obj\Debug\Interop.Objets100Lib.dll
+C:\wamp\www\LOCAMED\trunk\Webservices OM\WebServicesOM\obj\Debug\WebServicesOM.vbproj.ResolveComReference.cache
+C:\wamp\www\LOCAMED\trunk\Webservices OM\WebServicesOM\obj\Debug\WebServicesOM.Resources.resources
+C:\wamp\www\LOCAMED\trunk\Webservices OM\WebServicesOM\obj\Debug\WebServicesOM.vbproj.GenerateResource.Cache
+C:\wamp\www\LOCAMED\trunk\Webservices OM\WebServicesOM\obj\Debug\WebServicesOM.dll
+C:\wamp\www\LOCAMED\trunk\Webservices OM\WebServicesOM\obj\Debug\WebServicesOM.xml
+C:\wamp\www\LOCAMED\trunk\Webservices OM\WebServicesOM\obj\Debug\WebServicesOM.pdb

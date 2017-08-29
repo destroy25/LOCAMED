@@ -15,7 +15,7 @@
     <AssemblyName>WebServicesOM</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <MyType>Custom</MyType>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -80,7 +80,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Service1.asmx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Service1.asmx.vb">
@@ -173,7 +175,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54862</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:54572/</IISUrl>
+          <IISUrl>http://localhost/WebServicesOM/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -105,9 +105,7 @@ echo '
 								<div>'.utf8_encode($complement_client).'</div>
 								<div>'.utf8_encode($ville_client).'</div>
 							</div>
-
-						
-						
+	
 						</div>
 						<div class="col-lg-6 clearfix invoice-info">
 							<div class="text-lg-right">
