@@ -147,7 +147,9 @@ include('connexion.php');
 								<td>'.date_format($d,'d/m/Y').'</td>
 								<td>'.$rep['condition_enlevement'].'</td>
 								<td>'.$statut.'</td>
-								<td>	<a title="Consultation BL" href="bl.php?q='.$rep['BL'].'"><span class="fa fa-eye"></span></a></td>
+								<td>	<a title="Consultation BL" href="bl.php?q='.$rep['BL'].'"><span class="fa fa-eye"></span></a>
+								        <a title="Validation BL" href="validation_bl.php?q='.$rep['BL'].'"><span class="fa fa-cogs"></span></a>
+								</td>
 								</tr>';
 		
 						}?>

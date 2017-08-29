@@ -1,6 +1,5 @@
 <?php 
 include('connexion.php');
-
 ?>
 <!DOCTYPE html>
 <html>

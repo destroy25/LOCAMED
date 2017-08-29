@@ -82,7 +82,10 @@ include('connexion.php');
 	<nav class="side-menu">
 	    <ul class="side-menu-list">
 
-	<?php include('menu.php');?>	
+					<?php
+					include('menu.php');
+?>
+		
     </ul>
 	
 	</nav><!--.side-menu-->
@@ -94,11 +97,7 @@ include('connexion.php');
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h3>Devis</h3>
-							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="#">Gestion Devis</a></li>
-								<li><a href="#">Création Devis</a></li>
-							</ol>
+							<h3>Bon de Livraison</h3>
 						</div>
 					</div>
 				</div>
@@ -107,21 +106,56 @@ include('connexion.php');
 
 			
 <?php
-if(isset($_GET['q']))
+if(isset($_GET['q']) || isset($_GET['aa']))
 {
+	if(isset($_GET['q']))
 	$q=$_GET['q'];	
+    if(isset($_GET['aa']))
+	$q=$_GET['aa'];	
 
 				
 
+				
+if(isset($_GET['aa']))
+{
+	
+$q1=$_GET['aa'];
 
-$sql='select * from F_Docentete where DO_Piece=\''.$q.'\'';
+$liv='Livré';
+
+$sql='update F_DOCLIGNE set statut_livraison=\''.$liv.'\'where DL_PieceBL=\''.$q1.'\'';
+ odbc_exec($connection,$sql);
+ echo '<div class="alert alert-info" role="alert">
+							<strong>Succes !</strong><br>
+							Document Validé
+						</div>';
+ 
+}
+				
+
+$sql='select * from f_docligne where DL_PieceBL=\''.$q.'\'';
 
 				                    $rq = odbc_exec($connection,$sql);
                     if ($rep=odbc_fetch_array($rq)) {
 						$date=$rep['DO_Date'];
-						$client1=$rep['DO_Tiers'];
+						$client1=$rep['CT_Num'];
+						$stl=$rep['statut_livraison'];
+						
+						$condition_enlevement=$rep['condition_enlevement'];
 		
 					}
+					
+					
+					
+						if($stl=='Livré')
+						{
+							$statut_livraison='<span class="label label-success">Livré</span>';
+						}
+						else
+						{
+							$statut_livraison='<span class="label label-danger">En instance de Livraison</span>';
+						}
+						
 					
 $sqlclient='select * from f_comptet where ct_num=\''.$client1.'\'';
 
@@ -133,29 +167,26 @@ $sqlclient='select * from f_comptet where ct_num=\''.$client1.'\'';
 						$ville_client=$repclient['CT_Ville'];
 		
 					}
+					
+	
+	
 
 echo '			
 
-				<div class="row">
+		<div class="row">
 				
 
 			
 					
 		
 					
-<!--						<div class="col-lg-4">
-						<div class="form-group">
-													<label class="form-label" for="desgination">Quantité</label>
-
-							<input id="demo3" type="text" value="1" name="demo3">
-						</div>-->
-					</div>
-				</div><!--.row-->
 
 
-							<section class="card">
+	<section class="card">
+	   <form id="modif_condition" action="validation_bl.php" method="GET">
+					
 				<header class="card-header card-header-lg">
-					Devis
+					Bon de Livraison
 				</header>
 				<div class="card-block invoice">
 					<div class="row">
@@ -174,8 +205,10 @@ echo '
 						</div>
 						<div class="col-lg-6 clearfix invoice-info">
 							<div class="text-lg-right">
-								<h5>DEVIS #'.$q.'</h5>
+								<h5>BL #'.$q.'</h5>
 								<div>Date: '.$date.'</div>
+								<h5>Statut Livraison : bbbb '.$statut_livraison.'</h5>
+								<h5>Condition Enlevement : '.$condition_enlevement.'</h5>
 							</div>
 
 
@@ -192,7 +225,7 @@ echo '
 			                            
 <div id="ligne_devis">
 
-<input type="hidden" id="num_piece" value="'.$q.'"/>
+<input type="hidden" name="aa" value="'.$q.'"/>
 	<div class="col-lg-12">
 							<table class="table table-bordered">
 								<thead>
@@ -201,11 +234,6 @@ echo '
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
-										<th>Prix Unitaire</th>
-										<th>Remise</th>
-										<th>Condition Enlevement</th>
-										<th>Statut Stock</th>
-										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>';
@@ -214,7 +242,7 @@ echo '
 						$totalht=0;			//Totat HT
 						$totalttc=0;		//Tota TTC
 								$sqlligne='select AR_Ref,DL_Design,DL_Qte,DL_PrixUnitaire,DL_Remise01REM_Valeur,DL_MontantHT,DL_MontantTTC,condition_enlevement,cbMarq
-								from f_docligne where DO_Piece=\''.$q.'\'';
+								from f_docligne where DL_PieceBL=\''.$q.'\'';
 								    $rqligne = odbc_exec($connection,$sqlligne);
 									while ($data[] = odbc_fetch_array($rqligne));
 									
@@ -256,11 +284,6 @@ echo '
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
 										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
-										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
-										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
-										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
-										<td>'.$infostock.'</td>
-										<td><a class="modifrow" href="#" data-toggle="modal"data-target="#myModal"><i class="fa fa-pencil"></i></a> <a href="#"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 										
 									}
@@ -276,7 +299,7 @@ echo '
 					 aria-labelledby="myModalLabel"
 					 aria-hidden="true">
 					<div class="modal-dialog" role="document">
-						<div class="modal-content">
+					 	<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
 									<i class="font-icon-close-2"></i>
@@ -284,16 +307,18 @@ echo '
 								<h4 class="modal-title" id="myModalLabel">Modification Condition Enlevement</h4>
 							</div>
 							<div class="modal-body">
-							<form id="modif_condition">
+							
 							<div id="modif">
 							</div>
-							</form>
+							
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
-								<a class="modifcondition"  class="btn btn-rounded btn-primary">Valider</a>
+								<a class="btn btn-rounded btn-inline" >Valider</a>
+									
 							</div>
 						</div>
+						
 					</div>
 				</div><!--.modal-->
 							
@@ -321,7 +346,7 @@ echo '
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
-									<a onclick="validation_devis()" class="btn btn-rounded btn-inline">Valider</a>
+								    <button type="submit" id="btnValid" class="btn btn-rounded btn-inline">Valider</button>
 									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
 								</div>
 							</div>
@@ -333,6 +358,7 @@ echo '
 			
 					</div>
 				</div>
+				</form>
 			</section>
 
 ';
@@ -442,43 +468,16 @@ echo '
 			});
 		});
 	</script>
-	<script>
-
 	
-	function validation_entete() {
-                               str=document.forms['entete'].souche.value;
-                               str1=document.forms['entete'].client.value;
- 
-/*                showLoadingImage();*/
-                $.ajax({
-                    url: "ajax/devis.php?q=1&client="+str1+"&souche="+str,
-                    context: document.body,
-                    success: function(responseText) {
-
-                        $("#box").html(responseText);
-
-                    },
-                    complete: function() {
-                        // no matter the result, complete will fire, so it's a good place
-                        // to do the non-conditional stuff, like hiding a loading image.
-                $("#entete").css("display", "none");
-                       /* hideLoadingImage();*/
-                    }
-                });
-            };
-</script>
-
-
-	<script>
+	
+		<script>
 /*Fonction Validation Devis*/
 	
-	function validation_devis() {
+	function valider_bl() {
 		    var x = document.getElementById("num_piece").value;
-
- 
-/*                showLoadingImage();*/
+           
                 $.ajax({
-                    url: "ajax/validation_devis.php?q="+x,
+                    url: "ajax/valider_bl.php?q="+x,
                     context: document.body,
                     success: function(responseText) {
 
@@ -492,9 +491,10 @@ echo '
                        /* hideLoadingImage();*/
                     }
                 });
+				 
             };
-</script>
+  </script>
 
-<script src="js/app.js"></script>
+	<script><script src="js/app.js"></script>
 </body>
 </html>
