@@ -1,0 +1,11 @@
+C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\bin\WebServicesOM.dll
+C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\bin\WebServicesOM.pdb
+C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\bin\WebServicesOM.xml
+C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\bin\Interop.Objets100Lib.dll
+C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\obj\Release\Interop.Objets100Lib.dll
+C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\obj\Release\WebServicesOM.vbproj.ResolveComReference.cache
+C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\obj\Release\WebServicesOM.Resources.resources
+C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\obj\Release\WebServicesOM.vbproj.GenerateResource.Cache
+C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\obj\Release\WebServicesOM.dll
+C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\obj\Release\WebServicesOM.xml
+C:\Users\CHERQAOUI\Documents\Visual Studio 2012\Projects\WebServicesOM\WebServicesOM\obj\Release\WebServicesOM.pdb

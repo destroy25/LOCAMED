@@ -81,57 +81,8 @@ include('connexion.php');
 	<div class="mobile-menu-left-overlay"></div>
 	<nav class="side-menu">
 	    <ul class="side-menu-list">
-
-						<?php
-			$query = "SELECT * FROM menu where id_parent=0";
-				$reponse = $bdd->query($query);
-
-			while($row = $reponse->fetch()) {
-
-			if($row['uniq']==1)
-			{
-				
-				 echo '<li class="blue">
-	            <a href="'.$row['link'].'">
-	                <i class="'.$row['icon'].'"></i>
-	                <span class="lbl">'.$row['menu'].'</span>
-	            </a>
-	        </li>';
-
-				
-			}
-			else
-			{
-								 echo '<li class="blue with-sub">
-  <span>
-	                <i class="'.$row['icon'].'"></i>
-	                <span class="lbl">'.$row['menu'].'</span>
-	            </span>	          
-				<ul>
-	        ';
-	            
-				$query2='select * from menu where id_parent='.$row['id_menu'];
-				$reponse2 = $bdd->query($query2);
-				while($row2 = $reponse2->fetch()) {
-				echo '    <li><a href="'.$row2['link'].'">
-				<span class="lbl">'.$row2['menu'].'</span></a>
-				</li>';
-				}
-				echo '</ul></li>';
-				
-			}
-				
-				
-}
-
-
-
-// echo afficher_menu(0, 0, $categories);
-?>
-
-		
-    </ul>
-	
+				<?php	include('menu.php');   ?>
+		</ul>
 	</nav><!--.side-menu-->
 
 		<div class="page-content">
@@ -165,8 +116,7 @@ include('connexion.php');
 						<?php
 						$sql='select DO_Piece,DO_Date,CT_Intitule,DO_Statut,CT_Intitule,DO_Statut from f_docentete 
 						inner join f_comptet on f_docentete.do_tiers=f_comptet.ct_num 
-						where do_domaine=0 and do_type=6 and do_provenance=0
-						';
+						where do_domaine=0 and do_type=6 and do_provenance=0';
 		                $rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
 							
@@ -180,7 +130,7 @@ include('connexion.php');
 	
 							}
 	
-$d=date_create($rep['DO_Date']);
+							$d=date_create($rep['DO_Date']);
 								echo '<tr id="'.$rep['DO_Piece'].'">
 								<td>'.$rep['DO_Piece'].'</td>
 								<td>'.date_format($d,'d/m/Y').'</td>
