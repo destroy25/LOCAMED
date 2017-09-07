@@ -82,9 +82,7 @@ include('connexion.php');
 	<nav class="side-menu">
 	    <ul class="side-menu-list">
 
-					<?php
-					include('menu.php');
-?>
+					<?php include('menu.php'); ?>
 		
     </ul>
 	
@@ -106,67 +104,54 @@ include('connexion.php');
 
 			
 <?php
-if(isset($_GET['q']) || isset($_GET['aa']))
-{
-	if(isset($_GET['q']))
-	$q=$_GET['q'];	
-    if(isset($_GET['aa']))
-	$q=$_GET['aa'];	
+
 
 				
 
 				
-if(isset($_GET['aa']))
+if(isset($_POST['aa']))
 {
+  if ($_POST['aa']<>null)
+  {
+	$q1=$_POST['aa'];
 	
-$q1=$_GET['aa'];
-
-$liv='Livré';
-
-$sql='update F_DOCLIGNE set statut_livraison=\''.$liv.'\'where DL_PieceBL=\''.$q1.'\'';
- odbc_exec($connection,$sql);
- echo '<div class="alert alert-info" role="alert">
-							<strong>Succes !</strong><br>
-							Document Validé
-						</div>';
- 
-}
-				
-
-$sql='select * from f_docligne where DL_PieceBL=\''.$q.'\'';
+	$sql='select * from f_docligne where DL_PieceBL=\''.$q1.'\'';
 
 				                    $rq = odbc_exec($connection,$sql);
                     if ($rep=odbc_fetch_array($rq)) {
-						$date=$rep['DO_Date'];
-						$client1=$rep['CT_Num'];
-						$stl=$rep['statut_livraison'];
 						
-						$condition_enlevement=$rep['condition_enlevement'];
+						if ($rep['statut_livraison']==null)
+						{
+						
+						//update statut_livraison
+                        $liv='Livré';
+                        $sql='update F_DOCLIGNE set statut_livraison=\''.$liv.'\'where DL_PieceBL=\''.$q1.'\'';
+                        odbc_exec($connection,$sql);
+                        echo '<div class="alert alert-info" role="alert">
+							<strong>Succes !</strong><br>
+							Document Validé
+						    </div>';
+						}
+						else 
+							echo '<div class="alert alert-info" role="alert">
+							<strong>Attention !</strong><br>
+							Ce document est déja validé 
+						    </div>';
 		
 					}
-					
-					
-					
-						if($stl=='Livré')
-						{
-							$statut_livraison='<span class="label label-success">Livré</span>';
-						}
-						else
-						{
-							$statut_livraison='<span class="label label-danger">En instance de Livraison</span>';
-						}
-						
-					
-$sqlclient='select * from f_comptet where ct_num=\''.$client1.'\'';
+					else 
+						echo '<div class="alert alert-info" role="alert">
+							<strong>Attention !</strong><br>
+							Ce document n\'exist pas 
+						    </div>';
+	
+	
+	
+  }
+}
+				
 
-				                    $rqclient = odbc_exec($connection,$sqlclient);
-                    if ($repclient=odbc_fetch_array($rqclient)) {
-						$intitule_client=$repclient['CT_Intitule'];
-						$adresse_client=$repclient['CT_Adresse'];
-						$complement_client=$repclient['CT_Complement'];
-						$ville_client=$repclient['CT_Ville'];
-		
-					}
+
 					
 	
 	
@@ -183,115 +168,24 @@ echo '
 
 
 	<section class="card">
-	   <form id="modif_condition" action="validation_bl.php" method="GET">
+	   <form id="modif_condition" action="validation_bl.php" method="POST">
 					
 				<header class="card-header card-header-lg">
 					Bon de Livraison
 				</header>
 				<div class="card-block invoice">
-					<div class="row">
-						<div class="col-lg-6 company-info">
-							<h5>'.$client1.'</h5>
-							<p>'.$intitule_client.'</p>
-
-							<div class="invoice-block">
-								<div>'.utf8_encode($adresse_client).'</div>
-								<div>'.utf8_encode($complement_client).'</div>
-								<div>'.utf8_encode($ville_client).'</div>
-							</div>
-
-						
-						
-						</div>
-						<div class="col-lg-6 clearfix invoice-info">
-							<div class="text-lg-right">
-								<h5>BL #'.$q.'</h5>
-								<div>Date: '.$date.'</div>
-								<h5>Statut Livraison : bbbb '.$statut_livraison.'</h5>
-								<h5>Condition Enlevement : '.$condition_enlevement.'</h5>
-							</div>
-
-
-						</div>
 					
-					
-					
-					
-					</div>
 					
 					
 					<div class="row table-details">
 
-			                            
-<div id="ligne_devis">
+			         <input type="text" name="aa" class="form-control input-sm">
+					 
+                    <div id="ligne_devis">
 
-<input type="hidden" name="aa" value="'.$q.'"/>
+
 	<div class="col-lg-12">
-							<table class="table table-bordered">
-								<thead>
-									<tr>
-										<th width="10">#</th>
-										<th>Article</th>
-										<th>Désignation</th>
-										<th>Quantité</th>
-									</tr>
-								</thead>
-								<tbody>';
-								/*Affichage des Lignes du document */
-						$totalqte=0;		//Total Quantité
-						$totalht=0;			//Totat HT
-						$totalttc=0;		//Tota TTC
-								$sqlligne='select AR_Ref,DL_Design,DL_Qte,DL_PrixUnitaire,DL_Remise01REM_Valeur,DL_MontantHT,DL_MontantTTC,condition_enlevement,cbMarq
-								from f_docligne where DL_PieceBL=\''.$q.'\'';
-								    $rqligne = odbc_exec($connection,$sqlligne);
-									while ($data[] = odbc_fetch_array($rqligne));
-									
-									
-									$val=count($data);
-									$val2=0;
-									foreach($data as $dat)
-									{
-										$val2++;
-										if($val2==$val) continue;
-										
-										$totalqte=$totalqte+$dat['DL_Qte'];
-										$totalht=$totalht+$dat['DL_MontantHT'];
-										$totalttc=$totalttc+$dat['DL_MontantTTC'];
-										
-						//odbc_close($connection);
-						/*Statut du Stock */
-						$stock=0;
-						$sqlstock='select * from f_artstock where de_no=1 and ar_ref=\''.$dat['AR_Ref'].'\'';
-						$rqstock = odbc_exec($connection,$sqlstock);
-						if ($repstock=odbc_fetch_array($rqstock)) {
-						$stock=$repstock['AS_QteSto'];
-						}
-						
-						if($dat['DL_Qte']<=$stock)
-						{
-							$infostock='<span class="label label-success">Livrable</span>';
-						}
-						else
-						{
-							$infostock='<span class="label label-danger">Non Livrable</span>';
-						}
-						
-						/*Fin Statut du Stock */
-						
-						echo'
-									<tr id="'.$dat['cbMarq'].'" >
-										<td>#</td>
-										<td>'.$dat['AR_Ref'].'</td>
-										<td>'.$dat['DL_Design'].'</td>
-										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
-									</tr>';
-										
-									}
-						
-											echo'
-								</tbody>
-							</table>
-
+							
 				<div class="modal fade"
 					 id="myModal"
 					 tabindex="-1"
@@ -312,11 +206,7 @@ echo '
 							</div>
 							
 							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
-								<a class="btn btn-rounded btn-inline" >Valider</a>
-									
-							</div>
+							
 						</div>
 						
 					</div>
@@ -324,30 +214,15 @@ echo '
 							
 						</div>
 					</div>
-	<div class="payment-details">
-								<strong>Récapitulatif</strong>
-								<table>
-									<tr>
-										<td>Total Quantité :</td>
-										<td>'.$totalqte.'</td>
-									</tr>
-									<tr>
-										<td>Total HT :</td>
-										<td>'.number_format($totalht,2,',',' ').'</td>
-									</tr>
-									<tr>
-										<td>Total TTC :</td>
-										<td>'.number_format($totalttc,2,',',' ').'</td>
-									</tr>
-								</table>
-							</div>
+
 					<div class="row">
 					
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
+								    
 								    <button type="submit" id="btnValid" class="btn btn-rounded btn-inline">Valider</button>
-									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+									
 								</div>
 							</div>
 						</div>
@@ -362,12 +237,8 @@ echo '
 			</section>
 
 ';
-
-
-
-
 	
-}	?>			
+	?>			
 
 
 				</div><!--.box-typical-->
@@ -386,7 +257,7 @@ echo '
 	<script src="js/lib/tether/tether.min.js"></script>
 	<script src="js/lib/bootstrap/bootstrap.min.js"></script>
 	<script src="js/plugins.js"></script>
-
+<script src="js/lib/datatables-net/datatables.min.js"></script>
 		<script src="js/lib/bootstrap-select/bootstrap-select.min.js"></script>
 	<script src="js/lib/select2/select2.full.min.js"></script>
 
@@ -495,6 +366,6 @@ echo '
             };
   </script>
 
-	<script><script src="js/app.js"></script>
+	<script src="js/app.js"></script>
 </body>
 </html>
