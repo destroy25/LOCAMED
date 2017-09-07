@@ -3,7 +3,6 @@ include('connexion.php');
 
 
 
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -101,6 +100,9 @@ include('connexion.php');
 				</div>
 			</header>
 			<div id="modif">
+			    <id id="loading" style="text-align:center;display:none;">
+				<img src="img/fancybox_loading@2x.gif" alt="loading"/>
+				</id>		
 			</div>
 			<section class="card">
 				<div class="card-block">
@@ -148,7 +150,6 @@ include('connexion.php');
 								<td>'.$rep['condition_enlevement'].'</td>
 								<td>'.$statut.'</td>
 								<td>	<a title="Consultation BL" href="bl.php?q='.$rep['BL'].'"><span class="fa fa-eye"></span></a>
-								        <a title="Validation BL" href="validation_bl.php?q='.$rep['BL'].'"><span class="fa fa-cogs"></span></a>
 								</td>
 								</tr>';
 		
@@ -169,15 +170,6 @@ include('connexion.php');
 	<script src="js/plugins.js"></script>
 	<script src="js/lib/datatables-net/datatables.min.js"></script>
 
-	<script>
-		$(function() {
-			$('#example').DataTable({
-				responsive: true
-			});
-		});
-	</script>
-
-	
 	
                 <script type="text/javascript">
 // delete row in a table
@@ -205,6 +197,13 @@ jQuery('.transformation_devis').click(function(){
   // return false;
 });     </script>
 
+<script>
+		$(function() {
+			$('#example').DataTable({
+				responsive: true
+			});
+		});
+	</script>
 
 	
 	
