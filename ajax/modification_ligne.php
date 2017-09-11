@@ -6,17 +6,22 @@
 
 include('../connexion.php');
 
+
+
+
+if (isset($_GET['q']))
 $q=$_GET['q'];
+elseif (isset($_POST['checkbox_val']))
+$q=$_POST['checkbox_val'];
+		
 
-$sql='select * from f_docligne where cbMarq='.$q;
-
-
-				                    $rq = odbc_exec($connection,$sql);
-                    if ($rep=odbc_fetch_array($rq)) {
-//echo 'Article '. $rep['AR_Ref'].' Condtion Enlevement '.$rep['condition_enlevement'];
-					}
+//$sql='select * from f_docligne where cbMarq='.$q;
 
 
+				                 //   $rq = odbc_exec($connection,$sql);
+                   // if ($rep=odbc_fetch_array($rq)) {
+////echo 'Article '. $rep['AR_Ref'].' Condtion Enlevement '.$rep['condition_enlevement'];
+					//}
 
 
 ?>
@@ -27,7 +32,15 @@ $sql='select * from f_docligne where cbMarq='.$q;
 								<input name="date_enlevement" type="text" class="form-control" id="date-mask-input">
 								<small class="text-muted">Format Date: dd/mm/yyyy</small>
 							</div>
-<input type="hidden" name="cbMarq" value="<?php echo $q;?>"/>						
+<input type="hidden" name="cbMarq" value="<?php 
+if (isset($_GET['q']))
+echo $q;
+elseif (isset($_POST['checkbox_val']))
+{
+	foreach($q as $choix)
+	 echo $choix.';';
+}
+?>"/>						
 						
 							<script src="js/lib/input-mask/jquery.mask.min.js"></script>
 	<script src="js/lib/input-mask/input-mask-init.js"></script>
