@@ -50,7 +50,7 @@ $qte=$_GET['quantity'];
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th width="10">#</th>
+										<th width="10"><a  class="CC" href="#" data-toggle="modal" data-target="#myModal">Modifier</a> / <a >Supprimer</a></th>
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
@@ -106,7 +106,7 @@ $qte=$_GET['quantity'];
 						$id++;
 						echo'
 									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
-										<td>#</td>
+										<td><input type="checkbox" class="choix" value="'.$dat['cbMarq'].'"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
 										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
@@ -114,13 +114,15 @@ $qte=$_GET['quantity'];
 										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
 										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
 										<td>'.$infostock.'</td>
-										<td><a class="modifrow" href="#" data-toggle="modal"data-target="#myModal"><i class="fa fa-pencil"></i></a> 
+										<td><a class="modifrow" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a> 
 										<a class="suppression_ligne"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 									}
 											echo'
 								</tbody>
 							</table>
+							
+							
 				<div class="modal fade"
 					 id="myModal"
 					 tabindex="-1"
@@ -136,7 +138,7 @@ $qte=$_GET['quantity'];
 								<h4 class="modal-title" id="myModalLabel">Modification Condition Enlevement</h4>
 							</div>
 							<div class="modal-body">
-							<form id="modif_condition">
+							<form id="modif_condition" >
 							<div id="modif">
 							</div>
 							</form>
@@ -182,7 +184,31 @@ $qte=$_GET['quantity'];
 					</div>';
 }
 ?>
+<script type="text/javascript">
+jQuery('.CC').click(function(){
 
+      // Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('.choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).val());
+      });
+      		
+      $.ajax({ 
+		   type: "POST", 
+		   url: "ajax/modification_ligne.php", 
+		   data: { checkbox_val : checkbox_val}, 
+		   context: document.body,
+		   success: function(data) { 
+		        $("#modif").html(data);
+			} 
+	}); 
+   
+	
+   });
+</script>
 
 
                 <script type="text/javascript">
@@ -241,10 +267,6 @@ if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
 });     </script>
 
 
-
-
-
-
                 <script type="text/javascript">
 // Fonction Modification Condition Devis
 jQuery('.modifcondition').click(function(){
@@ -264,7 +286,15 @@ jQuery('.modifcondition').click(function(){
                     },
                     complete: function() {
 						
-	 document.getElementById('id'+str2+'').innerHTML='A Livrer Le '+str1+''; 
+						var chaine=str2;
+                        chaine = chaine.split(";");
+                        
+						for(var i= 0; i < chaine.length; i++)
+                           {
+	                         document.getElementById('id'+chaine[i]+'').innerHTML='A Livrer Le '+str1+''; 
+                                 }
+
+	 
                         // no matter the result, complete will fire, so it's a good place
                         // to do the non-conditional stuff, like hiding a loading image.
                     }
