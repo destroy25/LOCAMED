@@ -17,20 +17,18 @@ $q=$_POST['checkbox_val'];
 
 //$sql='select * from f_docligne where cbMarq='.$q;
 
-
 				                 //   $rq = odbc_exec($connection,$sql);
                    // if ($rep=odbc_fetch_array($rq)) {
 ////echo 'Article '. $rep['AR_Ref'].' Condtion Enlevement '.$rep['condition_enlevement'];
 					//}
 
-
 ?>
-
 							<div class="form-group">
-					
+					            
 								<label class="form-label" for="date-mask-input">Date Enlevement</label>
 								<input name="date_enlevement" type="text" class="form-control" id="date-mask-input">
-								<small class="text-muted">Format Date: dd/mm/yyyy</small>
+								<small class="text-muted">Format Date: dd/mm/yyyy</small><br>
+								<input type="checkbox" name="sur_place">&nbsp;&nbsp; Remis sur place</label>
 							</div>
 <input type="hidden" name="cbMarq" value="<?php 
 if (isset($_GET['q']))
