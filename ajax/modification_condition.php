@@ -7,8 +7,10 @@ include('../connexion.php');
 
 $q=$_GET['q']; //Date
 $q2=$_GET['q2']; //CbMarq ID Unique Table F_docligne
-
-$condition='A Livrer Le '.$q;
+if ($q =='Remis sur place')
+    $condition='Remis sur place';
+else
+	$condition='A Livrer Le '.$q;
 $elements = explode(';', $q2);
 
 if (count($elements) ==1)
