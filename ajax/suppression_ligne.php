@@ -103,7 +103,7 @@ $item=$_GET['item'];
 										<td><input type="checkbox" class="'.$id.'" value="'.$dat['cbMarq'].'" id="choix"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
-										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
+										<td><input type="text" onchange="Modification_Qte('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
 										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
 										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
@@ -370,6 +370,33 @@ jQuery('.modifcondition').click(function(){
                     success: function(responseText) {
 
                         $("#validation").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+            };
+</script>
+<script>
+
+	
+	function Modification_Qte(y) {
+		    var Qte = document.getElementById(y).value;
+            var x = document.getElementById("num_piece").value;
+			
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+					
+                    url: "ajax/Modification_Qte.php?&Qte="+Qte+"&num="+x+"&item="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        $("#designation").html(responseText);
 
                     },
                     complete: function() {
