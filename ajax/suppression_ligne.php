@@ -32,6 +32,7 @@ $item=$_GET['item'];
 		else
 		{
 			$msg=$result;
+			echo $msg.'ttt';
 		}
 	}
 	
@@ -43,7 +44,7 @@ $item=$_GET['item'];
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th width="10">#</th>
+										<th width="10"><a  class="SelectModif" href="#" data-toggle="modal" data-target="#myModal">Modifier</a> / <a class="suppression_list_lignes">Supprimer</a></th>
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
@@ -99,7 +100,7 @@ $item=$_GET['item'];
 						$id++;
 						echo'
 									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
-										<td>#</td>
+										<td><input type="checkbox" class="'.$id.'" value="'.$dat['cbMarq'].'" id="choix"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
 										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
@@ -183,9 +184,58 @@ $item=$_GET['item'];
 
 
 ?>
+<script type="text/javascript">
+jQuery('.SelectModif').click(function(){
+
+      // Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).val());
+      });
+      		
+			
+      $.ajax({ 
+		   type: "POST", 
+		   url: "ajax/modification_ligne.php", 
+		   data: { checkbox_val : checkbox_val}, 
+		   context: document.body,
+		   success: function(data) { 
+		        $("#modif").html(data);
+			} 
+	}); 
+  
+   });
+</script>
 
 
-           <script type="text/javascript">
+                <script type="text/javascript">
+// Modification Ligne
+jQuery('.modifrow').click(function(){
+ 
+		 var y = $(this).closest('tr').attr('id');
+		$.ajax({
+                    url: "ajax/modification_ligne.php?&q="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+});     </script>
+
+
+
+                <script type="text/javascript">
 // Suppresion Ligne
 jQuery('.suppression_ligne').click(function(){
 
@@ -196,7 +246,7 @@ if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
 			var y = $(this).closest('tr').attr('class');
  
  $.ajax({
-                    url: "suppression_ligne.php?&num="+x+"&item="+y,
+                    url: "ajax/suppression_ligne.php?&num="+x+"&item="+y,
                     context: document.body,
                     success: function(responseText) {
 
@@ -217,17 +267,65 @@ if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
 });     </script>
 
 
+<script type="text/javascript">
+// Suppresion list des Lignes
+jQuery('.suppression_list_lignes').click(function(){
+	
+	if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
+	
+		    var x = document.getElementById("num_piece").value;
+	
+	// Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).attr('class'));
+      });
+	  
+	 $.ajax({
+                    url: "ajax/suppression_list_lignes.php?&num="+x+"&item="+checkbox_val,
+                    context: document.body,
+                    success: function(responseText) {
 
 
-                <script type="text/javascript">
-// Modification Ligne
-jQuery('.modifrow').click(function(){
+                        //$("#txtHint22").html(responseText);
+                        $("#modif1").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+
+
+			
+			
  
  
-		 var y = $(this).closest('tr').attr('id');
  
+} 
+ // return false;
+});     </script>
+
+
+               <script type="text/javascript">
+// Fonction Modification Condition Devis
+jQuery('.modifcondition').click(function(){
+ 
+  str1=document.forms['modif_condition'].date_enlevement.value;
+  str2=document.forms['modif_condition'].cbMarq.value;
+  
+   if (document.forms['modif_condition'].sur_place.checked == true) {
+	   str1='Remis sur place';
+  }
+   alert (str1);
+
  $.ajax({
-                    url: "ajax/modification_ligne.php?&q="+y,
+                    url: "ajax/modification_condition.php?&q="+str1+"&q2="+str2,
                     context: document.body,
                     success: function(responseText) {
 
@@ -237,10 +335,49 @@ jQuery('.modifrow').click(function(){
 
                     },
                     complete: function() {
+						
+						var chaine=str2;
+                        chaine = chaine.split(";");
+                        
+						for(var i= 0; i < chaine.length; i++)
+                           {
+							   if (str1=='Remis sur place')
+								   document.getElementById('id'+chaine[i]+'').innerHTML=str1;
+							   else
+	                               document.getElementById('id'+chaine[i]+'').innerHTML='A Livrer Le '+str1+''; 
+                            }
+
+	 
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+                    }
+                });
+  // return false;*/
+});     </script>
+
+
+	<script>
+/*Fonction Validation Devis*/
+	
+	function validation_devis() {
+		    var x = document.getElementById("num_piece").value;
+
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+                    url: "ajax/validation_devis.php?q="+x,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        $("#validation").html(responseText);
+
+                    },
+                    complete: function() {
                         // no matter the result, complete will fire, so it's a good place
                         // to do the non-conditional stuff, like hiding a loading image.
 
+                       /* hideLoadingImage();*/
                     }
                 });
-  // return false;
-});     </script>
+            };
+</script>
