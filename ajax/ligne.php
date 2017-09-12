@@ -50,7 +50,7 @@ $qte=$_GET['quantity'];
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th width="10"><a  class="CC" href="#" data-toggle="modal" data-target="#myModal">Modifier</a> / <a >Supprimer</a></th>
+										<th width="10"><a  class="SelectModif" href="#" data-toggle="modal" data-target="#myModal">Modifier</a> / <a class="suppression_list_lignes">Supprimer</a></th>
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
@@ -106,10 +106,10 @@ $qte=$_GET['quantity'];
 						$id++;
 						echo'
 									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
-										<td><input type="checkbox" class="choix" value="'.$dat['cbMarq'].'"/></td>
+										<td><input type="checkbox" class="'.$id.'" value="'.$dat['cbMarq'].'" id="choix"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
-										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
+										<td><input type="text" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
 										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
 										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
@@ -185,17 +185,18 @@ $qte=$_GET['quantity'];
 }
 ?>
 <script type="text/javascript">
-jQuery('.CC').click(function(){
+jQuery('.SelectModif').click(function(){
 
       // Ce tableau javascript va stocker les valeurs des checkbox
       var checkbox_val = [];
 
       // Parcours de toutes les checkbox checkées avec la classe "choix"
-      $('.choix:checked').each(function(){
+      $('#choix:checked').each(function(){
          // Insertion de la valeur de la checkbox dans le tableau checkbox_val
          checkbox_val.push($(this).val());
       });
       		
+			
       $.ajax({ 
 		   type: "POST", 
 		   url: "ajax/modification_ligne.php", 
@@ -205,8 +206,7 @@ jQuery('.CC').click(function(){
 		        $("#modif").html(data);
 			} 
 	}); 
-   
-	
+  
    });
 </script>
 
@@ -267,12 +267,62 @@ if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
 });     </script>
 
 
+<script type="text/javascript">
+// Suppresion list des Lignes
+jQuery('.suppression_list_lignes').click(function(){
+	
+	if (confirm("Voulez vous supprimer les lignes ces enregistrements ?") == true) {
+	
+		    var x = document.getElementById("num_piece").value;
+	
+	// Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).attr('class'));
+      });
+	  
+	 $.ajax({
+                    url: "ajax/suppression_list_lignes.php?&num="+x+"&item="+checkbox_val,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif1").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+
+
+			
+			
+ 
+ 
+ 
+} 
+ // return false;
+});     </script>
+
+
                 <script type="text/javascript">
 // Fonction Modification Condition Devis
 jQuery('.modifcondition').click(function(){
  
   str1=document.forms['modif_condition'].date_enlevement.value;
   str2=document.forms['modif_condition'].cbMarq.value;
+  
+   if (document.forms['modif_condition'].sur_place.checked == true) {
+	   str1='Remis sur place';
+  }
+   alert (str1);
 
  $.ajax({
                     url: "ajax/modification_condition.php?&q="+str1+"&q2="+str2,
@@ -291,8 +341,11 @@ jQuery('.modifcondition').click(function(){
                         
 						for(var i= 0; i < chaine.length; i++)
                            {
-	                         document.getElementById('id'+chaine[i]+'').innerHTML='A Livrer Le '+str1+''; 
-                                 }
+							   if (str1=='Remis sur place')
+								   document.getElementById('id'+chaine[i]+'').innerHTML=str1;
+							   else
+	                               document.getElementById('id'+chaine[i]+'').innerHTML='A Livrer Le '+str1+''; 
+                            }
 
 	 
                         // no matter the result, complete will fire, so it's a good place
