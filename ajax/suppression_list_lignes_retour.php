@@ -96,7 +96,7 @@ for ($i=0;$i <count($elements) ; $i++){
 										<td><input type="checkbox" class="'.$repligne['cbMarq'].'" value="'.$repligne['cbMarq'].'" id="choix"/></td>
 										<td>'.$repligne['AR_Ref'].'</td>
 										<td>'.$repligne['DL_Design'].'</td>
-										<td>'.number_format($repligne['DL_Qte'],2,',',' ').'</td>
+										<td><input type="text" onchange="Modification_Qte_retour('.$id.')" id="'.$id.'" value='.number_format($repligne['DL_Qte'],0,',',' ').' /></td>
 										<td>'.number_format($repligne['DL_PrixUnitaire'],2,',',' ').'</td>
 			                            <td><a class="suppression_ligne_retour"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
@@ -214,3 +214,34 @@ jQuery('.suppression_list_lignes_retour').click(function(){
 } 
  // return false;
 });     </script>
+
+<script>	
+	function Modification_Qte_retour(y) {
+		    var Qte = document.getElementById(y).value;
+            var x = document.getElementById("num_piece").value;
+			
+			if (Qte<0)
+			{
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+					
+                    url: "ajax/Modification_Qte_retour.php?&Qte="+Qte+"&num="+x+"&item="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        $("#designation").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+			}
+			else 
+				alert ("Attention, vérifier la Quantité");
+            };
+</script>
