@@ -16,7 +16,7 @@ $item=$_GET['item'];
 	}
 	// Exécution de la Methode 
 	$result = $client->call('suppression_ligne',
-	array('num'=>$num,'type'=>0,'item'=>$item));
+	array('num'=>$num,'Type'=>0,'item'=>$item));
  
 	if ($client->fault) 
 	{
@@ -100,7 +100,7 @@ $item=$_GET['item'];
 						$id++;
 						echo'
 									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
-										<td><input type="checkbox" class="'.$id.'" value="'.$dat['cbMarq'].'" id="choix"/></td>
+										<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
 										<td><input type="text" onchange="Modification_Qte('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
@@ -110,7 +110,9 @@ $item=$_GET['item'];
 										<td>'.$infostock.'</td>
 										<td><a class="modifrow" href="#" data-toggle="modal"data-target="#myModal"><i class="fa fa-pencil"></i></a> 
 										<a class="suppression_ligne" ><i class="fa fa-remove"></i> </a></td>
-									</tr>';
+									  </tr>';
+										
+									
 										
 									}
 						
@@ -285,7 +287,7 @@ jQuery('.suppression_list_lignes').click(function(){
       });
 	  
 	 $.ajax({
-                    url: "ajax/suppression_list_lignes.php?&num="+x+"&item="+checkbox_val,
+                    url: "ajax/suppression_list_lignes.php?&num="+x+"&cbMarq="+checkbox_val,
                     context: document.body,
                     success: function(responseText) {
 
