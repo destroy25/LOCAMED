@@ -5,6 +5,7 @@ $Qte=$_GET['Qte'];
 $num=$_GET['num'];
 $item=$_GET['item'];
 
+
 //$designation=0;
 $client = new nusoap_client($wsdl,true);
 	$err = $client->getError();
@@ -16,7 +17,7 @@ $client = new nusoap_client($wsdl,true);
 	}
 	// Exécution de la Methode 
 	$result = $client->call('Modification_Qte',
-	array('num'=>$num,'type'=>0,'item'=>$item,'Qte'=>$Qte));
+	array('num'=>$num,'Type'=>0,'item'=>$item,'Qte'=>$Qte));
  
 	if ($client->fault) 
 	{
