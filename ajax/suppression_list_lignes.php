@@ -4,45 +4,66 @@
 include('../connexion.php');
 
 $num=$_GET['num'];
-$items=$_GET['item'];
+$cbMarq=$_GET['cbMarq'];
 
-$elements = explode(',', '2,3');
+$elements = explode(',', $cbMarq);
 
-foreach ($elements as $element){
+
+
+for ($i=0;$i <count($elements) ; $i++){
 	
-	echo "<br>".$element;
+	$j=0;
+	
+	
+							
+	$sqlligne='select AR_Ref,DL_Design,DL_Qte,DL_PrixUnitaire,DL_Remise01REM_Valeur,DL_MontantHT,DL_MontantTTC,condition_enlevement,cbMarq
+								from f_docligne where DO_Piece=\''.$num.'\'';
+								    $rqligne = odbc_exec($connection,$sqlligne);
+									while ($datasql= odbc_fetch_array($rqligne)and $j<>-1)
+									{
+										
+										$j++;
+										
+										if ($datasql['cbMarq']==$elements[$i])
+											
+											{
+												
+											  $client = new nusoap_client($wsdl,true);
+	                                          $err = $client->getError();
+											  
+	                                          if ($err) 
+	                                            {
+			                                       echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
+			                                       echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
+			                                       exit();
+	                                            }
+	                                               // Exécution de la Methode 
 
-	$client = new nusoap_client($wsdl,true);
-	$err = $client->getError();
-	if ($err) 
-	{
-			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
-			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
-			exit();
-	}
-	// Exécution de la Methode 
+	                                               $result = $client->call('suppression_ligne',
+	                                               array('num'=>$num,'type'=>0,'item'=>$j));
+                                                   $j=-1;
+	                                               if ($client->fault) 
+	                                                  {
+		                                               echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
+	                                                   } 
+	                                                else 
+	                                                    {
+		                                               $err = $client->getError();
+		                                                 if ($err) 
+		                                                   {
+		                                                     	echo '<h2>Error</h2><pre>' . $err . '</pre>';
+		                                                    } 
+		                                                  else
+		                                                     {
+		                                                     	$msg=$result;
+		                                                     }
+	                                                    }
+										    }	
+									}
+	
+	
 
 	
-	$result = $client->call('suppression_ligne',
-	array('num'=>$num,'type'=>0,'item'=>$element));
- 
-	if ($client->fault) 
-	{
-		echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
-	} 
-	else 
-	{
-		$err = $client->getError();
-		if ($err) 
-		{
-			echo '<h2>Error</h2><pre>' . $err . '</pre>';
-		} 
-		else
-		{
-			$msg=$result;
-			echo $msg.'  ';
-		}
-	}
 }
 	
 		echo '			
