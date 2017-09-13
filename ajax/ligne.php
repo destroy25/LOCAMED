@@ -106,7 +106,7 @@ $qte=$_GET['quantity'];
 						$id++;
 						echo'
 									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
-										<td><input type="checkbox" class="'.$id.'" value="'.$dat['cbMarq'].'" id="choix"/></td>
+										<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
 										<td><input type="text" onchange="Modification_Qte('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
@@ -285,10 +285,9 @@ jQuery('.suppression_list_lignes').click(function(){
       });
 	  
 	 $.ajax({
-                    url: "ajax/suppression_list_lignes.php?&num="+x+"&item="+checkbox_val,
+                    url: "ajax/suppression_list_lignes.php?&num="+x+"&cbMarq="+checkbox_val,
                     context: document.body,
                     success: function(responseText) {
-
 
                         //$("#txtHint22").html(responseText);
                         $("#modif1").html(responseText);
@@ -297,16 +296,8 @@ jQuery('.suppression_list_lignes').click(function(){
                     complete: function() {
                         // no matter the result, complete will fire, so it's a good place
                         // to do the non-conditional stuff, like hiding a loading image.
-
                     }
                 });
-
-
-			
-			
- 
- 
- 
 } 
  // return false;
 });     </script>
@@ -383,13 +374,13 @@ jQuery('.modifcondition').click(function(){
 </script>
 
 
-<script>
-
-	
+<script>	
 	function Modification_Qte(y) {
 		    var Qte = document.getElementById(y).value;
             var x = document.getElementById("num_piece").value;
 			
+		//	if (Number.isInteger(Qte)==true)
+		//	{
  
 /*                showLoadingImage();*/
                 $.ajax({
@@ -408,5 +399,8 @@ jQuery('.modifcondition').click(function(){
                        /* hideLoadingImage();*/
                     }
                 });
+			//}
+			//else 
+			//	alert ("Attention, il faut.....");
             };
 </script>
