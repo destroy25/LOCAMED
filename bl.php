@@ -124,7 +124,8 @@ $sql='select * from f_docligne where DL_PieceBL=\''.$q.'\'';
 		
 					}
 					
-						if($stl='Livré')
+					
+						if($stl=='Livré')
 						{
 							$statut_livraison='<span class="label label-success">Livré</span>';
 						}
