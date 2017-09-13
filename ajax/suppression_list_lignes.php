@@ -40,7 +40,7 @@ for ($i=0;$i <count($elements) ; $i++){
 	                                               // Exécution de la Methode 
 
 	                                               $result = $client->call('suppression_ligne',
-	                                               array('num'=>$num,'type'=>0,'item'=>$j));
+	                                               array('num'=>$num,'Type'=>0,'item'=>$j));
                                                    $j=-1;
 	                                               if ($client->fault) 
 	                                                  {
@@ -60,9 +60,6 @@ for ($i=0;$i <count($elements) ; $i++){
 	                                                    }
 										    }	
 									}
-	
-	
-
 	
 }
 	
@@ -129,7 +126,7 @@ for ($i=0;$i <count($elements) ; $i++){
 						$id++;
 						echo'
 									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
-										<td><input type="checkbox" class="'.$id.'" value="'.$dat['cbMarq'].'" id="choix"/></td>
+										<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
 										<td><input type="text" onchange="Modification_Qte('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
@@ -314,7 +311,7 @@ jQuery('.suppression_list_lignes').click(function(){
       });
 	  
 	 $.ajax({
-                    url: "ajax/suppression_list_lignes.php?&num="+x+"&item="+checkbox_val,
+                    url: "ajax/suppression_list_lignes.php?&num="+x+"&cbMarq="+checkbox_val,
                     context: document.body,
                     success: function(responseText) {
 
