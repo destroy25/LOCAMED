@@ -2,6 +2,39 @@
 
 if (isset($_POST['MM_Insert'])) {
 	
+	
+	
+		/*Login */
+	$client = new nusoap_client($wsdl,true);
+	$err = $client->getError();
+	if ($err) 
+	{
+			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
+			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
+			exit();
+	}
+	// Exécution de la Methode : Création Document
+	$souche='N° Pièce';
+	$result = $client->call('connexion_om');
+ 
+	if ($client->fault) 
+	{
+		echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
+	} 
+	else 
+	{
+		$err = $client->getError();
+		if ($err) 
+		{
+			echo '<h2>Error</h2><pre>' . $err . '</pre>';
+		} 
+		else
+		{
+	//	echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
+//			echo $result;
+		}
+	}
+	
  // $loginUsername=mysql_real_escape_string($_POST['login']);
   
   $MM_fldUserAuthorization = "";
@@ -14,7 +47,7 @@ if (isset($_POST['MM_Insert'])) {
   //$LoginRS__query=sprintf("SELECT * FROM compte WHERE login = %s AND mdp = %s ",
     //GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
 	
-	$sql='SELECT * FROM user_interface WHERE login =\''.$_POST['login'].'\' AND mdp = \''.md5($_POST['mdp']).'\'';
+	$sql='SELECT * FROM INTERFACE_USER WHERE login =\''.$_POST['login'].'\' AND mdp = \''.md5($_POST['mdp']).'\'';
 	
 		                $rq = odbc_exec($connection,$sql);
 	
@@ -33,6 +66,8 @@ if (isset($_POST['MM_Insert'])) {
     //declare two session variables and assign them
 	$_SESSION['compte_logged']='on';
     $_SESSION['compte_login'] = $row['login'];
+    $_SESSION['compte_profil'] = $row['id_profil'];
+    $_SESSION['depot'] = $row['depot'];
 
 	
 	/*Evenement Historique - */
@@ -50,9 +85,15 @@ if (isset($_POST['MM_Insert'])) {
 
   }
   
+  if($i)
+  {
 	  header("Location: " . $MM_redirectLoginSuccess );
-	  exit();
-  
+  }
+  else
+  {
+	  header("Location: ". $MM_redirectLoginFailed );
+  }
+	  
       
   /*else 
     header("Location: ". $MM_redirectLoginFailed );*/

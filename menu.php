@@ -1,5 +1,7 @@
 						<?php
-			$query = "SELECT * FROM menu where id_parent=0";
+			$query = 'SELECT * FROM INTERFACE_MENU 
+			inner join INTERFACE_MENU_DROIT on INTERFACE_MENU.id_menu=INTERFACE_MENU_DROIT.id_menu
+			where id_parent=0 and active=1 and id_profil='.$_SESSION['compte_profil'].'';
 
 				                    $reponse = odbc_exec($connection,$query);
                     while ($row=odbc_fetch_array($reponse)) {
@@ -12,21 +14,23 @@
 	            <a href="'.$row['link'].'">
 	                <i class="'.$row['icon'].'"></i>
 	                <span class="lbl">'.$row['menu'].'</span>
-	            </a>
-	        </li>';
+				</a>
+				</li>';
 
-				
 			}
 			else
 			{
-								 echo '<li class="blue with-sub">
+				 echo '<li class="blue with-sub">
 			<span>
 	                <i class="'.$row['icon'].'"></i>
 	                <span class="lbl">'.$row['menu'].'</span>
 	            </span>	          
 				<ul>
 	        ';
-				$query2='select * from menu where id_parent='.$row['id_menu'];
+				$query2='select * from INTERFACE_MENU  
+			inner join INTERFACE_MENU_DROIT on INTERFACE_MENU.id_menu=INTERFACE_MENU_DROIT.id_menu
+			where active=1 and id_profil='.$_SESSION['compte_profil'].' and
+				id_parent='.$row['id_menu'];
 		                    $reponse2 = odbc_exec($connection,$query2);
                     while ($row2=odbc_fetch_array($reponse2)) {
 			

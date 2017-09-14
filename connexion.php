@@ -24,7 +24,7 @@ if(!isset($_SESSION['compte_logged']) || $_SESSION['compte_logged']!='on'){
 	  
 	  // Lib nusoap
 require_once('nusoap-0.9.5/lib/nusoap.php');
-$wsdl = "http://localhost:51950/Service1.asmx?wsdl";
+$wsdl = "http://localhost/OMLOCAMED/Service1.asmx?wsdl";
 ini_set("soap.wsdl_cache_enabled", 0);
 
 
