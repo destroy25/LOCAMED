@@ -134,23 +134,23 @@ include('connexion.php');
 						<div class="col-xs-3">
 							<section class="widget widget-simple-sm-fill orange">
 								<div class="widget-simple-sm-icon">
-									<i class="font-icon font-icon-server"></i>
+									<i class="font-icon font-icon-page"></i>
 								</div>
 								<div class="widget-simple-sm-fill-caption">Documents Bon de Livraison</div>
 							</section><!--.widget-simple-sm-fill-->
 						</div>
 												<div class="col-xs-3">
-							<section class="widget widget-simple-sm-fill orange">
+							<section class="widget widget-simple-sm-fill red">
 								<div class="widget-simple-sm-icon">
-									<i class="font-icon font-icon-server"></i>
+									<i class="font-icon font-icon-page"></i>
 								</div>
 								<div class="widget-simple-sm-fill-caption">Documents Factures</div>
 							</section><!--.widget-simple-sm-fill-->
 						</div>
 										<div class="col-xs-3">
-							<section class="widget widget-simple-sm-fill orange">
+							<section class="widget widget-simple-sm-fill ">
 								<div class="widget-simple-sm-icon">
-									<i class="font-icon font-icon-server"></i>
+									<i class="font-icon font-icon-page"></i>
 								</div>
 								<div class="widget-simple-sm-fill-caption">Documents Retour</div>
 							</section><!--.widget-simple-sm-fill-->

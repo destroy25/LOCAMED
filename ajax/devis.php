@@ -127,6 +127,7 @@ echo '
 							<div class="text-lg-right">
 								<h5>DEVIS #'.$do_piece.'</h5>
 								<div>Date: '.$date.'</div>
+								<div>Dépôt: '.$depot.'</div>
 							</div>
 
 						</div>

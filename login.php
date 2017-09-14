@@ -133,12 +133,13 @@ if (isset($_POST['MM_Insert'])) {
 
     <div class="page-center">
         <div class="page-center-in">
-            <div class="container-fluid">
+
+		<div class="container-fluid">
                 <form class="sign-box" action="login.php" method="post">
                     <div class="sign-avatar">
                         <img src="img/avatar-sign.png" alt="">
                     </div>
-                    <header class="sign-title">LOCAMED</header>
+                    <header class="sign-title">INTERFACE LOCAMED</header>
                     <div class="form-group">
                         <input name="login" type="text" class="form-control" placeholder="Login"/>
                     </div>
