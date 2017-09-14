@@ -120,6 +120,7 @@ $sql='select * from F_Docentete where DO_Piece=\''.$q.'\'';
                     if ($rep=odbc_fetch_array($rq)) {
 						$date=$rep['DO_Date'];
 						$client1=$rep['DO_Tiers'];
+						$DO_Statut=$rep['DO_Statut'];
 		
 					}
 					
@@ -175,8 +176,12 @@ echo '
 						<div class="col-lg-6 clearfix invoice-info">
 							<div class="text-lg-right">
 								<h5>DEVIS #'.$q.'</h5>
-								<div>Date: '.$date.'</div>
-							</div>
+								<div>Date: '.$date.'</div>';
+								if ($DO_Statut==1)
+									echo '<h5>Non Validé</h5>';
+								elseif ($DO_Statut==2)
+								    echo '<h5>Validé</h5>';
+							echo '</div>
 
 
 						</div>
@@ -193,6 +198,7 @@ echo '
 <div id="ligne_devis">
 
 <input type="hidden" id="num_piece" value="'.$q.'"/>
+
 	<div class="col-lg-12">
 							<table class="table table-bordered">
 								<thead>
@@ -221,6 +227,7 @@ echo '
 									
 									$val=count($data);
 									$val2=0;
+									$id=0;
 									foreach($data as $dat)
 									{
 										$val2++;
@@ -249,9 +256,9 @@ echo '
 						}
 						
 						/*Fin Statut du Stock */
-						
+						$id++;
 						echo'
-									<tr id="'.$dat['cbMarq'].'" >
+									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
 										<td>#</td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
@@ -260,8 +267,9 @@ echo '
 										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
 										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
 										<td>'.$infostock.'</td>
-										<td><a class="modifrow" href="#" data-toggle="modal"data-target="#myModal"><i class="fa fa-pencil"></i></a> <a href="#"><i class="fa fa-remove"></i> </a></td>
-									</tr>';
+										<td><a class="modifrow" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a> 
+										<a class="suppression_ligne_2"><i class="fa fa-remove"></i> </a></td>
+										</tr>';
 										
 									}
 						
@@ -284,21 +292,21 @@ echo '
 								<h4 class="modal-title" id="myModalLabel">Modification Condition Enlevement</h4>
 							</div>
 							<div class="modal-body">
-							<form id="modif_condition">
+							<form id="modif_condition2">
 							<div id="modif">
 							</div>
 							</form>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
-								<a class="modifcondition"  class="btn btn-rounded btn-primary">Valider</a>
+								<a class="modifcondition2"  class="btn btn-rounded btn-primary">Valider</a>
 							</div>
 						</div>
 					</div>
 				</div><!--.modal-->
 							
 						</div>
-					</div>
+					
 	<div class="payment-details">
 								<strong>Récapitulatif</strong>
 								<table>
@@ -320,9 +328,14 @@ echo '
 					
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
-								<div class="actions">
-									<a onclick="validation_devis()" class="btn btn-rounded btn-inline">Valider</a>
-									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+								<div class="actions">';
+								
+								if ($DO_Statut==1)
+									echo '<a onclick="validation_devis()" class="btn btn-rounded btn-inline">Valider</a>';
+								
+									
+									
+									echo '<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
 								</div>
 							</div>
 						</div>
@@ -332,9 +345,10 @@ echo '
 						</div>
 			
 					</div>
+					<div id="validation"></div>
 				</div>
 			</section>
-
+</div>
 ';
 
 
@@ -469,7 +483,106 @@ echo '
 </script>
 
 
-	<script>
+	
+<script type="text/javascript">
+// Modification Ligne
+jQuery('.modifrow').click(function(){
+ 
+		 var y = $(this).closest('tr').attr('id');
+		 
+		$.ajax({
+                    url: "ajax/modification_ligne.php?&q="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+});     </script>
+
+<script type="text/javascript">
+// Suppresion Ligne
+jQuery('.suppression_ligne_2').click(function(){
+
+// var y = $(this).closest('tr').attr('id');
+if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
+	
+		    var x = document.getElementById("num_piece").value;
+			var y = $(this).closest('tr').attr('class');
+			
+ 
+ $.ajax({
+                    url: "ajax/suppression_ligne_2.php?&num="+x+"&item="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+ 
+} 
+ // return false;
+});     </script>
+
+<script type="text/javascript">
+// Fonction Modification Condition Devis
+jQuery('.modifcondition2').click(function(){
+ 
+  str1=document.forms['modif_condition2'].date_enlevement.value;
+  str2=document.forms['modif_condition2'].cbMarq.value;
+  
+   if (document.forms['modif_condition2'].sur_place.checked == true) {
+	   str1='Remis sur place';
+  }
+   alert (str1);
+
+ $.ajax({
+                    url: "ajax/modification_condition_2.php?&q="+str1+"&q2="+str2,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif").html(responseText);
+
+                    },
+                    complete: function() {
+						
+						var chaine=str2;
+                        chaine = chaine.split(";");
+                        
+						for(var i= 0; i < chaine.length; i++)
+                           {
+							   if (str1=='Remis sur place')
+								   document.getElementById('id'+chaine[i]+'').innerHTML=str1;
+							   else
+	                               document.getElementById('id'+chaine[i]+'').innerHTML='A Livrer Le '+str1+''; 
+                            }
+
+	 
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+                    }
+                });
+  // return false;*/
+});     </script>
+
+<script>
 /*Fonction Validation Devis*/
 	
 	function validation_devis() {
@@ -482,7 +595,7 @@ echo '
                     context: document.body,
                     success: function(responseText) {
 
-                        $("#ligne_form").html(responseText);
+                        $("#validation").html(responseText);
 
                     },
                     complete: function() {
