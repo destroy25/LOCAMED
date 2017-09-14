@@ -144,9 +144,14 @@ include('connexion.php');
 								<td>'.$rep['CT_Intitule'].'</td>
 								<td>'.$statut.'</td>
 								<td>
-								<a title="Consultation Devis" href="devis.php?q='.$rep['DO_Piece'].'"><span class="fa fa-eye"></span></a>
-								<a title="Transformation en Facture" class="transformation_devis"><span class="fa fa-cogs"></span></a>
-								<a title="Impression" class="transformation_devis"><span class="fa fa-print"></span></a></td>
+								<a title="Consultation Devis" href="devis.php?q='.$rep['DO_Piece'].'"><span class="fa fa-eye"></span></a>';
+								if ($rep['DO_Statut']==2)
+								echo ' <a title="Transformation en Facture" class="transformation_devis"><span class="fa fa-cogs"></span></a>';
+							
+							   echo ' <a title="Impression" class="transformation_devis"><span class="fa fa-print"></span></a>';
+							    if ($rep['DO_Statut']==2)
+							    echo ' <a title="Annulation Devis" class="annulation_devis"><span class="fa fa-remove"></span></a>';
+							    echo '</td>
 								</tr>';
 		
 						}?>
@@ -186,6 +191,36 @@ if (confirm("Voulez vous transformer le devis N° "+y+" en facture ?") == true) 
  
  $.ajax({
                     url: "ajax/transformation_devis.php?&q="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+ 
+} 
+ // return false;
+});     </script>
+
+
+<script type="text/javascript">
+// delete row in a table
+jQuery('.annulation_devis').click(function(){
+ var y = $(this).closest('tr').attr('id');
+if (confirm("Voulez vous annuler le devis N° "+y+" ?") == true) {
+		
+//		 var x = $(this).closest('tr').attr('id');
+ 
+ $.ajax({
+                    url: "ajax/annulation_devis.php?&q="+y,
                     context: document.body,
                     success: function(responseText) {
 
