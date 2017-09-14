@@ -75,6 +75,7 @@ $sql='select * from F_Docentete where DO_Piece=\''.$do_piece.'\'';
 				                    $rq = odbc_exec($connection,$sql);
                     if ($rep=odbc_fetch_array($rq)) {
 						$date=$rep['DO_Date'];
+						$Statut=$rep['DO_Statut'];
 		
 					}
 					
@@ -181,15 +182,8 @@ echo '
 
 ?>
 		
-		
-	
-			
 				<div class="row">
 				
-
-			
-
-					
 					<!--<div class="col-lg-4">
 						<fieldset class="form-group">
 							<label class="form-label" for="article">Article</label>
