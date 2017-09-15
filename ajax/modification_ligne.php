@@ -13,10 +13,8 @@ if (isset($_GET['q']))
 $q=$_GET['q'];
 elseif (isset($_POST['checkbox_val']))
 $q=$_POST['checkbox_val'];
-		
 
 //$sql='select * from f_docligne where cbMarq='.$q;
-
 				                 //   $rq = odbc_exec($connection,$sql);
                    // if ($rep=odbc_fetch_array($rq)) {
 ////echo 'Article '. $rep['AR_Ref'].' Condtion Enlevement '.$rep['condition_enlevement'];
