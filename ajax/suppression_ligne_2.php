@@ -53,17 +53,19 @@ $item=$_GET['item'];
 	<div class="col-lg-12">
 							<table class="table table-bordered">
 								<thead>
-									<tr>
-										<th width="10"><a  class="SelectModif_2" href="#" data-toggle="modal" data-target="#myModal">Modifier</a> / <a class="suppression_list_lignes_2">Supprimer</a></th>
-										<th>Article</th>
+									<tr>';
+									if ($DO_Statut==1)
+								  echo '<th width="10"><a  class="SelectModif_2" href="#" data-toggle="modal" data-target="#myModal">Modifier</a> / <a class="suppression_list_lignes_2">Supprimer</a></th>';
+								  echo '<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
 										<th>Prix Unitaire</th>
 										<th>Remise</th>
 										<th>Condition Enlevement</th>
-										<th>Statut Stock</th>
-										<th>Action</th>
-									</tr>
+										<th>Statut Stock</th>';
+										if ($DO_Statut==1)
+										echo '<th>Action</th>';
+									echo '</tr>
 								</thead>
 								<tbody>';
 								/*Affichage des Lignes du document */
@@ -109,18 +111,20 @@ $item=$_GET['item'];
 						/*Fin Statut du Stock */
 						$id++;
 						echo'
-									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
-										<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>
-										<td>'.$dat['AR_Ref'].'</td>
+									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >';
+									if ($DO_Statut==1)
+										echo '<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>';
+									echo '<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
-										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
+										<td><input type="text" onchange="Modification_Qte_2('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
 										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
 										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
-										<td>'.$infostock.'</td>
-										<td><a class="modifrow" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a> 
-										<a class="suppression_ligne_2"><i class="fa fa-remove"></i> </a></td>
-										</tr>';
+										<td>'.$infostock.'</td>';
+										if ($DO_Statut==1)
+										echo '<td><a class="modifrow" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a> 
+										<a class="suppression_ligne_2"><i class="fa fa-remove"></i> </a></td>';
+										echo '</tr>';
 										
 									}
 						
