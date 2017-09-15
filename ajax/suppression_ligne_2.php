@@ -37,6 +37,15 @@ $item=$_GET['item'];
 		}
 	}
 	
+	
+	$sql='select * from F_Docentete where DO_Piece=\''.$num.'\'';
+
+				                    $rq = odbc_exec($connection,$sql);
+                    if ($rep=odbc_fetch_array($rq)) {
+						$DO_Statut=$rep['DO_Statut'];
+		
+					}
+					
 	echo '<div id="ligne_devis">
 
 <input type="hidden" id="num_piece" value="'.$num.'"/>
@@ -45,7 +54,7 @@ $item=$_GET['item'];
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th width="10">#</th>
+										<th width="10"><a  class="SelectModif_2" href="#" data-toggle="modal" data-target="#myModal">Modifier</a> / <a class="suppression_list_lignes_2">Supprimer</a></th>
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
@@ -101,7 +110,7 @@ $item=$_GET['item'];
 						$id++;
 						echo'
 									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
-										<td>#</td>
+										<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
 										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
@@ -134,14 +143,14 @@ $item=$_GET['item'];
 								<h4 class="modal-title" id="myModalLabel">Modification Condition Enlevement</h4>
 							</div>
 							<div class="modal-body">
-							<form id="modif_condition">
+							<form id="modif_condition2">
 							<div id="modif">
 							</div>
 							</form>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
-								<a class="modifcondition"  class="btn btn-rounded btn-primary">Valider</a>
+								<a class="modifcondition2"  class="btn btn-rounded btn-primary">Valider</a>
 							</div>
 						</div>
 					</div>
@@ -170,9 +179,14 @@ $item=$_GET['item'];
 					
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
-								<div class="actions">
-									<a onclick="validation_devis()" class="btn btn-rounded btn-inline">Valider</a>
-									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+								<div class="actions">';
+								
+								if ($DO_Statut==1)
+									echo '<a onclick="validation_devis()" class="btn btn-rounded btn-inline">Valider</a>';
+								
+									
+									
+									echo '<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
 								</div>
 							</div>
 						</div>
@@ -182,6 +196,7 @@ $item=$_GET['item'];
 						</div>
 			
 					</div>
+					<div id="validation"></div>
 				</div>
 			</section>
 </div>
@@ -191,7 +206,6 @@ $item=$_GET['item'];
 
 
 	
-
 	?>			
 
 
@@ -320,32 +334,7 @@ $item=$_GET['item'];
 </script>
 
 
-	<script>
-/*Fonction Validation Devis*/
 	
-	function validation_devis() {
-		    var x = document.getElementById("num_piece").value;
-
- 
-/*                showLoadingImage();*/
-                $.ajax({
-                    url: "ajax/validation_devis.php?q="+x,
-                    context: document.body,
-                    success: function(responseText) {
-
-                        $("#ligne_form").html(responseText);
-
-                    },
-                    complete: function() {
-                        // no matter the result, complete will fire, so it's a good place
-                        // to do the non-conditional stuff, like hiding a loading image.
-
-                       /* hideLoadingImage();*/
-                    }
-                });
-            };
-</script>
-
 <script type="text/javascript">
 // Modification Ligne
 jQuery('.modifrow').click(function(){
@@ -353,7 +342,7 @@ jQuery('.modifrow').click(function(){
 		 var y = $(this).closest('tr').attr('id');
 		 
 		$.ajax({
-                    url: "ajax/modification_ligne.php?&q="+y,
+                    url: "ajax/modification_ligne_2.php?&q="+y,
                     context: document.body,
                     success: function(responseText) {
 
@@ -401,6 +390,132 @@ if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
  // return false;
 });     </script>
 
-<script src="js/app.js"></script>
-</body>
-</html>
+<script type="text/javascript">
+// Fonction Modification Condition Devis
+jQuery('.modifcondition2').click(function(){
+ 
+  str1=document.forms['modif_condition2'].date_enlevement.value;
+  str2=document.forms['modif_condition2'].cbMarq.value;
+  
+   if (document.forms['modif_condition2'].sur_place.checked == true) {
+	   str1='Remis sur place';
+  }
+   alert (str1);
+
+ $.ajax({
+                    url: "ajax/modification_condition_2.php?&q="+str1+"&q2="+str2,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif").html(responseText);
+
+                    },
+                    complete: function() {
+						
+						var chaine=str2;
+                        chaine = chaine.split(";");
+                        
+						for(var i= 0; i < chaine.length; i++)
+                           {
+							   if (str1=='Remis sur place')
+								   document.getElementById('id'+chaine[i]+'').innerHTML=str1;
+							   else
+	                               document.getElementById('id'+chaine[i]+'').innerHTML='A Livrer Le '+str1+''; 
+                            }
+
+	 
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+                    }
+                });
+  // return false;*/
+});     </script>
+
+<script>
+/*Fonction Validation Devis*/
+	
+	function validation_devis() {
+		    var x = document.getElementById("num_piece").value;
+
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+                    url: "ajax/validation_devis.php?q="+x,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        $("#validation").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+            };
+</script>
+
+<script type="text/javascript">
+// Suppresion list des Lignes
+jQuery('.suppression_list_lignes_2').click(function(){
+	
+	if (confirm("Voulez vous supprimer les lignes ces enregistrements ?") == true) {
+	
+		    var x = document.getElementById("num_piece").value;
+	
+	// Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).attr('class'));
+      });
+	  
+	 $.ajax({
+                    url: "ajax/suppression_list_lignes_2.php?&num="+x+"&cbMarq="+checkbox_val,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        //$("#txtHint22").html(responseText);
+                        $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+                    }
+                });
+} 
+ // return false;
+});     </script>
+
+<script type="text/javascript">
+jQuery('.SelectModif_2').click(function(){
+
+      // Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).val());
+      });
+      		
+			
+      $.ajax({ 
+		   type: "POST", 
+		   url: "ajax/modification_ligne_2.php", 
+		   data: { checkbox_val : checkbox_val}, 
+		   context: document.body,
+		   success: function(data) { 
+		        $("#modif").html(data);
+			} 
+	}); 
+  
+   });
+</script>
