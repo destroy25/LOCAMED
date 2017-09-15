@@ -203,7 +203,7 @@ echo '
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th width="10">#</th>
+										<th width="10"><a  class="SelectModif_2" href="#" data-toggle="modal" data-target="#myModal">Modifier</a> / <a class="suppression_list_lignes_2">Supprimer</a></th>
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
@@ -259,10 +259,10 @@ echo '
 						$id++;
 						echo'
 									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
-										<td>#</td>
+										<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
-										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
+										<td><input type="text" onchange="Modification_Qte_2('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
 										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
 										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
@@ -491,7 +491,7 @@ jQuery('.modifrow').click(function(){
 		 var y = $(this).closest('tr').attr('id');
 		 
 		$.ajax({
-                    url: "ajax/modification_ligne.php?&q="+y,
+                    url: "ajax/modification_ligne_2.php?&q="+y,
                     context: document.body,
                     success: function(responseText) {
 
@@ -607,6 +607,99 @@ jQuery('.modifcondition2').click(function(){
                 });
             };
 </script>
+
+<script type="text/javascript">
+// Suppresion list des Lignes
+jQuery('.suppression_list_lignes_2').click(function(){
+	
+	if (confirm("Voulez vous supprimer les lignes ces enregistrements ?") == true) {
+	
+		    var x = document.getElementById("num_piece").value;
+	
+	// Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).attr('class'));
+      });
+	  
+	 $.ajax({
+                    url: "ajax/suppression_list_lignes_2.php?&num="+x+"&cbMarq="+checkbox_val,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        //$("#txtHint22").html(responseText);
+                        $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+                    }
+                });
+} 
+ // return false;
+});     </script>
+
+<script type="text/javascript">
+jQuery('.SelectModif_2').click(function(){
+
+      // Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).val());
+      });
+      		
+			
+      $.ajax({ 
+		   type: "POST", 
+		   url: "ajax/modification_ligne_2.php", 
+		   data: { checkbox_val : checkbox_val}, 
+		   context: document.body,
+		   success: function(data) { 
+		        $("#modif").html(data);
+			} 
+	}); 
+  
+   });
+</script>
+<script>	
+	function Modification_Qte_2(y) {
+		    var Qte = document.getElementById(y).value;
+            var x = document.getElementById("num_piece").value;
+			
+			
+		//	if (Number.isInteger(Qte)==true)
+		//	{
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+					
+                    url: "ajax/Modification_Qte_2.php?&Qte="+Qte+"&num="+x+"&item="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        $("#designation").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+			//}
+			//else 
+			//	alert ("Attention, il faut.....");
+            };
+</script>
+
 
 <script src="js/app.js"></script>
 </body>
