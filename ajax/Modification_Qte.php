@@ -6,6 +6,7 @@ $num=$_GET['num'];
 $item=$_GET['item'];
 
 
+
 //$designation=0;
 $client = new nusoap_client($wsdl,true);
 	$err = $client->getError();
