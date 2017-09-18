@@ -36,7 +36,7 @@ elseif (count($elements) >1)
 	{
 		
 		$sql='update f_docligne
-set condition_enlevement=\''.$condition.'\',statut_livraison=\'En instance de livraison\'
+set condition_enlevement=\''.$condition.'\', DO_DateLivr=\''.$dateL.'\', statut_livraison=\'En instance de livraison\'
  where cbMarq='.$elements[$ii];
  odbc_exec($connection,$sql);
  
