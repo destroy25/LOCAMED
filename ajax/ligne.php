@@ -50,12 +50,13 @@ $qte=$_GET['quantity'];
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th width="10"><a  class="SelectModif" href="#" data-toggle="modal" data-target="#myModal">Modifier</a> / <a class="suppression_list_lignes">Supprimer</a></th>
+										<th width="10"><a  class="SelectModif" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>  <a class="suppression_list_lignes"><i class="fa fa-remove"></i></a></th>
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
 										<th>Prix Unitaire</th>
-										<th>Remise</th>
+										<th>Remise en %</th>
+										<th>Montant</th>
 										<th>Condition Enlevement</th>
 										<th>Statut Stock</th>
 										<th>Action</th>
@@ -111,7 +112,8 @@ $qte=$_GET['quantity'];
 										<td>'.$dat['DL_Design'].'</td>
 										<td><input class="form-control" type="text" onchange="Modification_Qte('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
-										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
+										<td><input type="text" onchange="Modification_Remise('.$id.')" id="Remise'.$id.'" value="'.number_format($dat['DL_Remise01REM_Valeur'],2,'',' ').'" /></td>
+										<td>'.(($dat['DL_Qte'] * $dat['DL_PrixUnitaire'])-(($dat['DL_Qte'] * $dat['DL_PrixUnitaire']* $dat['DL_Remise01REM_Valeur'])/100)).'</td>
 										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
 										<td>'.$infostock.'</td>
 										<td><a class="modifrow" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a> 
@@ -387,9 +389,46 @@ jQuery('.modifcondition').click(function(){
 					
                     url: "ajax/Modification_Qte.php?&Qte="+Qte+"&num="+x+"&item="+y,
                     context: document.body,
-                    success: function(responseText) {
+					success: function(responseText) {
 
-                        $("#designation").html(responseText);
+
+                        //$("#txtHint22").html(responseText);
+                        $("#"+y).html(responseText);
+
+                    },
+                    
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+			//}
+			//else 
+			//	alert ("Attention, il faut.....");
+            };
+</script>
+
+
+<script>	
+	function Modification_Remise(y) {
+		    var Remise = document.getElementById('Remise'+y).value;
+            var x = document.getElementById("num_piece").value;
+			alert (Remise);
+			
+		//	if (Number.isInteger(Qte)==true)
+		//	{
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+					
+                    url: "ajax/Modification_Remise.php?&Remise="+Remise+"&num="+x+"&item="+y,
+                    context: document.body,
+					success: function(responseText) {
+
+                        //$("#txtHint22").html(responseText);
+                        $("#Remise"+y).html(responseText);
 
                     },
                     complete: function() {
