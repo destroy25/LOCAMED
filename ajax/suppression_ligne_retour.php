@@ -44,7 +44,7 @@ $item=$_GET['item'];
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th width="10">#</th>
+										<th width="10"><a class="suppression_list_lignes_retour"><i class="fa fa-remove"></i></a></th>
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
