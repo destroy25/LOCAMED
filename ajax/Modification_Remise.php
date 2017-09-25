@@ -108,7 +108,7 @@ echo '
 										<td>'.$dat['DL_Design'].'</td>
 										<td><input class="form-control" type="text" onchange="Modification_Qte('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
-										<td><input type="text" onchange="Modification_Remise('.$id.')" id="Remise'.$id.'" value="'.number_format($dat['DL_Remise01REM_Valeur'],0,'',' ').'" /></td>
+										<td><input class="form-control" type="text" onchange="Modification_Remise('.$id.')" id="Remise'.$id.'" value="'.number_format($dat['DL_Remise01REM_Valeur'],0,'',' ').'" /></td>
 										<td>'.(($dat['DL_Qte'] * $dat['DL_PrixUnitaire'])-(($dat['DL_Qte'] * $dat['DL_PrixUnitaire']* $dat['DL_Remise01REM_Valeur'])/100)).'</td>
 										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
 										<td>'.$infostock.'</td>
@@ -178,14 +178,13 @@ echo '
 								<div class="actions">
 									<a href="list_devis.php" class="btn btn-rounded btn-inline">Fin de Saisie</a>
 									<a onclick="validation_devis()" class="btn btn-rounded btn-inline">Valider</a>
-									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+									<a href="impression_devis.php?q='.$num.'" class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
 								</div>
 							</div>
 						</div>
 					</div>
 					</div>
 					</div>';
-	
 	
 
 
@@ -387,24 +386,28 @@ jQuery('.modifcondition').click(function(){
                 });
             };
 </script>
-<script>
-
-	
+<script>	
 	function Modification_Qte(y) {
 		    var Qte = document.getElementById(y).value;
             var x = document.getElementById("num_piece").value;
 			
+			if (Qte>0)
+			{
  
 /*                showLoadingImage();*/
                 $.ajax({
 					
                     url: "ajax/Modification_Qte.php?&Qte="+Qte+"&num="+x+"&item="+y,
                     context: document.body,
-                    success: function(responseText) {
+					success: function(responseText) {
 
-                        $("#designation").html(responseText);
+
+                        //$("#txtHint22").html(responseText);
+                        //$("#"+y).html(responseText);
+						 $("#modif1").html(responseText);
 
                     },
+                    
                     complete: function() {
                         // no matter the result, complete will fire, so it's a good place
                         // to do the non-conditional stuff, like hiding a loading image.
@@ -412,8 +415,12 @@ jQuery('.modifcondition').click(function(){
                        /* hideLoadingImage();*/
                     }
                 });
+			}
+			else 
+				alert ("Attention, il faut.....");
             };
 </script>
+
 
 
 <script>	
