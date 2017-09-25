@@ -135,6 +135,12 @@ include('connexion.php');
 								$statut='<span class="label label-success">Validé</span>';
 	
 							}
+							$exist_ligne=0;
+							$sqlligne='select * from f_docligne where DO_Piece=\''.$rep['DO_Piece'].'\'';
+						    $rqligne = odbc_exec($connection,$sqlligne);
+									if ($data= odbc_fetch_array($rqligne))
+										$exist_ligne=1;
+									
 								/*Conversion de date*/
 								$d=date_create($rep['DO_Date']);
 								
@@ -145,7 +151,7 @@ include('connexion.php');
 								<td>'.$statut.'</td>
 								<td>
 								<a title="Consultation Devis" href="devis.php?q='.$rep['DO_Piece'].'"><span class="fa fa-eye"></span></a>';
-								if ($rep['DO_Statut']==2)
+								if ($rep['DO_Statut']==2 and $exist_ligne==1)
 								echo ' <a title="Transformation en Facture" class="transformation_devis"><span class="fa fa-cogs"></span></a>';
 							
 							   echo ' <a title="Impression" class="transformation_devis"><span class="fa fa-print"></span></a>';
