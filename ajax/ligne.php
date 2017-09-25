@@ -51,15 +51,15 @@ $qte=$_GET['quantity'];
 								<thead>
 									<tr>
 										<th width="10"><a  class="SelectModif" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>  <a class="suppression_list_lignes"><i class="fa fa-remove"></i></a></th>
-										<th>Article</th>
-										<th>Désignation</th>
-										<th>Quantité</th>
-										<th>Prix Unitaire</th>
-										<th>Remise en %</th>
-										<th>Montant</th>
-										<th>Condition Enlevement</th>
-										<th>Statut Stock</th>
-										<th>Action</th>
+										<th align="center">Article</th>
+										<th align="center">Désignation</th>
+										<th align="center">Quantité</th>
+										<th align="center">Prix Unitaire (HT)</th>
+										<th align="center">Remise en %</th>
+										<th align="center">Montant</th>
+										<th align="center">Condition Enlevement</th>
+										<th align="center">Statut Stock</th>
+										<th align="center">Action</th>
 									</tr>
 								</thead>
 								<tbody>';
@@ -113,7 +113,7 @@ $qte=$_GET['quantity'];
 										<td><input class="form-control" type="text" onchange="Modification_Qte('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
 										<td><input class="form-control" type="text" onchange="Modification_Remise('.$id.')" id="Remise'.$id.'" value="'.number_format($dat['DL_Remise01REM_Valeur'],0,'',' ').'" /></td>
-										<td>'.(($dat['DL_Qte'] * $dat['DL_PrixUnitaire'])-(($dat['DL_Qte'] * $dat['DL_PrixUnitaire']* $dat['DL_Remise01REM_Valeur'])/100)).'</td>
+										<td>'.number_format((($dat['DL_Qte'] * $dat['DL_PrixUnitaire'])-(($dat['DL_Qte'] * $dat['DL_PrixUnitaire']* $dat['DL_Remise01REM_Valeur'])/100)),2,',',' ').'</td>
 										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
 										<td>'.$infostock.'</td>
 										<td><a class="modifrow" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a> 
