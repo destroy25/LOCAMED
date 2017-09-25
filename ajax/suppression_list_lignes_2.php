@@ -70,26 +70,24 @@ $sql='select * from F_Docentete where DO_Piece=\''.$num.'\'';
 		
 					}
 	
-		echo '<div id="ligne_devis">
-
+		echo '			
 <input type="hidden" id="num_piece" value="'.$num.'"/>
-
-	<div class="col-lg-12">
+	<div id="ligne_devis">
+	<div  class="col-lg-12">
 							<table class="table table-bordered">
 								<thead>
-									<tr>';
-									if ($DO_Statut==1)
-								  echo '<th width="10"><a  class="SelectModif_2" href="#" data-toggle="modal" data-target="#myModal">Modifier</a> / <a class="suppression_list_lignes_2">Supprimer</a></th>';
-								  echo '<th>Article</th>
+									<tr>
+										<th width="10"><a  class="SelectModif" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>  <a class="suppression_list_lignes"><i class="fa fa-remove"></i></a></th>
+										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
 										<th>Prix Unitaire</th>
-										<th>Remise</th>
+										<th>Remise en %</th>
+										<th>Montant</th>
 										<th>Condition Enlevement</th>
-										<th>Statut Stock</th>';
-										if ($DO_Statut==1)
-										echo '<th>Action</th>';
-									echo '</tr>
+										<th>Statut Stock</th>
+										<th>Action</th>
+									</tr>
 								</thead>
 								<tbody>';
 								/*Affichage des Lignes du document */
@@ -135,20 +133,21 @@ $sql='select * from F_Docentete where DO_Piece=\''.$num.'\'';
 						/*Fin Statut du Stock */
 						$id++;
 						echo'
-									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >';
-									if ($DO_Statut==1)
-										echo '<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>';
-									echo '<td>'.$dat['AR_Ref'].'</td>
+									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
+										<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>
+										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
-										<td><input type="text" onchange="Modification_Qte_2('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
+										<td><input class="form-control" type="text" onchange="Modification_Qte_2('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
-										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
+										<td><input class="form-control" type="text" onchange="Modification_Remise_2('.$id.')" id="Remise'.$id.'" value="'.number_format($dat['DL_Remise01REM_Valeur'],2,'',' ').'" /></td>
+										<td>'.(($dat['DL_Qte'] * $dat['DL_PrixUnitaire'])-(($dat['DL_Qte'] * $dat['DL_PrixUnitaire']* $dat['DL_Remise01REM_Valeur'])/100)).'</td>
 										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
-										<td>'.$infostock.'</td>';
-										if ($DO_Statut==1)
-										echo '<td><a class="modifrow" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a> 
-										<a class="suppression_ligne_2"><i class="fa fa-remove"></i> </a></td>';
-										echo '</tr>';
+										<td>'.$infostock.'</td>
+										<td><a class="modifrow" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a> 
+										<a class="suppression_ligne"><i class="fa fa-remove"></i> </a></td>
+									</tr>';
+										
+									
 										
 									}
 						
@@ -171,21 +170,21 @@ $sql='select * from F_Docentete where DO_Piece=\''.$num.'\'';
 								<h4 class="modal-title" id="myModalLabel">Modification Condition Enlevement</h4>
 							</div>
 							<div class="modal-body">
-							<form id="modif_condition2">
+							<form id="modif_condition">
 							<div id="modif">
 							</div>
 							</form>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
-								<a class="modifcondition2"  class="btn btn-rounded btn-primary">Valider</a>
+								<a class="modifcondition"  class="btn btn-rounded btn-primary">Valider</a>
 							</div>
 						</div>
 					</div>
 				</div><!--.modal-->
 							
 						</div>
-					
+					</div>
 	<div class="payment-details">
 								<strong>Récapitulatif</strong>
 								<table>
@@ -207,175 +206,60 @@ $sql='select * from F_Docentete where DO_Piece=\''.$num.'\'';
 					
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
-								<div class="actions">';
-								
-								if ($DO_Statut==1)
-									echo '<a onclick="validation_devis()" class="btn btn-rounded btn-inline">Valider</a>';
-								
-									
-									
-									echo '<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+								<div class="actions">
+									<a href="list_devis.php" class="btn btn-rounded btn-inline">Fin de Saisie</a>
+									<a onclick="validation_devis()" class="btn btn-rounded btn-inline">Valider</a>
+									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
 								</div>
 							</div>
 						</div>
 					</div>
 					</div>
+					</div>';
 	
-						</div>
+	
+
+
+?>
+<script type="text/javascript">
+jQuery('.SelectModif').click(function(){
+
+      // Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).val());
+      });
+      		
 			
-					</div>
-					<div id="validation"></div>
-				</div>
-			</section>
-</div>
-';
-
-
-
-
-	
-	?>			
-
-
-				</div><!--.box-typical-->
-
-				
-	</div><!--.container-fluid-->
-	
-	
-	
-	
-	</div><!--.page-content-->
-
-
-	
-		<script src="js/lib/jquery/jquery.min.js"></script>
-	<script src="js/lib/tether/tether.min.js"></script>
-	<script src="js/lib/bootstrap/bootstrap.min.js"></script>
-	<script src="js/plugins.js"></script>
-
-		<script src="js/lib/bootstrap-select/bootstrap-select.min.js"></script>
-	<script src="js/lib/select2/select2.full.min.js"></script>
-
-	<script src="js/lib/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
-	<script>
-		$(document).ready(function() {
-			$("input[name='demo1']").TouchSpin({
-				min: 0,
-				max: 100,
-				step: 0.1,
-				decimals: 2,
-				boostat: 5,
-				maxboostedstep: 10,
-				postfix: '%'
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo2']").TouchSpin({
-				min: -1000000000,
-				max: 1000000000,
-				stepinterval: 50,
-				maxboostedstep: 10000000,
-				prefix: '$'
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo_vertical']").TouchSpin({
-				verticalbuttons: true
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo_vertical2']").TouchSpin({
-				verticalbuttons: true,
-				verticalupclass: 'glyphicon glyphicon-plus',
-				verticaldownclass: 'glyphicon glyphicon-minus'
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo3']").TouchSpin();
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo4']").TouchSpin({
-				postfix: "a button",
-				postfix_extraclass: "btn btn-default"
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo4_2']").TouchSpin({
-				postfix: "a button",
-				postfix_extraclass: "btn btn-default"
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo6']").TouchSpin({
-				buttondown_class: "btn btn-default-outline",
-				buttonup_class: "btn btn-default-outline"
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo5']").TouchSpin({
-				prefix: "pre",
-				postfix: "post"
-			});
-		});
-	</script>
-	<script>
-
-	
-	function validation_entete() {
-                               str=document.forms['entete'].souche.value;
-                               str1=document.forms['entete'].client.value;
- 
-/*                showLoadingImage();*/
-                $.ajax({
-                    url: "ajax/devis.php?q=1&client="+str1+"&souche="+str,
-                    context: document.body,
-                    success: function(responseText) {
-
-                        $("#box").html(responseText);
-
-                    },
-                    complete: function() {
-                        // no matter the result, complete will fire, so it's a good place
-                        // to do the non-conditional stuff, like hiding a loading image.
-                $("#entete").css("display", "none");
-                       /* hideLoadingImage();*/
-                    }
-                });
-            };
+      $.ajax({ 
+		   type: "POST", 
+		   url: "ajax/modification_ligne.php", 
+		   data: { checkbox_val : checkbox_val}, 
+		   context: document.body,
+		   success: function(data) { 
+		        $("#ligne_devis").html(data);
+			} 
+	}); 
+  
+   });
 </script>
 
 
-	
-<script type="text/javascript">
+                <script type="text/javascript">
 // Modification Ligne
 jQuery('.modifrow').click(function(){
  
 		 var y = $(this).closest('tr').attr('id');
-		 
 		$.ajax({
-                    url: "ajax/modification_ligne_2.php?&q="+y,
+                    url: "ajax/modification_ligne.php?&q="+y,
                     context: document.body,
                     success: function(responseText) {
 
                         //$("#txtHint22").html(responseText);
-                        $("#modif").html(responseText);
+                        $("#ligne_devis").html(responseText);
 
                     },
                     complete: function() {
@@ -386,16 +270,17 @@ jQuery('.modifrow').click(function(){
                 });
 });     </script>
 
-<script type="text/javascript">
+
+
+                <script type="text/javascript">
 // Suppresion Ligne
-jQuery('.suppression_ligne_2').click(function(){
+jQuery('.suppression_ligne').click(function(){
 
 // var y = $(this).closest('tr').attr('id');
 if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
 	
 		    var x = document.getElementById("num_piece").value;
 			var y = $(this).closest('tr').attr('class');
-			
  
  $.ajax({
                     url: "ajax/suppression_ligne_2.php?&num="+x+"&item="+y,
@@ -418,20 +303,66 @@ if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
  // return false;
 });     </script>
 
+
 <script type="text/javascript">
-// Fonction Modification Condition Devis
-jQuery('.modifcondition2').click(function(){
+// Suppresion list des Lignes
+jQuery('.suppression_list_lignes').click(function(){
+	
+	if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
+	
+		    var x = document.getElementById("num_piece").value;
+	
+	// Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).attr('class'));
+      });
+	  
+	 $.ajax({
+                    url: "ajax/suppression_list_lignes_2.php?&num="+x+"&cbMarq="+checkbox_val,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+
+
+			
+			
  
-  str1=document.forms['modif_condition2'].date_enlevement.value;
-  str2=document.forms['modif_condition2'].cbMarq.value;
+ 
+ 
+} 
+ // return false;
+});     </script>
+
+
+               <script type="text/javascript">
+// Fonction Modification Condition Devis
+jQuery('.modifcondition').click(function(){
+ 
+  str1=document.forms['modif_condition'].date_enlevement.value;
+  str2=document.forms['modif_condition'].cbMarq.value;
   
-   if (document.forms['modif_condition2'].sur_place.checked == true) {
+   if (document.forms['modif_condition'].sur_place.checked == true) {
 	   str1='Remis sur place';
   }
    alert (str1);
 
  $.ajax({
-                    url: "ajax/modification_condition_2.php?&q="+str1+"&q2="+str2,
+                    url: "ajax/modification_condition.php?&q="+str1+"&q2="+str2,
                     context: document.body,
                     success: function(responseText) {
 
@@ -461,7 +392,8 @@ jQuery('.modifcondition2').click(function(){
   // return false;*/
 });     </script>
 
-<script>
+
+	<script>
 /*Fonction Validation Devis*/
 	
 	function validation_devis() {
@@ -486,64 +418,69 @@ jQuery('.modifcondition2').click(function(){
                 });
             };
 </script>
-
-<script type="text/javascript">
-// Suppresion list des Lignes
-jQuery('.suppression_list_lignes_2').click(function(){
-	
-	if (confirm("Voulez vous supprimer les lignes ces enregistrements ?") == true) {
-	
-		    var x = document.getElementById("num_piece").value;
-	
-	// Ce tableau javascript va stocker les valeurs des checkbox
-      var checkbox_val = [];
-
-      // Parcours de toutes les checkbox checkées avec la classe "choix"
-      $('#choix:checked').each(function(){
-         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
-         checkbox_val.push($(this).attr('class'));
-      });
-	  
-	 $.ajax({
-                    url: "ajax/suppression_list_lignes_2.php?&num="+x+"&cbMarq="+checkbox_val,
+<script>	
+	function Modification_Qte_2(y) {
+		    var Qte = document.getElementById(y).value;
+            var x = document.getElementById("num_piece").value;
+			
+			
+			if (Qte>0)
+			{
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+					
+                    url: "ajax/Modification_Qte_2.php?&Qte="+Qte+"&num="+x+"&item="+y,
                     context: document.body,
                     success: function(responseText) {
 
-                        //$("#txtHint22").html(responseText);
                         $("#ligne_devis").html(responseText);
 
                     },
                     complete: function() {
                         // no matter the result, complete will fire, so it's a good place
                         // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
                     }
                 });
-} 
- // return false;
-});     </script>
+			}
+			else 
+				alert ("Attention, il faut.....");
+            };
+</script>
 
-<script type="text/javascript">
-jQuery('.SelectModif_2').click(function(){
 
-      // Ce tableau javascript va stocker les valeurs des checkbox
-      var checkbox_val = [];
-
-      // Parcours de toutes les checkbox checkées avec la classe "choix"
-      $('#choix:checked').each(function(){
-         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
-         checkbox_val.push($(this).val());
-      });
-      		
+<script>	
+	function Modification_Remise_2(y) {
+		    var Remise = document.getElementById('Remise'+y).value;
+            var x = document.getElementById("num_piece").value;
+			alert (Remise);
 			
-      $.ajax({ 
-		   type: "POST", 
-		   url: "ajax/modification_ligne_2.php", 
-		   data: { checkbox_val : checkbox_val}, 
-		   context: document.body,
-		   success: function(data) { 
-		        $("#modif").html(data);
-			} 
-	}); 
-  
-   });
+		//	if (Number.isInteger(Qte)==true)
+		//	{
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+					
+                    url: "ajax/Modification_Remise_2.php?&Remise="+Remise+"&num="+x+"&item="+y,
+                    context: document.body,
+					success: function(responseText) {
+
+                        //$("#txtHint22").html(responseText);
+                        //$("#Remise"+y).html(responseText);
+						 $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+			//}
+			//else 
+			//	alert ("Attention, il faut.....");
+            };
 </script>
