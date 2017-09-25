@@ -16,7 +16,11 @@ if(isset($_GET['q']))
 						$souche=$rep['S_Intitule'];
 					}
 
-
+    $sqldepot='select * from f_depot where de_no='.$_SESSION['depot'];
+				                    $rqdepot = odbc_exec($connection,$sqldepot);
+                    if ($repdepot=odbc_fetch_array($rqdepot)) {
+						$depot=$repdepot['DE_Intitule'];
+					}
 					
 					
 											$client = new nusoap_client($wsdl,true);
@@ -30,7 +34,7 @@ if(isset($_GET['q']))
 	// Exécution de la Methode 
 //	$result = $client->call('HelloUser',$theVariable);
 	$result = $client->call('creation_document',
-	array('num'=>$client1,'souche'=>$souche,'type'=>4));
+	array('num'=>$client1,'souche'=>$souche,'type'=>4,'depot'=>$depot));
  
 	if ($client->fault) 
 	{
@@ -47,6 +51,7 @@ if(isset($_GET['q']))
 		{
 		//echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
 			$do_piece=$result;
+			
 		}
 	}
 
