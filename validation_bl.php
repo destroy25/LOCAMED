@@ -178,7 +178,7 @@ echo '
 					
 					
 					<div class="row table-details">
-
+                     <label class="form-label semibold" for="exampleInput">Scaner ici</label>
 			         <input type="text" name="aa" class="form-control input-sm">
 					 
                     <div id="ligne_devis">
@@ -221,7 +221,7 @@ echo '
 							<div class="total-amount">
 								<div class="actions">
 								    
-								    <button type="submit" id="btnValid" class="btn btn-rounded btn-inline">Valider</button>
+								    <button type="submit" id="btnValid" style="float:right;" class="btn btn-rounded btn-inline">Valider</button>
 									
 								</div>
 							</div>
