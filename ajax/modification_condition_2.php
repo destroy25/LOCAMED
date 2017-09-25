@@ -36,6 +36,7 @@ elseif (count($elements) >1)
 	for($ii=0;$ii<count($elements)-1 ;$ii++)
 	{
 		
+		
 		$sql='update f_docligne
 set condition_enlevement=\''.$condition.'\', DO_DateLivr=\''.$dateL.'\', statut_livraison=\'En instance de livraison\'
  where cbMarq='.$elements[$ii];
