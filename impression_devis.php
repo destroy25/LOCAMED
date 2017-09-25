@@ -1,49 +1,92 @@
 <?php 
 include('connexion.php');
+require_once('TCPDF-master/tcpdf.php');
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$pdf->SetCreator(PDF_CREATOR);
+$pdf->SetTitle('');
+$pdf->SetHeaderData('', '', PDF_HEADER_TITLE, PDF_HEADER_STRING);
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+$pdf->SetMargins(PDF_MARGIN_LEFT, 5, PDF_MARGIN_RIGHT);
+$pdf->SetAutoPageBreak(TRUE, 10);
+$pdf->SetFont('dejavusans', '', 14);
 
-
-
-?>
-<!DOCTYPE html>
-<html>
-<head lang="en">
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>LOCAMED</title>
-
-	<link href="img/favicon.144x144.png" rel="apple-touch-icon" type="image/png" sizes="144x144">
-	<link href="img/favicon.114x114.png" rel="apple-touch-icon" type="image/png" sizes="114x114">
-	<link href="img/favicon.72x72.png" rel="apple-touch-icon" type="image/png" sizes="72x72">
-	<link href="img/favicon.57x57.png" rel="apple-touch-icon" type="image/png">
-	<link href="img/favicon.png" rel="icon" type="image/png">
-	<link href="img/favicon.ico" rel="shortcut icon">
-
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
-	<link rel="stylesheet" href="css/separate/vendor/bootstrap-select/bootstrap-select.min.css">
-<link rel="stylesheet" href="css/separate/vendor/select2.min.css">
-
-<link rel="stylesheet" href="css/separate/pages/invoice.min.css">
-    <link rel="stylesheet" href="css/lib/font-awesome/font-awesome.min.css">
-    <link rel="stylesheet" href="css/lib/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="css/main.css">
-</head>
-<body class="with-side-menu">
-
-
-	<div >
+$pdf->AddPage();  
+      $content = '
+	  <style>
+	  div.Totaux {
+		position: absolute;
+        top: 0px;
+        right: 0;
+        width: 300px;
+        height: 200px;
+		text-align: right;
+       
+    }
+	div.rec {
+		position: absolute;
+        top: 0px;
+        right: 100;
+		left:900;
+        width: 300px;
+        height: 200px;
+		text-align: left;
+       
+    }
+	img.hidden-md-down {
+        top: 0px;
+        right: 100;
+        width: 200px;
+        height: 70px;
+		margin-right:0px;
+		margin-left:300px;
+    }
 	
-			<div class="container-fluid">
-			
+	table.table {
+        border-collapse:collapse;
+        width:90%;
+		text-align:center;
+        }
+    th.t2{
+        border:1px solid black;
+        width:20%;
+		text-align:center;
+        }
+    td.t2{
+		border:1px solid black;
+        width:20%;
+        text-align:center;
+        }
+		
+	div#conteneur{
+	
+        width:300px; 
+        margin-top:20px; 
+        padding-bottom:25px; 
+        padding-top:5px;
+       }
+ 
+    p#colonne1{
+        width:140px; 
+        height:100px; 
+        float:left;
+       }
+ 
+    p#colonne2{
+        width:140px; 
+        height:100px;  
+        float:right;
+       }
 
-
-			
-<?php
-if(isset($_GET['q']))
+	
+	 </style>';  
+     
+	 
+	 
+ 
+  if(isset($_GET['q']))
 {
 	$q=$_GET['q'];	
 
@@ -70,7 +113,7 @@ $sqlclient='select * from f_comptet where ct_num=\''.$client1.'\'';
 		
 					}
 
-echo '			
+ $content .=  '			
 
 				<div class="row">
 				
@@ -79,14 +122,9 @@ echo '
 					
 		
 					
-<!--						<div class="col-lg-4">
-						<div class="form-group">
-													<label class="form-label" for="desgination">Quantité</label>
 
-							<input id="demo3" type="text" value="1" name="demo3">
-						</div>-->
 					</div>
-				</div><!--.row-->
+				</div>
 
 
 							<section class="card">
@@ -94,31 +132,22 @@ echo '
         <img class="hidden-md-down" src="img/logo-2.png" alt="">
 	    	
 				</header>
-				<div class="card-block invoice">
-					<div class="row">
-						<div class="col-lg-6 company-info">
+				<div>
+					<div id="conteneur">
+						<p id="colonne1">
 							<h5>'.$client1.'</h5>
 							<p>'.$intitule_client.'</p>
-
-							<div class="invoice-block">
-								<div>'.utf8_encode($adresse_client).'</div>
-								<div>'.utf8_encode($complement_client).'</div>
-								<div>'.utf8_encode($ville_client).'</div>
-							</div>
-	
-						</div>
-						<div class="col-lg-6 clearfix invoice-info">
-							<div class="text-lg-right">
+							
+								'.utf8_encode($adresse_client).'
+								'.utf8_encode($complement_client).'
+								'.utf8_encode($ville_client).'
+													
+						</p>
+						<p id="colonne2">
 								<h5>DEVIS #'.$q.'</h5>
-								<div>Date: '.$date.'</div>
-							</div>
-
-
-						</div>
-					
-					
-					
-					
+								Date: '.$date.'
+								
+						</p>
 					</div>
 					
 					
@@ -129,24 +158,24 @@ echo '
 
 <input type="hidden" id="num_piece" value="'.$q.'"/>
 	<div class="col-lg-12">
-							<table class="table table-bordered">
+							<table class="table">
 								<thead>
-									<tr>
-										<th width="10">#</th>
-										<th>Article</th>
-										<th>Désignation</th>
-										<th>Quantité</th>
-										<th>Prix Unitaire</th>
-										<th>Remise</th>
-										<th>Condition Enlevement</th>
+									<tr class="t1">
+										<th class="t2">Article</th>
+										<th class="t2">Désignation</th>
+										<th class="t2">Quantité</th>
+										<th class="t2">Prix Unitaire</th>
+										<th class="t2">Remise</th>
+										<th class="t2">Montant</th>
+										<th class="t2">Condition Enlevement</th>
 									</tr>
 								</thead>
-								<tbody>';
+								';
 								/*Affichage des Lignes du document */
 						$totalqte=0;		//Total Quantité
 						$totalht=0;			//Totat HT
 						$totalttc=0;		//Tota TTC
-								$sqlligne='select AR_Ref,DL_Design,DL_Qte,DL_PrixUnitaire,DL_Remise01REM_Valeur,DL_MontantHT,DL_MontantTTC,condition_enlevement,cbMarq
+								$sqlligne='select AR_Ref,DL_Design,DL_Qte,DL_PrixUnitaire,DL_Remise01REM_Valeur,DL_MontantHT,DL_MontantTTC,cbMarq,condition_enlevement
 								from f_docligne where DO_Piece=\''.$q.'\'';
 								    $rqligne = odbc_exec($connection,$sqlligne);
 									while ($data[] = odbc_fetch_array($rqligne));
@@ -183,55 +212,31 @@ echo '
 						
 						/*Fin Statut du Stock */
 						
-						echo'
+						 $content .=  '<tbody class="table">
 									<tr id="'.$dat['cbMarq'].'" >
-										<td>#</td>
-										<td>'.$dat['AR_Ref'].'</td>
-										<td>'.$dat['DL_Design'].'</td>
-										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
-										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
-										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
-										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
+										
+										<td class="t2" style="border:1px solid black" >'.$dat['AR_Ref'].'</td>
+										<td class="t2" style="border:1px solid black" >'.$dat['DL_Design'].'</td>
+										<td class="t2" style="border:1px solid black" >'.number_format($dat['DL_Qte'],2,',',' ').'</td>
+										<td class="t2" style="border:1px solid black" >'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
+										<td class="t2" style="border:1px solid black" >'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
+										<td class="t2" style="border:1px solid black" >'.(($dat['DL_Qte'] * $dat['DL_PrixUnitaire'])-(($dat['DL_Qte'] * $dat['DL_PrixUnitaire']* $dat['DL_Remise01REM_Valeur'])/100)).'</td>
+										<td class="t2" style="border:1px solid black" >'.$dat['condition_enlevement'].'</td>
+										
 									</tr>';
 										
 									}
 						
-											echo'
+											 $content .=  '
 								</tbody>
 							</table>
 
-				<div class="modal fade"
-					 id="myModal"
-					 tabindex="-1"
-					 role="dialog"
-					 aria-labelledby="myModalLabel"
-					 aria-hidden="true">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
-									<i class="font-icon-close-2"></i>
-								</button>
-								<h4 class="modal-title" id="myModalLabel">Modification Condition Enlevement</h4>
-							</div>
-							<div class="modal-body">
-							<form id="modif_condition">
-							<div id="modif">
-							</div>
-							</form>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
-								<a class="modifcondition"  class="btn btn-rounded btn-primary">Valider</a>
-							</div>
-						</div>
-					</div>
-				</div><!--.modal-->
 							
 						</div>
 					</div>
 	<div class="payment-details">
-								<strong>Récapitulatif</strong>
+					<div class="rec"><strong>Récapitulatif</strong> </div>
+					<div class="Totaux">
 								<table>
 									<tr>
 										<td>Total Quantité :</td>
@@ -247,17 +252,8 @@ echo '
 									</tr>
 								</table>
 							</div>
-					<div class="row">
-					
-						<div class="col-lg-12 clearfix">
-							<div class="total-amount">
-								<div class="actions">
-									<a onclick="validation_devis()" class="btn btn-rounded btn-inline">Valider</a>
-									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
-								</div>
 							</div>
-						</div>
-					</div>
+					
 					</div>
 	
 	
@@ -275,13 +271,58 @@ echo '
 ';
 
 
+      
+     
+      $pdf->writeHTML($content);  
+      $pdf->Output('sample.pdf', 'I');
+
+
 
 
 	
 }	?>			
 
+  
 
-				</div><!--.box-typical-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>LOCAMED</title>
+<link href="img/favicon.144x144.png" rel="apple-touch-icon" type="image/png" sizes="144x144">
+	<link href="img/favicon.114x114.png" rel="apple-touch-icon" type="image/png" sizes="114x114">
+	<link href="img/favicon.72x72.png" rel="apple-touch-icon" type="image/png" sizes="72x72">
+	<link href="img/favicon.57x57.png" rel="apple-touch-icon" type="image/png">
+	<link href="img/favicon.png" rel="icon" type="image/png">
+	<link href="img/favicon.ico" rel="shortcut icon">
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" href="css/separate/vendor/bootstrap-select/bootstrap-select.min.css">
+<link rel="stylesheet" href="css/separate/vendor/select2.min.css">
+
+<link rel="stylesheet" href="css/separate/pages/invoice.min.css">
+    <link rel="stylesheet" href="css/lib/font-awesome/font-awesome.min.css">
+    <link rel="stylesheet" href="css/lib/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+	
+</head>
+<body class="with-side-menu">
+
+
+	<div >
+	
+			<div class="container-fluid">
+			
+
+
+			
+			</div><!--.box-typical-->
 
 				
 	</div><!--.container-fluid-->
