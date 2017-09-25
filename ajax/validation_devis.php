@@ -52,7 +52,11 @@ set DO_Statut=2
 							<strong>Succes !</strong><br>
 							Document Validé
 						</div>';
+						
+ //echo "<script type='text/javascript'>document.location.replace('devis1.php');</script>";
+
  
+      
  
 
 
