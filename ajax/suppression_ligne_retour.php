@@ -61,7 +61,7 @@ $item=$_GET['item'];
 								    $rqligne = odbc_exec($connection,$sqlligne);
                     while ($repligne=odbc_fetch_array($rqligne)) {
 						$id++;
-						$totalqte=$totalqte+$repligne['DL_Qte'];
+						$totalqte=$totalqte+($repligne['DL_Qte']*(-1));
 						$totalht=$totalht+$repligne['DL_MontantHT'];
 						$totalttc=$totalttc+$repligne['DL_MontantTTC'];
 						echo'
@@ -69,7 +69,7 @@ $item=$_GET['item'];
 										<td><input type="checkbox" class="'.$repligne['cbMarq'].'" value="'.$repligne['cbMarq'].'" id="choix"/></td>
 										<td>'.$repligne['AR_Ref'].'</td>
 										<td>'.$repligne['DL_Design'].'</td>
-										<td><input type="text" onchange="Modification_Qte_retour('.$id.')" id="'.$id.'" value='.number_format($repligne['DL_Qte'],0,',',' ').' /></td>
+										<td><input class="form-control" type="text" onchange="Modification_Qte_retour('.$id.')" id="'.$id.'" value='.number_format($repligne['DL_Qte']*(-1),0,',',' ').' /></td>
 										<td>'.number_format($repligne['DL_PrixUnitaire'],2,',',' ').'</td>
 			                            <td><a class="suppression_ligne_retour"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
@@ -149,6 +149,7 @@ if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
 } 
  // return false;
 });     </script>
+
 <script type="text/javascript">
 // Suppresion list des Lignes
 jQuery('.suppression_list_lignes_retour').click(function(){
@@ -182,7 +183,6 @@ jQuery('.suppression_list_lignes_retour').click(function(){
 
                     }
                 });
-
  
 } 
  // return false;
@@ -190,11 +190,14 @@ jQuery('.suppression_list_lignes_retour').click(function(){
 
 <script>	
 	function Modification_Qte_retour(y) {
-		    var Qte = document.getElementById(y).value;
+		    var Qte = document.getElementById(y).value; 
+			
             var x = document.getElementById("num_piece").value;
 			
-			if (Qte<0)
+			if (Qte>0)
 			{
+
+				Qte=Qte*(-1);
  
 /*                showLoadingImage();*/
                 $.ajax({
@@ -203,7 +206,7 @@ jQuery('.suppression_list_lignes_retour').click(function(){
                     context: document.body,
                     success: function(responseText) {
 
-                        $("#designation").html(responseText);
+                         $("#modif1").html(responseText);
 
                     },
                     complete: function() {
