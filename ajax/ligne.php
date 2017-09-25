@@ -112,13 +112,14 @@ $qte=$_GET['quantity'];
 										<td>'.$dat['DL_Design'].'</td>
 										<td><input class="form-control" type="text" onchange="Modification_Qte('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte'],0,',',' ').' /></td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
-										<td><input type="text" onchange="Modification_Remise('.$id.')" id="Remise'.$id.'" value="'.number_format($dat['DL_Remise01REM_Valeur'],2,'',' ').'" /></td>
+										<td><input class="form-control" type="text" onchange="Modification_Remise('.$id.')" id="Remise'.$id.'" value="'.number_format($dat['DL_Remise01REM_Valeur'],0,'',' ').'" /></td>
 										<td>'.(($dat['DL_Qte'] * $dat['DL_PrixUnitaire'])-(($dat['DL_Qte'] * $dat['DL_PrixUnitaire']* $dat['DL_Remise01REM_Valeur'])/100)).'</td>
 										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
 										<td>'.$infostock.'</td>
 										<td><a class="modifrow" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a> 
 										<a class="suppression_ligne"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
+									
 									}
 											echo'
 								</tbody>
@@ -175,7 +176,7 @@ $qte=$_GET['quantity'];
 								<div class="actions">
 									<a href="list_devis.php" class="btn btn-rounded btn-inline">Fin de Saisie</a>
 									<a onclick="validation_devis()" class="btn btn-rounded btn-inline">Valider</a>
-									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+									<a href="impression_devis.php?q='.$num_piece.'"  class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
 								</div>
 							</div>
 						</div>
@@ -381,8 +382,8 @@ jQuery('.modifcondition').click(function(){
 		    var Qte = document.getElementById(y).value;
             var x = document.getElementById("num_piece").value;
 			
-		//	if (Number.isInteger(Qte)==true)
-		//	{
+			if (Qte>0)
+			{
  
 /*                showLoadingImage();*/
                 $.ajax({
@@ -393,7 +394,8 @@ jQuery('.modifcondition').click(function(){
 
 
                         //$("#txtHint22").html(responseText);
-                        $("#"+y).html(responseText);
+                        //$("#"+y).html(responseText);
+						 $("#modif1").html(responseText);
 
                     },
                     
@@ -404,9 +406,9 @@ jQuery('.modifcondition').click(function(){
                        /* hideLoadingImage();*/
                     }
                 });
-			//}
-			//else 
-			//	alert ("Attention, il faut.....");
+			}
+			else 
+				alert ("Attention, il faut.....");
             };
 </script>
 
@@ -428,7 +430,8 @@ jQuery('.modifcondition').click(function(){
 					success: function(responseText) {
 
                         //$("#txtHint22").html(responseText);
-                        $("#Remise"+y).html(responseText);
+                        //$("#Remise"+y).html(responseText);
+						 $("#modif1").html(responseText);
 
                     },
                     complete: function() {
