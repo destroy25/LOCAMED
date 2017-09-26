@@ -326,7 +326,7 @@ jQuery('.modifcondition').click(function(){
    if (document.forms['modif_condition'].sur_place.checked == true) {
 	   str1='Remis sur place';
   }
-   alert (str1);
+   
 
  $.ajax({
                     url: "ajax/modification_condition.php?&q="+str1+"&q2="+str2,
