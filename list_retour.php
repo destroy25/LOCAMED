@@ -155,7 +155,8 @@ include('connexion.php');
 						<tr>
 							<th>N° Retour</th>
 							<th>Date</th>
-							<th>Client</th>
+							<th>Num Client</th>
+							<th>Intitulé Client</th>
 							<th>Statut</th>
 							<th>Action</th>
 						</tr>
@@ -163,13 +164,16 @@ include('connexion.php');
 						
 					<tbody>
 						<?php
-						$sql='select * from f_docentete where do_domaine=0 and do_type=6 and do_provenance=1';
+						$sql='select DO_Piece,DO_Date,CT_Intitule,DO_Statut,CT_Intitule,DO_Statut,do_tiers from f_docentete 
+						inner join f_comptet on f_docentete.do_tiers=f_comptet.ct_num where do_domaine=0 and do_type=6 and do_provenance=1';
 		                $rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
+							$d=date_create($rep['DO_Date']);
 								echo '<tr id="'.$rep['DO_Piece'].'">
 								<td>'.$rep['DO_Piece'].'</td>
-								<td>'.$rep['DO_Date'].'</td>
-								<td>'.$rep['DO_Tiers'].'</td>
+								<td>'.date_format($d,'d/m/Y').'</td>
+								<td>'.$rep['do_tiers'].'</td>
+								<td>'.$rep['CT_Intitule'].'</td>
 								<td>'.$rep['DO_Statut'].'</td>
 								<td>
 								<a href="retour.php?q='.$rep['DO_Piece'].'"><span class="font-icon font-icon-eye"></span></a>
