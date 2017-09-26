@@ -112,14 +112,15 @@ include('connexion.php');
 						<tr>
 							<th>N° Devis</th>
 							<th>Date</th>
-							<th>Client</th>
+							<th>Num Client</th>
+							<th>Intitulé Client</th>
 							<th>Statut</th>
 							<th>Action</th>
 						</tr>
 						</thead>
 						<tbody>
 						<?php
-						$sql='select DO_Piece,DO_Date,CT_Intitule,DO_Statut,CT_Intitule,DO_Statut from f_docentete 
+						$sql='select DO_Piece,DO_Date,CT_Intitule,DO_Statut,CT_Intitule,DO_Statut,do_tiers from f_docentete 
 						inner join f_comptet on f_docentete.do_tiers=f_comptet.ct_num 
 						where do_domaine=0 and do_type=0
 						';
@@ -133,7 +134,6 @@ include('connexion.php');
 							elseif($rep['DO_Statut']==2)
 							{
 								$statut='<span class="label label-success">Validé</span>';
-	
 							}
 							$exist_ligne=0;
 							$sqlligne='select * from f_docligne where DO_Piece=\''.$rep['DO_Piece'].'\'';
@@ -147,6 +147,7 @@ include('connexion.php');
 								echo '<tr id="'.$rep['DO_Piece'].'">
 								<td>'.$rep['DO_Piece'].'</td>
 								<td>'.date_format($d,'d/m/Y').'</td>
+								<td>'.$rep['do_tiers'].'</td>
 								<td>'.$rep['CT_Intitule'].'</td>
 								<td>'.$statut.'</td>
 								<td>
