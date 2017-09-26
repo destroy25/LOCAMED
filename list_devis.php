@@ -155,7 +155,7 @@ include('connexion.php');
 								if ($rep['DO_Statut']==2 and $exist_ligne==1)
 								echo ' <a title="Transformation en Facture" class="transformation_devis"><span class="fa fa-cogs"></span></a>';
 							
-							   echo ' <a title="Impression" class="transformation_devis"><span class="fa fa-print"></span></a>';
+							   echo ' <a title="Impression" href="impression_devis.php?q='.$rep['DO_Piece'].'"><span class="fa fa-print"></span></a>';
 							    if ($rep['DO_Statut']==2)
 							    echo ' <a title="Annulation Devis" class="annulation_devis"><span class="fa fa-remove"></span></a>';
 							    echo '</td>
