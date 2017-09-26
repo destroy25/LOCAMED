@@ -22,7 +22,7 @@ set DO_Statut=2
 							Document Validé
 						</div>';
 						
- echo "<script type='text/javascript'>document.location.replace('devis.php?q='".$q.");</script>";
+ echo "<script type='text/javascript'>document.location.replace('devis.php?q=".$q."');</script>";
 
 /* echo "<script>	
 	function redirection(".$q."){
