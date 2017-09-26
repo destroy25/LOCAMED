@@ -273,7 +273,7 @@ echo '
 										
 									echo '<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>';
 										if ($DO_Statut==1)
-											echo '<td><input class="form-control" type="text" onchange="Modification_Remise('.$id.')" id="Remise'.$id.'" value="'.number_format($dat['DL_Remise01REM_Valeur'],2,'',' ').'" /></td>';
+											echo '<td><input class="form-control" type="text" onchange="Modification_Remise_2('.$id.')" id="Remise'.$id.'" value="'.number_format($dat['DL_Remise01REM_Valeur'],0,'',' ').'" /></td>';
 										
 											else	
 									echo '<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'</td>';
@@ -351,7 +351,7 @@ echo '
 								
 									
 									
-									echo '<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+									echo '<a  href="impression_devis.php?q='.$q.'" class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
 								</div>
 							</div>
 						</div>
