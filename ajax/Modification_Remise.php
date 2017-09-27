@@ -184,6 +184,9 @@ echo '
 						</div>
 					</div>
 					</div>
+					</div>
+					<div id="validation"></div>
+							</div>
 					</div>';
 	
 
