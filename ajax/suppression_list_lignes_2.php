@@ -77,7 +77,7 @@ $sql='select * from F_Docentete where DO_Piece=\''.$num.'\'';
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th width="10"><a  class="SelectModif" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>  <a class="suppression_list_lignes"><i class="fa fa-remove"></i></a></th>
+										<th width="10"><a class="SelectModif_2" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>  <a class="suppression_list_lignes_2"><i class="fa fa-remove"></i></a></th>
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
@@ -170,14 +170,14 @@ $sql='select * from F_Docentete where DO_Piece=\''.$num.'\'';
 								<h4 class="modal-title" id="myModalLabel">Modification Condition Enlevement</h4>
 							</div>
 							<div class="modal-body">
-							<form id="modif_condition">
+							<form id="modif_condition2">
 							<div id="modif">
 							</div>
 							</form>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
-								<a class="modifcondition"  class="btn btn-rounded btn-primary">Valider</a>
+								<a class="modifcondition2"  class="btn btn-rounded btn-primary">Valider</a>
 							</div>
 						</div>
 					</div>
@@ -221,45 +221,47 @@ $sql='select * from F_Docentete where DO_Piece=\''.$num.'\'';
 
 
 ?>
-<script type="text/javascript">
-jQuery('.SelectModif').click(function(){
+<script>
 
-      // Ce tableau javascript va stocker les valeurs des checkbox
-      var checkbox_val = [];
+	
+	function validation_entete() {
+                               str=document.forms['entete'].souche.value;
+                               str1=document.forms['entete'].client.value;
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+                    url: "ajax/devis.php?q=1&client="+str1+"&souche="+str,
+                    context: document.body,
+                    success: function(responseText) {
 
-      // Parcours de toutes les checkbox checkées avec la classe "choix"
-      $('#choix:checked').each(function(){
-         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
-         checkbox_val.push($(this).val());
-      });
-      		
-			
-      $.ajax({ 
-		   type: "POST", 
-		   url: "ajax/modification_ligne.php", 
-		   data: { checkbox_val : checkbox_val}, 
-		   context: document.body,
-		   success: function(data) { 
-		        $("#ligne_devis").html(data);
-			} 
-	}); 
-  
-   });
+                        $("#box").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+                $("#entete").css("display", "none");
+                       /* hideLoadingImage();*/
+                    }
+                });
+            };
 </script>
 
 
-                <script type="text/javascript">
+	
+<script type="text/javascript">
 // Modification Ligne
 jQuery('.modifrow').click(function(){
  
 		 var y = $(this).closest('tr').attr('id');
+		 
 		$.ajax({
-                    url: "ajax/modification_ligne.php?&q="+y,
+                    url: "ajax/modification_ligne_2.php?&q="+y,
                     context: document.body,
                     success: function(responseText) {
 
                         //$("#txtHint22").html(responseText);
-                        $("#ligne_devis").html(responseText);
+                        $("#modif").html(responseText);
 
                     },
                     complete: function() {
@@ -270,17 +272,16 @@ jQuery('.modifrow').click(function(){
                 });
 });     </script>
 
-
-
-                <script type="text/javascript">
+<script type="text/javascript">
 // Suppresion Ligne
-jQuery('.suppression_ligne').click(function(){
+jQuery('.suppression_ligne_2').click(function(){
 
 // var y = $(this).closest('tr').attr('id');
 if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
 	
 		    var x = document.getElementById("num_piece").value;
 			var y = $(this).closest('tr').attr('class');
+			
  
  $.ajax({
                     url: "ajax/suppression_ligne_2.php?&num="+x+"&item="+y,
@@ -303,66 +304,20 @@ if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
  // return false;
 });     </script>
 
-
 <script type="text/javascript">
-// Suppresion list des Lignes
-jQuery('.suppression_list_lignes').click(function(){
-	
-	if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
-	
-		    var x = document.getElementById("num_piece").value;
-	
-	// Ce tableau javascript va stocker les valeurs des checkbox
-      var checkbox_val = [];
-
-      // Parcours de toutes les checkbox checkées avec la classe "choix"
-      $('#choix:checked').each(function(){
-         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
-         checkbox_val.push($(this).attr('class'));
-      });
-	  
-	 $.ajax({
-                    url: "ajax/suppression_list_lignes_2.php?&num="+x+"&cbMarq="+checkbox_val,
-                    context: document.body,
-                    success: function(responseText) {
-
-
-                        //$("#txtHint22").html(responseText);
-                        $("#ligne_devis").html(responseText);
-
-                    },
-                    complete: function() {
-                        // no matter the result, complete will fire, so it's a good place
-                        // to do the non-conditional stuff, like hiding a loading image.
-
-                    }
-                });
-
-
-			
-			
- 
- 
- 
-} 
- // return false;
-});     </script>
-
-
-               <script type="text/javascript">
 // Fonction Modification Condition Devis
-jQuery('.modifcondition').click(function(){
+jQuery('.modifcondition2').click(function(){
  
-  str1=document.forms['modif_condition'].date_enlevement.value;
-  str2=document.forms['modif_condition'].cbMarq.value;
+  str1=document.forms['modif_condition2'].date_enlevement.value;
+  str2=document.forms['modif_condition2'].cbMarq.value;
   
-   if (document.forms['modif_condition'].sur_place.checked == true) {
+   if (document.forms['modif_condition2'].sur_place.checked == true) {
 	   str1='Remis sur place';
   }
    alert (str1);
 
  $.ajax({
-                    url: "ajax/modification_condition.php?&q="+str1+"&q2="+str2,
+                    url: "ajax/modification_condition_2.php?&q="+str1+"&q2="+str2,
                     context: document.body,
                     success: function(responseText) {
 
@@ -392,8 +347,7 @@ jQuery('.modifcondition').click(function(){
   // return false;*/
 });     </script>
 
-
-	<script>
+<script>
 /*Fonction Validation Devis*/
 	
 	function validation_devis() {
@@ -417,6 +371,67 @@ jQuery('.modifcondition').click(function(){
                     }
                 });
             };
+</script>
+
+<script type="text/javascript">
+// Suppresion list des Lignes
+jQuery('.suppression_list_lignes_2').click(function(){
+	
+	if (confirm("Voulez vous supprimer les lignes ces enregistrements ?") == true) {
+	
+		    var x = document.getElementById("num_piece").value;
+	
+	// Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).attr('class'));
+      });
+	  
+	 $.ajax({
+                    url: "ajax/suppression_list_lignes_2.php?&num="+x+"&cbMarq="+checkbox_val,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        //$("#txtHint22").html(responseText);
+                        $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+                    }
+                });
+} 
+ // return false;
+});     </script>
+
+<script type="text/javascript">
+jQuery('.SelectModif_2').click(function(){
+
+      // Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).val());
+      });
+      		
+			
+      $.ajax({ 
+		   type: "POST", 
+		   url: "ajax/modification_ligne_2.php", 
+		   data: { checkbox_val : checkbox_val}, 
+		   context: document.body,
+		   success: function(data) { 
+		        $("#modif").html(data);
+			} 
+	}); 
+  
+   });
 </script>
 <script>	
 	function Modification_Qte_2(y) {
@@ -449,7 +464,6 @@ jQuery('.modifcondition').click(function(){
 				alert ("Attention, il faut.....");
             };
 </script>
-
 
 <script>	
 	function Modification_Remise_2(y) {
