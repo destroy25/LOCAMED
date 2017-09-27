@@ -243,7 +243,7 @@ echo '
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th width="10">#</th>
+										<th width="10"><a class="suppression_list_lignes_retour"><i class="fa fa-remove"></i></a></th>
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
@@ -276,12 +276,12 @@ echo '
 						
 						echo'
 									<tr id="'.$dat['cbMarq'].'" >
-										<td>#</td>
+										<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
 										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
-										<td><a class="modifrow" href="#" data-toggle="modal"data-target="#myModal"><i class="fa fa-pencil"></i></a> <a href="#"><i class="fa fa-remove"></i> </a></td>
+										<td> <a href="#"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 										
 									}
@@ -468,6 +468,38 @@ echo '
 			});
 		});
 	</script>
+	
+	
+	<script type="text/javascript">
+// Suppresion Ligne retour
+jQuery('.suppression_ligne_retour').click(function(){
+
+// var y = $(this).closest('tr').attr('id');
+if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
+	
+		    var x = document.getElementById("num_piece").value;
+			var y = $(this).closest('tr').attr('class');
+ 
+ $.ajax({
+                    url: "ajax/suppression_ligne_retour_2.php?&num="+x+"&item="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+ 
+} 
+ // return false;
+});     </script>
 
 <script src="js/app.js"></script>
 </body>
