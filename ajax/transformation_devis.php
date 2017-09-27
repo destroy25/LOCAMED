@@ -196,7 +196,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 
 
  
-echo "<script type='text/javascript'>document.location.replace('list_devis.php');</script>";
+//echo "<script type='text/javascript'>document.location.replace('list_devis.php');</script>";
 
 				
 
