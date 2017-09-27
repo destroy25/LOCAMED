@@ -150,6 +150,7 @@ include('connexion.php');
 								<td>'.$rep['condition_enlevement'].'</td>
 								<td>'.$statut.'</td>
 								<td>	<a title="Consultation BL" href="bl.php?q='.$rep['BL'].'"><span class="fa fa-eye"></span></a>
+								        <a title="Impression BL" href="impression_bl.php?q='.$rep['BL'].'"><span class="fa fa-print"></span></a>
 								</td>
 								</tr>';
 		
