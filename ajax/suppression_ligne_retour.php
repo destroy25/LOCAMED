@@ -104,7 +104,6 @@ $item=$_GET['item'];
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
-									<button class="btn btn-rounded btn-inline">Valider</button>
 									<button class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
 								</div>
 							</div>
