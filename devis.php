@@ -204,7 +204,7 @@ echo '
 								<thead>
 									<tr>';
 									if ($DO_Statut==1)
-								  echo '<th width="10"><a  class="SelectModif_2" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>  <a class="suppression_list_lignes_2"><i class="fa fa-remove"></i></a></th>';
+								  echo '<th width="10"><a class="SelectModif_2" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>  <a class="suppression_list_lignes_2"><i class="fa fa-remove"></i></a></th>';
 								  echo '<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
