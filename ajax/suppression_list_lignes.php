@@ -208,6 +208,9 @@ for ($i=0;$i <count($elements) ; $i++){
 						</div>
 					</div>
 					</div>
+					</div>
+					<div id="validation"></div>
+							</div>
 					</div>';
 	
 	
