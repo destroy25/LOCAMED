@@ -182,6 +182,8 @@ $item=$_GET['item'];
 						</div>
 					</div>
 					</div>
+					</div><div id="validation"></div>
+							</div>
 					</div>';
 	
 	
