@@ -145,7 +145,7 @@ $item=$_GET['item'];
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
-									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+									<a href="impression_retour.php?q='.$q.'" class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
 								</div>
 							</div>
 						</div>
