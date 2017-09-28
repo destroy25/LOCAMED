@@ -1,5 +1,7 @@
 <?php 
 include('connexion.php');
+/*Récuperétion des infos*/
+$depot=$_SESSION['depot'];
 
 
 
@@ -107,39 +109,66 @@ include('connexion.php');
 							<th>N° Facture</th>
 							<th>Date</th>
 							<th>Client</th>
+							<th>Montant TTC</th>
 							<th>Statut</th>
+							<th>Solde</th>
 							<th>Action</th>
 						</tr>
 						</thead>
 
 						<tbody>
 						<?php
-						$sql='select DO_Piece,DO_Date,CT_Intitule,DO_Statut,CT_Intitule,DO_Statut from f_docentete 
-						inner join f_comptet on f_docentete.do_tiers=f_comptet.ct_num 
-						where do_domaine=0 and do_type=6 and do_provenance=0';
+						$sql='
+						
+						select distinct F_Docligne.DO_Piece,sum(DL_MontantTTC) as MontantTTC,F_Docligne.DO_Date,CT_Intitule,DO_Statut,CT_Intitule 
+from f_docligne inner join f_comptet on f_docligne.ct_num=f_comptet.ct_num 
+inner join f_docentete on F_DOCLIGNE.DO_Piece=F_DOCENTETE.DO_Piece
+where f_docligne.do_domaine=0 and f_docligne.do_type=6 and do_provenance=0 and f_docentete.de_no='.$depot.'
+group by F_docligne.DO_Piece,F_DOCLIGNE.DO_Date,f_comptet.ct_intitule,f_docentete.do_statut';
+					
 		                $rq = odbc_exec($connection,$sql);
+						
+									while ($data[] = odbc_fetch_array($rq));
+									
+									
+									$val=count($data);
+									$val2=0;
+									$id=0;
+									foreach($data as $dat)
+									{
+										$val2++;
+										if($val2==$val) continue;
+										
+							$solde='<span class="label label-success">Soldé</span>';
+
+							$sql='select * from f_docregl where do_piece=\''.$dat['DO_Piece'].'\'';
+									                $rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
+							if($rep['DR_Regle']==0)
+							{
+								$solde='<span class="label label-danger">Non Soldé</span>';
+							}
+							//$cp++;
+							//$valeur=$rep[''];
 							
-							if($rep['DO_Statut']==1)
-							{
-								$statut='<span class="label label-warning">En instance de validation</span>';
-							}
-							elseif($rep['DO_Statut']==2)
-							{
-								$statut='<span class="label label-success">Validé</span>';
+						}
+						
+						
+
+							
 	
-							}
-	
-							$d=date_create($rep['DO_Date']);
-								echo '<tr id="'.$rep['DO_Piece'].'">
-								<td>'.$rep['DO_Piece'].'</td>
+							$d=date_create($dat['DO_Date']);
+								echo '<tr id="'.$dat['DO_Piece'].'">
+								<td>'.$dat['DO_Piece'].'</td>
 								<td>'.date_format($d,'d/m/Y').'</td>
-								<td>'.$rep['CT_Intitule'].'</td>
-								<td>'.$statut.'</td>
+								<td>'.$dat['CT_Intitule'].'</td>
+								<td>'.number_format($dat['MontantTTC'],2,',',' ').'</td>
+								<td>'.$solde.'</td>
+								<td>'.number_format($dat['MontantTTC'],2,',',' ').'</td>
 								<td>
-								<a title="Consultation Facture" href="facture.php?q='.$rep['DO_Piece'].'"><span class="fa fa-eye"></span></a>
-								<a title="Saisie Règlement" ><span class="fa fa-cogs"></span></a>
-								<a title="Impression Facture" href="impression_facture.php?q='.$rep['DO_Piece'].'"><span class="fa fa-print"></span></a></td>
+								<a title="Consultation Facture" href="facture.php?q='.$dat['DO_Piece'].'"><span class="fa fa-eye"></span></a>
+								<a title="Saisie Règlement" href="saisie_reglement.php?q='.$dat['DO_Piece'].'" ><span class="fa fa-pencil"></span></a>
+								<a title="Impression Facture" href="impression_facture.php?q='.$dat['DO_Piece'].'"><span class="fa fa-print"></span></a></td>
 								</tr>';
 		
 						}?>
