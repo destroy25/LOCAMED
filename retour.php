@@ -256,6 +256,7 @@ echo '
 						$totalqte=0;		//Total Quantité
 						$totalht=0;			//Totat HT
 						$totalttc=0;		//Tota TTC
+						$id=0;
 								$sqlligne='select AR_Ref,DL_Design,DL_Qte,DL_PrixUnitaire,DL_Remise01REM_Valeur,DL_MontantHT,DL_MontantTTC,condition_enlevement,cbMarq
 								from f_docligne where DO_Piece=\''.$q.'\'';
 								    $rqligne = odbc_exec($connection,$sqlligne);
@@ -272,16 +273,16 @@ echo '
 										$totalqte=$totalqte+$dat['DL_Qte'];
 										$totalht=$totalht+$dat['DL_MontantHT'];
 										$totalttc=$totalttc+$dat['DL_MontantTTC'];
-										
+										$id++;
 						
 						echo'
-									<tr id="'.$dat['cbMarq'].'" >
+									<tr id="'.$dat['cbMarq'].'" class="'.$id.'">
 										<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
 										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
-										<td> <a href="#"><i class="fa fa-remove"></i> </a></td>
+										<td><a class="suppression_ligne_retour"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 										
 									}
@@ -342,7 +343,7 @@ echo '
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
-									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+									<a  href="impression_retour.php?q='.$q.'" class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
 								</div>
 							</div>
 						</div>
@@ -479,6 +480,7 @@ if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
 	
 		    var x = document.getElementById("num_piece").value;
 			var y = $(this).closest('tr').attr('class');
+			
  
  $.ajax({
                     url: "ajax/suppression_ligne_retour_2.php?&num="+x+"&item="+y,
@@ -497,6 +499,44 @@ if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
                     }
                 });
  
+} 
+ // return false;
+});     </script>
+
+<script type="text/javascript">
+// Suppresion list des Lignes
+jQuery('.suppression_list_lignes_retour').click(function(){
+	
+	if (confirm("Voulez vous supprimer les lignes ces enregistrements ?") == true) {
+	
+		    var x = document.getElementById("num_piece").value;
+	
+	// Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).attr('class'));
+      });
+	  
+	 $.ajax({
+                    url: "ajax/suppression_list_lignes_retour_2.php?&num="+x+"&cbMarq="+checkbox_val,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+
 } 
  // return false;
 });     </script>
