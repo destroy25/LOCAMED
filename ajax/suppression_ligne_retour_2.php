@@ -303,3 +303,41 @@ if (confirm("Voulez vous supprimer cet enregistrement ?") == true) {
 } 
  // return false;
 });     </script>
+
+<script type="text/javascript">
+// Suppresion list des Lignes
+jQuery('.suppression_list_lignes_retour').click(function(){
+	
+	if (confirm("Voulez vous supprimer les lignes ces enregistrements ?") == true) {
+	
+		    var x = document.getElementById("num_piece").value;
+	
+	// Ce tableau javascript va stocker les valeurs des checkbox
+      var checkbox_val = [];
+
+      // Parcours de toutes les checkbox checkées avec la classe "choix"
+      $('#choix:checked').each(function(){
+         // Insertion de la valeur de la checkbox dans le tableau checkbox_val
+         checkbox_val.push($(this).attr('class'));
+      });
+	  
+	 $.ajax({
+                    url: "ajax/suppression_list_lignes_retour_2.php?&num="+x+"&cbMarq="+checkbox_val,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+
+} 
+ // return false;
+});     </script>
