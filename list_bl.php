@@ -1,6 +1,9 @@
 <?php 
 include('connexion.php');
 
+/*Récuperétion des infos*/
+$depot=$_SESSION['depot'];
+
 
 
 ?>
@@ -53,16 +56,13 @@ include('connexion.php');
 	                <div class="site-header-shown">
 	              
 	
-	                    <div class="dropdown user-menu">
+	                     <div class="dropdown user-menu">
 	                        <button class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<?php echo $_SESSION['compte_login'];?>
 	                            <img src="img/avatar-2-64.png" alt="">
 	                        </button>
 	                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
-	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-user"></span>Profile</a>
-	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-cog"></span>Settings</a>
-	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-question-sign"></span>Help</a>
-	                            <div class="dropdown-divider"></div>
-	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
+	                            <a class="dropdown-item" href="delog.php"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
 	                        </div>
 	                    </div>
 	
@@ -122,7 +122,7 @@ include('connexion.php');
 						<tbody>
 						<?php
 						$sql='select distinct(DL_PieceBL) as BL,DO_Piece as Facture,CT_Intitule,DO_Date,condition_enlevement,statut_livraison from f_docligne 
-						inner join f_comptet on f_docligne.ct_num=f_comptet.ct_num where do_type=6 and DL_PieceBL<>\'\'						';
+						inner join f_comptet on f_docligne.ct_num=f_comptet.ct_num where do_type=6 and DL_PieceBL<>\'\'	 and f_docligne.de_no='.$depot.'	';
 		                $rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
 							

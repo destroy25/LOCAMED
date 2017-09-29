@@ -9,6 +9,15 @@ if(isset($_GET['q']))
 		
 	$client1=$_GET['client'];
 	$souche=$_GET['souche'];
+	$num_depot=$_SESSION['depot'];
+	
+	
+	$sqldepot='select * from f_depot where de_no='.$num_depot;
+	                $rqdepot = odbc_exec($connection,$sqldepot);
+                    if ($repdepot=odbc_fetch_array($rqdepot)) {
+						$depot=$repdepot['DE_Intitule'];
+					}
+	
 	
 	$sqlsouche='select * from P_SOUCHEVENTE where CbIndice='.$souche;
 				                    $rq = odbc_exec($connection,$sqlsouche);
@@ -23,7 +32,7 @@ if(isset($_GET['q']))
 					}
 					
 					
-											$client = new nusoap_client($wsdl,true);
+	$client = new nusoap_client($wsdl,true);
 	$err = $client->getError();
 	if ($err) 
 	{
@@ -49,7 +58,7 @@ if(isset($_GET['q']))
 		} 
 		else
 		{
-		//echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
+//		echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
 			$do_piece=$result;
 			
 		}

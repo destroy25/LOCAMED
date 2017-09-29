@@ -1,4 +1,5 @@
 <?php 
+include('verif.php');
 include('connexion.php');
 
 
@@ -127,7 +128,8 @@ if (isset($_POST['MM_Insert'])) {
 	
 	                    <div class="dropdown user-menu">
 	                        <button class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                            <img src="img/avatar-2-64.png" alt="">
+	                            	                            <?php echo $_SESSION['compte_login'];?>
+								<img src="img/avatar-2-64.png" alt="">
 	                        </button>
 	                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
 	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-user"></span>Profile</a>

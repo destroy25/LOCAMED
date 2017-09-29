@@ -2,10 +2,7 @@
 
 if (!isset($_SESSION)) session_start();
 
-if(!isset($_SESSION['compte_logged']) || $_SESSION['compte_logged']!='on'){
-	//echo 'OK';
-	header('Location : login.php?error=1');
-}
+
 
  /* $expire = 3600; // on définit la durée du cookie, 1 jour
     $page = substr($_SERVER['PHP_SELF'],10);
@@ -24,7 +21,8 @@ if(!isset($_SESSION['compte_logged']) || $_SESSION['compte_logged']!='on'){
 	  
 	  // Lib nusoap
 require_once('nusoap-0.9.5/lib/nusoap.php');
-$wsdl = "http://localhost/OMLOCAMED/Service1.asmx?wsdl";
+$wsdl = "http://localhost/WEBSERVICE_LOCAMED/Service1.asmx?wsdl";
+//$wsdl = "http://localhost/OM_LOCAMED/Service1.asmx?wsdl";
 ini_set("soap.wsdl_cache_enabled", 0);
 
 

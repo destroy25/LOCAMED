@@ -1,4 +1,5 @@
 <?php 
+include('verif.php');
 include('connexion.php');
 ?>
 <!DOCTYPE html>

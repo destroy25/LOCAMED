@@ -1,5 +1,8 @@
 <?php 
+include('verif.php');
 include('connexion.php');
+/*Récuperétion des infos*/
+$depot=$_SESSION['depot'];
 
 
 
@@ -83,51 +86,7 @@ include('connexion.php');
 	    <ul class="side-menu-list">
 
 						<?php
-			$query = "SELECT * FROM menu where id_parent=0";
-				$reponse = $bdd->query($query);
-
-			while($row = $reponse->fetch()) {
-
-			if($row['uniq']==1)
-			{
-				
-				 echo '<li class="blue">
-	            <a href="'.$row['link'].'">
-	                <i class="'.$row['icon'].'"></i>
-	                <span class="lbl">'.$row['menu'].'</span>
-	            </a>
-	        </li>';
-
-				
-			}
-			else
-			{
-								 echo '<li class="blue with-sub">
-  <span>
-	                <i class="'.$row['icon'].'"></i>
-	                <span class="lbl">'.$row['menu'].'</span>
-	            </span>	          
-				<ul>
-	        ';
-	            
-				$query2='select * from menu where id_parent='.$row['id_menu'];
-				$reponse2 = $bdd->query($query2);
-				while($row2 = $reponse2->fetch()) {
-				echo '    <li><a href="'.$row2['link'].'">
-				<span class="lbl">'.$row2['menu'].'</span></a>
-				</li>';
-				}
-				echo '</ul></li>';
-				
-			}
-				
-				
-}
-
-
-
-// echo afficher_menu(0, 0, $categories);
-?>
+						include('menu.php');?>
 
 		
     </ul>
@@ -164,8 +123,14 @@ include('connexion.php');
 						
 					<tbody>
 						<?php
+<<<<<<< .mine
+						$sql='select * from f_docentete where do_domaine=0 and do_type=6 and do_provenance=1 and de_no='.$depot.'';
+||||||| .r101
+						$sql='select * from f_docentete where do_domaine=0 and do_type=6 and do_provenance=1';
+=======
 						$sql='select DO_Piece,DO_Date,CT_Intitule,DO_Statut,CT_Intitule,DO_Statut,do_tiers from f_docentete 
 						inner join f_comptet on f_docentete.do_tiers=f_comptet.ct_num where do_domaine=0 and do_type=6 and do_provenance=1';
+>>>>>>> .r121
 		                $rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
 							$d=date_create($rep['DO_Date']);
@@ -209,34 +174,6 @@ include('connexion.php');
 
 	
 	
-                <script type="text/javascript">
-// delete row in a table
-jQuery('.transformation_devis').click(function(){
- var y = $(this).closest('tr').attr('id');
-if (confirm("Voulez vous transformer le devis N° "+y+" en facture ?") == true) {
-		
-//		 var x = $(this).closest('tr').attr('id');
- 
- $.ajax({
-                    url: "ajax/transformation_devis.php?&q="+y,
-                    context: document.body,
-                    success: function(responseText) {
-
-
-                        //$("#txtHint22").html(responseText);
-                        $("#modif").html(responseText);
-
-                    },
-                    complete: function() {
-                        // no matter the result, complete will fire, so it's a good place
-                        // to do the non-conditional stuff, like hiding a loading image.
-
-                    }
-                });
- 
-} 
- // return false;
-});     </script>
 
 
 	

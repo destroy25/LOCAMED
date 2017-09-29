@@ -142,7 +142,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 		{
 //		echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
 //			$do_piece=$result;
-		echo $result;
+		echo 'Transformation : '. $result;
 		
 		}
 	}
@@ -183,7 +183,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 		{
 		//		echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
 		//			$do_piece=$result;
-		//echo 'Erreur test '.$result2;
+		echo 'Erreur test '.$result2;
 		}
 	}
 }

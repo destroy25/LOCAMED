@@ -1,4 +1,5 @@
 <?php 
+include('verif.php');
 include('connexion.php');
 
 
@@ -25,9 +26,8 @@ include('connexion.php');
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	<link rel="stylesheet" href="css/separate/vendor/bootstrap-select/bootstrap-select.min.css">
-<link rel="stylesheet" href="css/separate/vendor/select2.min.css">
-
-<link rel="stylesheet" href="css/separate/pages/invoice.min.css">
+	<link rel="stylesheet" href="css/separate/vendor/select2.min.css">
+	<link rel="stylesheet" href="css/separate/pages/invoice.min.css">
     <link rel="stylesheet" href="css/lib/font-awesome/font-awesome.min.css">
     <link rel="stylesheet" href="css/lib/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
@@ -56,14 +56,11 @@ include('connexion.php');
 	
 	                    <div class="dropdown user-menu">
 	                        <button class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                            <img src="img/avatar-2-64.png" alt="">
+	                            <?php echo $_SESSION['compte_login'];?>	                           
+							   <img src="img/avatar-2-64.png" alt="">
 	                        </button>
 	                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
-	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-user"></span>Profile</a>
-	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-cog"></span>Settings</a>
-	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-question-sign"></span>Help</a>
-	                            <div class="dropdown-divider"></div>
-	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
+	                            <a class="dropdown-item" href="delog.php"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
 	                        </div>
 	                    </div>
 	

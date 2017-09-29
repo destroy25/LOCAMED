@@ -423,55 +423,6 @@ $sqlclient='select * from f_comptet where ct_num=\''.$client1.'\'';
 	<script>
 
 	
-	function validation_entete() {
-                               str=document.forms['entete'].souche.value;
-                               str1=document.forms['entete'].client.value;
- 
-/*                showLoadingImage();*/
-                $.ajax({
-                    url: "ajax/devis.php?q=1&client="+str1+"&souche="+str,
-                    context: document.body,
-                    success: function(responseText) {
-
-                        $("#box").html(responseText);
-
-                    },
-                    complete: function() {
-                        // no matter the result, complete will fire, so it's a good place
-                        // to do the non-conditional stuff, like hiding a loading image.
-                $("#entete").css("display", "none");
-                       /* hideLoadingImage();*/
-                    }
-                });
-            };
-</script>
-
-
-	<script>
-/*Fonction Validation Devis*/
-	
-	function validation_devis() {
-		    var x = document.getElementById("num_piece").value;
-
- 
-/*                showLoadingImage();*/
-                $.ajax({
-                    url: "ajax/validation_devis.php?q="+x,
-                    context: document.body,
-                    success: function(responseText) {
-
-                        $("#ligne_form").html(responseText);
-
-                    },
-                    complete: function() {
-                        // no matter the result, complete will fire, so it's a good place
-                        // to do the non-conditional stuff, like hiding a loading image.
-
-                       /* hideLoadingImage();*/
-                    }
-                });
-            };
-</script>
 
 <script src="js/app.js"></script>
 </body>

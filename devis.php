@@ -1,4 +1,5 @@
 <?php 
+include('verif.php');
 include('connexion.php');
 
 
@@ -135,12 +136,15 @@ $sqlclient='select * from f_comptet where ct_num=\''.$client1.'\'';
 		
 					}
 
+					if($DO_Statut==1)
+					{
 echo '			
 
 				<div class="row">
 				
 
-			
+
+				
 					
 		
 					
@@ -191,9 +195,42 @@ echo '
 					
 					</div>
 					
+										<div class="row table-details">
+
+			                            <form action="#" method="post" class="main" enctype="multipart/form-data" id="ligne_form">
+
+								<div class="col-lg-4">
+						<fieldset class="form-group">
+							<label class="form-label" for="exampleInputEmail1">Article</label>
+							<input name="article" onchange="validation_article()" type="text" class="form-control" id="article"  >
+						</fieldset>
+					</div>
+					<div id="designation" class="col-lg-4">
+						<fieldset class="form-group">
+							<label class="form-label" for="desgination">Designation</label>
+							<input name="designation" type="text" disabled class="form-control"  >
+						</fieldset>
+					</div>
+										<div class="col-lg-4">
+						<fieldset class="form-group">
+							<label class="form-label" for="Quantité">Quantité</label>
+							<input name="quantity" type="text"  class="form-control"  value="1" >
+						</fieldset>
+					</div>			
+					<input type="hidden" name="piece" value="'.$q.'" />
+                            <a style="float:right;" class="btn btn-rounded btn-inline" onclick="validation_ligne()">Valider</a>
+					
+
+					
+							<id id="loading" style="text-align:center;display:none;">
+				<img src="img/fancybox_loading@2x.gif" alt="loading"/>
+				</id>		
+					
+					</form>
 					
 					<div class="row table-details">
 
+					
 			                            
 <div id="ligne_devis">
 
@@ -366,6 +403,223 @@ echo '
 			</section>
 </div>
 ';
+						
+					}
+					else
+					{
+echo '			
+
+				<div class="row">
+				
+
+			
+					
+		
+					
+<!--						<div class="col-lg-4">
+						<div class="form-group">
+													<label class="form-label" for="desgination">Quantité</label>
+
+							<input id="demo3" type="text" value="1" name="demo3">
+						</div>-->
+					</div>
+				</div><!--.row-->
+
+
+							<section class="card">
+				<header class="card-header card-header-lg">
+					Devis
+				</header>
+				<div class="card-block invoice">
+					<div class="row">
+						<div class="col-lg-6 company-info">
+							<h5>'.$client1.'</h5>
+							<p>'.$intitule_client.'</p>
+
+							<div class="invoice-block">
+								<div>'.utf8_encode($adresse_client).'</div>
+								<div>'.utf8_encode($complement_client).'</div>
+								<div>'.utf8_encode($ville_client).'</div>
+							</div>
+
+						
+						
+						</div>
+						<div class="col-lg-6 clearfix invoice-info">
+							<div class="text-lg-right">
+								<h5>DEVIS #'.$q.'</h5>
+								<div>Date: '.$date.'</div>';
+								    echo '<h5>Validé</h5>';
+							echo '</div>
+
+
+						</div>
+					
+					
+					
+					
+					</div>
+					
+					
+					<div class="row table-details">
+
+			                            
+<div id="ligne_devis">
+
+<input type="hidden" id="num_piece" value="'.$q.'"/>
+
+	<div class="col-lg-12">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th width="10">#</th>
+										<th>Article</th>
+										<th>Désignation</th>
+										<th>Quantité</th>
+										<th>Prix Unitaire</th>
+										<th>Remise</th>
+										<th>Montant TTC</th>
+										<th>Condition Enlevement</th>
+										<th>Statut Stock</th>
+									</tr>
+								</thead>
+								<tbody>';
+								/*Affichage des Lignes du document */
+						$totalqte=0;		//Total Quantité
+						$totalht=0;			//Totat HT
+						$totalttc=0;		//Tota TTC
+								$sqlligne='select AR_Ref,DL_Design,DL_Qte,DL_PrixUnitaire,DL_Remise01REM_Valeur,DL_MontantHT,DL_MontantTTC,condition_enlevement,cbMarq
+								from f_docligne where DO_Piece=\''.$q.'\'';
+								    $rqligne = odbc_exec($connection,$sqlligne);
+									while ($data[] = odbc_fetch_array($rqligne));
+									
+									
+									$val=count($data);
+									$val2=0;
+									$id=0;
+									foreach($data as $dat)
+									{
+										$val2++;
+										if($val2==$val) continue;
+										
+										$totalqte=$totalqte+$dat['DL_Qte'];
+										$totalht=$totalht+$dat['DL_MontantHT'];
+										$totalttc=$totalttc+$dat['DL_MontantTTC'];
+										
+						//odbc_close($connection);
+						/*Statut du Stock */
+						$stock=0;
+						$sqlstock='select * from f_artstock where de_no=1 and ar_ref=\''.$dat['AR_Ref'].'\'';
+						$rqstock = odbc_exec($connection,$sqlstock);
+						if ($repstock=odbc_fetch_array($rqstock)) {
+						$stock=$repstock['AS_QteSto'];
+						}
+						
+						if($dat['DL_Qte']<=$stock)
+						{
+							$infostock='<span class="label label-success">Livrable</span>';
+						}
+						else
+						{
+							$infostock='<span class="label label-danger">Non Livrable</span>';
+						}
+						
+						/*Fin Statut du Stock */
+						$id++;
+						echo'
+									<tr id="'.$dat['cbMarq'].'" class="'.$id.'" >
+										<td>#</td>
+										<td>'.$dat['AR_Ref'].'</td>
+										<td>'.$dat['DL_Design'].'</td>
+										<td>'.number_format($dat['DL_Qte'],0,',',' ').'</td>
+										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
+										<td>'.number_format($dat['DL_Remise01REM_Valeur'],2,',',' ').'%</td>
+										<td>'.number_format($dat['DL_MontantTTC'],2,',',' ').'</td>
+										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
+										<td>'.$infostock.'</td>
+										</tr>';
+										
+									}
+						
+											echo'
+								</tbody>
+							</table>
+
+				<div class="modal fade"
+					 id="myModal"
+					 tabindex="-1"
+					 role="dialog"
+					 aria-labelledby="myModalLabel"
+					 aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+									<i class="font-icon-close-2"></i>
+								</button>
+								<h4 class="modal-title" id="myModalLabel">Modification Condition Enlevement</h4>
+							</div>
+							<div class="modal-body">
+							<form id="modif_condition2">
+							<div id="modif">
+							</div>
+							</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
+								<a class="modifcondition2"  class="btn btn-rounded btn-primary">Valider</a>
+							</div>
+						</div>
+					</div>
+				</div><!--.modal-->
+							
+						</div>
+					
+	<div class="payment-details">
+								<strong>Récapitulatif</strong>
+								<table>
+									<tr>
+										<td>Total Quantité :</td>
+										<td>'.$totalqte.'</td>
+									</tr>
+									<tr>
+										<td>Total HT :</td>
+										<td>'.number_format($totalht,2,',',' ').'</td>
+									</tr>
+									<tr>
+										<td>Total TTC :</td>
+										<td>'.number_format($totalttc,2,',',' ').'</td>
+									</tr>
+								</table>
+							</div>
+					<div class="row">
+					
+						<div class="col-lg-12 clearfix">
+							<div class="total-amount">
+								<div class="actions">';
+								
+									echo '<a  onclick="annulation_devis(\''.$q.'\');" class="btn btn-rounded btn-inline">Annulation</a>';
+								
+									
+									
+									echo '<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+	
+						</div>
+			
+					</div>
+					<div id="validation"></div>
+				</div>
+			</section>
+</div>
+';
+						
+					}
+					
 
 
 
@@ -749,6 +1003,108 @@ jQuery('.SelectModif_2').click(function(){
 			//	alert ("Attention, il faut.....");
             };
 </script>
+
+
+
+	<script>
+
+	
+	function validation_ligne() {
+		                               str1=document.forms['ligne_form'].article.value;
+		                               str2=document.forms['ligne_form'].quantity.value;
+		                               str3=document.forms['ligne_form'].piece.value;
+
+ 
+                showLoadingImage();
+                $.ajax({
+                    url: "ajax/ligne.php?q=1&article="+str1+"&quantity="+str2+"&piece="+str3,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                        hideLoadingImage();
+                    }
+                });
+            };
+</script>
+
+
+
+
+	<script>
+
+	
+	function validation_article() {
+		    var x = document.getElementById("article").value;
+
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+                    url: "ajax/article.php?article="+x,
+                    context: document.body,
+                    success: function(responseText) {
+
+                        $("#designation").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+            };
+</script>
+
+        <script type="text/javascript">
+
+            function hideLoadingImage()
+            {
+                $("#loading").css("display", "none");
+
+            }
+
+            function showLoadingImage(){
+                $("#loading").css("display", "block");
+            }
+
+        </script>
+
+		<script type="text/javascript">
+// delete row in a table
+function annulation_devis(a)
+{
+if (confirm("Voulez vous annuler le devis N° "+a+" ?") == true) {
+		
+//		 var x = $(this).closest('tr').attr('id');
+ 
+ $.ajax({
+                    url: "ajax/annulation_devis.php?q="+a,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }
+                });
+ 
+} 
+ // return false;
+}     </script>
 
 
 <script src="js/app.js"></script>

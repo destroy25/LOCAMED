@@ -35,12 +35,16 @@ if(isset($_GET['q']))
 			exit();
 	}
 	// Exécution de la Methode 
-//	$result = $client->call('HelloUser',$theVariable);
-	$result = $client->call('creation_document',
+	/*$result = $client->call('creation_document',
 	array('num'=>$client1,
 	'souche'=>$souche,
 	'type'=>0,
 	'depot'=>$depot
+	));*/
+	
+	$result = $client->call('creation_devis',
+	array('num'=>$client1,
+	'souche'=>$souche
 	));
  
 	if ($client->fault) 
@@ -165,7 +169,8 @@ echo '
 					
 					</form>
 
-
+					<div id="modif_qte" >
+</div>
 <div id="ligne_devis">
 						</div>
 			
