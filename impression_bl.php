@@ -92,18 +92,18 @@ $pdf->AddPage();
 
 				
 
-$sql='select distinct(DL_PieceBL) as BL,DO_Piece as Facture,CT_Intitule,DO_Date,condition_enlevement,DO_DateLivr from f_docligne 
+$sql='select distinct(DL_PieceBL) as BL,DO_Piece as Facture,f_docligne.CT_Num,DO_Date,condition_enlevement,DO_DateLivr from f_docligne 
 						inner join f_comptet on f_docligne.ct_num=f_comptet.ct_num where do_type=6 and DL_PieceBL=\''.$q.'\'';
 
 				                    $rq = odbc_exec($connection,$sql);
                     if ($rep=odbc_fetch_array($rq)) {
 						$date=$rep['DO_Date'];
-						$client1=$rep['CT_Intitule'];
+						$client1=$rep['CT_Num'];
 						$DateLivr=$rep['DO_DateLivr'];
 		
 					}
 					
-$sqlclient='select * from f_comptet where ct_Intitule=\''.$client1.'\'';
+$sqlclient="select * from f_comptet where CT_Num='".$client1."'";
 
 				                    $rqclient = odbc_exec($connection,$sqlclient);
                     if ($repclient=odbc_fetch_array($rqclient)) {
