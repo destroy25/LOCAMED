@@ -199,7 +199,7 @@ echo '
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th width="10">#</th>
+										
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
@@ -253,7 +253,7 @@ echo '
 						
 						echo'
 									<tr id="'.$dat['cbMarq'].'" >
-										<td>#</td>
+										
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.utf8_encode($dat['DL_Design']).'</td>
 										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
@@ -321,7 +321,7 @@ echo '
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
-									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+									<a href="impression_facture.php?q='.$q.'"  class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
 								</div>
 							</div>
 						</div>
