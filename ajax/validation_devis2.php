@@ -54,6 +54,7 @@ set DO_Statut=2
 						</div>';
  
  
+echo "<script type='text/javascript'>document.location.replace('devis.php?q=".$q."');</script>";
 
 
 ?>
