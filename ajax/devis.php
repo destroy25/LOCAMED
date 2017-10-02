@@ -138,6 +138,17 @@ echo '
 					</div>
 					
 					<div class="row table-details">
+					<div class="col-lg-4">
+							<label class="form-label" for="exampleInputEmail1">Reference</label>
+							<input name="ref" onchange="Modification_ref()" type="text" class="form-control" id="ref"  >
+					</div>
+					<div class="col-lg-4">
+							<label class="form-label" for="exampleInputEmail1">Coord</label>
+							<input name="coord" width="10" onchange="Modification_coord()" type="text" class="form-control" id="coord"  >
+					</div>
+					</div>
+					
+					<div class="row table-details">
 
 			                            <form action="#" method="post" class="main" enctype="multipart/form-data" id="ligne_form">
 											
@@ -160,7 +171,7 @@ echo '
 							<input name="quantity" type="text"  class="form-control"  value="1" >
 						</fieldset>
 					</div>			
-					<input type="hidden" name="piece" value="'.$do_piece.'" />
+					<input type="hidden" id="piece" value="'.$do_piece.'" />
                             <a style="float:right;" class="btn btn-rounded btn-inline" onclick="validation_ligne()">Valider</a>
 					
 
@@ -283,16 +294,48 @@ echo '
 
 
 <script>
-
-	
-	function validation_ref() {
+	function Modification_ref() {
+		   
 		    var x = document.getElementById("ref").value;
-
- 
+            var y = document.getElementById("piece").value;
+			
+            
 /*                showLoadingImage();*/
                 $.ajax({
-                    url: "ajax/reference.php?ref="+x,
+				   url: "ajax/reference.php?&num="+y+"&ref="+x,
                     context: document.body,
+					 success: function(responseText) {
+
+                        $("#ligne_devis").html(responseText);
+
+                    },
+                    
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+            };
+</script>
+
+<script>
+	function Modification_coord() {
+		   
+		    var x = document.getElementById("coord").value;
+            var y = document.getElementById("piece").value;
+			
+            
+/*                showLoadingImage();*/
+                $.ajax({
+				   url: "ajax/coord.php?&num="+y+"&coord="+x,
+                    context: document.body,
+					 success: function(responseText) {
+
+                        $("#ligne_devis").html(responseText);
+
+                    },
                     
                     complete: function() {
                         // no matter the result, complete will fire, so it's a good place
