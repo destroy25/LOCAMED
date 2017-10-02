@@ -171,7 +171,9 @@ echo '
 							<input name="quantity" type="text"  class="form-control"  value="1" >
 						</fieldset>
 					</div>			
-					<input type="hidden" id="piece" value="'.$do_piece.'" />
+					<input type="hidden" id="piece" name="piece" value="'.$do_piece.'" />
+					<div id="ref" class="col-lg-4">
+					</div>
                             <a style="float:right;" class="btn btn-rounded btn-inline" onclick="validation_ligne()">Valider</a>
 					
 
@@ -306,7 +308,7 @@ echo '
                     context: document.body,
 					 success: function(responseText) {
 
-                        $("#ligne_devis").html(responseText);
+                        $("#ref").html(responseText);
 
                     },
                     
@@ -333,7 +335,7 @@ echo '
                     context: document.body,
 					 success: function(responseText) {
 
-                        $("#ligne_devis").html(responseText);
+                        $("#ref").html(responseText);
 
                     },
                     
