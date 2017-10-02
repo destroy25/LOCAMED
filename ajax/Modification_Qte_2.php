@@ -112,7 +112,7 @@ echo '
 										<td id="id'.$dat['cbMarq'].'">'.$dat['condition_enlevement'].'</td>
 										<td>'.$infostock.'</td>
 										<td><a class="modifrow" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a> 
-										<a class="suppression_ligne"><i class="fa fa-remove"></i> </a></td>
+										<a class="suppression_ligne_2"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 										
 									
@@ -324,7 +324,7 @@ jQuery('.modifcondition2').click(function(){
  
 /*                showLoadingImage();*/
                 $.ajax({
-                    url: "ajax/validation_devis.php?q="+x,
+                    url: "ajax/validation_devis2.php?q="+x,
                     context: document.body,
                     success: function(responseText) {
 
