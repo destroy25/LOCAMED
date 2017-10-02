@@ -136,10 +136,12 @@ echo '
 
 						</div>
 					</div>
+					
 					<div class="row table-details">
 
 			                            <form action="#" method="post" class="main" enctype="multipart/form-data" id="ligne_form">
-
+											
+										
 								<div class="col-lg-4">
 						<fieldset class="form-group">
 							<label class="form-label" for="exampleInputEmail1">Article</label>
@@ -278,6 +280,30 @@ echo '
                 });
             };
 </script>
+
+
+<script>
+
+	
+	function validation_ref() {
+		    var x = document.getElementById("ref").value;
+
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+                    url: "ajax/reference.php?ref="+x,
+                    context: document.body,
+                    
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+            };
+</script>
+
 
         <script type="text/javascript">
 
