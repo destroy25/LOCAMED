@@ -130,14 +130,14 @@ $depot=$_SESSION['depot'];
 							{
 								$statut='<span class="label label-warning">En instance de livraison</span>';
 							}
-							elseif($rep['statut_livraison']=='Livré')
-							{
-								$statut='<span class="label label-success">Livré</span>';
+							//elseif($rep['statut_livraison']=='Livré')
+							//{
+							//	$statut='<span class="label label-success">Livré</span>';
 	
-							}
+							//}
 							else
 							{
-								$statut='';
+								$statut='<span class="label label-success">Livré</span>';
 							}
 
 							
