@@ -117,7 +117,7 @@ if(isset($_POST['aa']))
 				                    $rq = odbc_exec($connection,$sql);
                     if ($rep=odbc_fetch_array($rq)) {
 						
-						if ($rep['statut_livraison']==null)
+						if ($rep['statut_livraison']=='En instance de livraison')
 						{
 						
 						//update statut_livraison
