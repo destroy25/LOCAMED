@@ -417,7 +417,7 @@ jQuery('.modifcondition').click(function(){
 	function Modification_Remise(y) {
 		    var Remise = document.getElementById('Remise'+y).value;
             var x = document.getElementById("num_piece").value;
-			alert (Remise);
+			
 			
 		//	if (Number.isInteger(Qte)==true)
 		//	{
