@@ -83,9 +83,7 @@ include('connexion.php');
 	<nav class="side-menu">
 	    <ul class="side-menu-list">
 
-					<?php
-					include('menu.php');
-?>
+					<?php include('menu.php'); ?>
 		
     </ul>
 	
@@ -103,6 +101,7 @@ include('connexion.php');
 					</div>
 				</div>
 			</header>
+
 
 
 			
@@ -317,7 +316,7 @@ echo '
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
-									<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+									<a href="impression_bl.php?q='.$q.'" class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
 								</div>
 							</div>
 						</div>
@@ -443,7 +442,7 @@ echo '
 			});
 		});
 	</script>
-	<script>
+	
 
 	
 
