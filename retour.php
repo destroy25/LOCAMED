@@ -327,7 +327,7 @@ echo '
 								<table>
 									<tr>
 										<td>Total Quantité :</td>
-										<td>'.$totalqte.'</td>
+										<td>'.($totalqte*(-1)).'</td>
 									</tr>
 									<tr>
 										<td>Total HT :</td>
