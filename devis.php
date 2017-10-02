@@ -861,7 +861,7 @@ jQuery('.modifcondition2').click(function(){
  
 /*                showLoadingImage();*/
                 $.ajax({
-                    url: "ajax/validation_devis.php?q="+x,
+                    url: "ajax/validation_devis2.php?q="+x,
                     context: document.body,
                     success: function(responseText) {
 
