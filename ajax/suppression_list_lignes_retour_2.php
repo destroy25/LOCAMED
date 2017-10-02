@@ -172,7 +172,7 @@ for ($i=0;$i <count($elements) ; $i++){
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
-									<a href="impression_retour.php?q='.$q.'" class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
+									<a href="impression_retour.php?q='.$num.'" class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
 								</div>
 							</div>
 						</div>
