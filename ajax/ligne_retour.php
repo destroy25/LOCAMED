@@ -121,7 +121,7 @@ $qte=$_GET['quantity'];
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
-									<button class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+									<a  href="impression_retour.php?q='.$num_piece.'" class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
 								</div>
 							</div>
 						</div>
