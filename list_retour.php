@@ -142,7 +142,6 @@ $depot=$_SESSION['depot'];
 								<td>'.$rep['DO_Statut'].'</td>
 								<td>
 								<a href="retour.php?q='.$rep['DO_Piece'].'"><span class="font-icon font-icon-eye"></span></a>
-								<a class="transformation_devis"><span class="font-icon font-icon-cogwheel"></span></a>
 								<a title="Impression" href="impression_retour.php?q='.$rep['DO_Piece'].'"><span class="fa fa-print"></span></a>
 								</td>
 								</tr>';
