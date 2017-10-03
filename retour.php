@@ -249,6 +249,7 @@ echo '
 										<th>Désignation</th>
 										<th>Quantité</th>
 										<th>Prix Unitaire</th>
+										<th>Montant TTC</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -281,8 +282,10 @@ echo '
 										<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
-										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
-										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
+										<td><input class="form-control" type="text" onchange="Modification_Qte_retour_2('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte']*(-1),0,',',' ').' /></td>
+									    <td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
+										<td>'.number_format((($dat['DL_Qte'] * $dat['DL_PrixUnitaire'])-(($dat['DL_Qte'] * $dat['DL_PrixUnitaire']* $dat['DL_Remise01REM_Valeur'])/100)),2,',',' ').'</td>
+										
 										<td><a class="suppression_ligne_retour"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 										
@@ -541,6 +544,43 @@ jQuery('.suppression_list_lignes_retour').click(function(){
 } 
  // return false;
 });     </script>
+
+<script>	
+	function Modification_Qte_retour_2(y) {
+		    var Qte = document.getElementById(y).value; 
+			
+            var x = document.getElementById("num_piece").value;
+		
+			
+			
+			if (Qte>0)
+			{
+
+				Qte=Qte*(-1);
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+					
+                    url: "ajax/Modification_Qte_retour_2.php?&Qte="+Qte+"&num="+x+"&item="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+                         $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+			}
+			else 
+				alert ("Attention, vérifier la Quantité");
+            };
+</script>
+
 
 <script src="js/app.js"></script>
 </body>
