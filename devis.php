@@ -384,7 +384,7 @@ echo '
 								
 									
 									
-									echo '<a  href="impression_devis.php?q='.$q.'" class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
+									echo '<a href="impression_devis.php?q='.$q.'"  class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
 								</div>
 							</div>
 						</div>
@@ -598,7 +598,7 @@ echo '
 								
 									
 									
-									echo '<button  class="btn btn-inline btn-secondary btn-rounded">Imprimer</button>
+									echo '<a  href="impression_devis.php?q='.$q.'" class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
 								</div>
 							</div>
 						</div>
@@ -970,7 +970,7 @@ jQuery('.SelectModif_2').click(function(){
 	function Modification_Remise_2(y) {
 		    var Remise = document.getElementById('Remise'+y).value;
             var x = document.getElementById("num_piece").value;
-			alert (Remise);
+			
 			
 		//	if (Number.isInteger(Qte)==true)
 		//	{
