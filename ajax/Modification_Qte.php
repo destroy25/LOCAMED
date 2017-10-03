@@ -146,14 +146,14 @@ echo '
 								<h4 class="modal-title" id="myModalLabel">Modification Condition Enlevement</h4>
 							</div>
 							<div class="modal-body">
-							<form id="modif_condition">
+							<form id="modif_condition" >
 							<div id="modif">
 							</div>
 							</form>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
-								<a class="modifcondition"  class="btn btn-rounded btn-primary">Valider</a>
+							    <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="modifcondition btn btn-rounded btn-primary">Valider</button>
 							</div>
 						</div>
 					</div>
