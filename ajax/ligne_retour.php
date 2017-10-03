@@ -79,14 +79,9 @@ $qte=$_GET['quantity'];
 										<td><input type="checkbox" class="'.$repligne['cbMarq'].'" value="'.$repligne['cbMarq'].'" id="choix"/></td>
 										<td>'.$repligne['AR_Ref'].'</td>
 										<td>'.$repligne['DL_Design'].'</td>
-<<<<<<< .mine
-										<td><input class="form-control" type="text" onchange="Modification_Qte_retour('.$id.')" id="'.$id.'" value='.number_format($repligne['DL_Qte'],0,',',' ').' /></td>
-||||||| .r64
-										<td><input type="text" onchange="Modification_Qte_retour('.$id.')" id="'.$id.'" value='.number_format($repligne['DL_Qte'],0,',',' ').' /></td>
-=======
+
 										<td><input class="form-control" type="text" onchange="Modification_Qte_retour('.$id.')" id="'.$id.'" value='.number_format($repligne['DL_Qte']*(-1),0,',',' ').' /></td>
->>>>>>> .r101
-										<td>'.number_format($repligne['DL_PrixUnitaire'],2,',',' ').'</td>
+						                <td>'.number_format($repligne['DL_PrixUnitaire'],2,',',' ').'</td>
 										<td>'.number_format($repligne['DL_MontantTTC'],2,',',' ').'</td>
 			                            <td><a class="suppression_ligne_retour"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
