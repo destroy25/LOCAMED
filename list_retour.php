@@ -123,14 +123,10 @@ $depot=$_SESSION['depot'];
 						
 					<tbody>
 						<?php
-<<<<<<< .mine
-						$sql='select * from f_docentete where do_domaine=0 and do_type=6 and do_provenance=1 and de_no='.$depot.'';
-||||||| .r101
-						$sql='select * from f_docentete where do_domaine=0 and do_type=6 and do_provenance=1';
-=======
+
 						$sql='select DO_Piece,DO_Date,CT_Intitule,DO_Statut,CT_Intitule,DO_Statut,do_tiers from f_docentete 
-						inner join f_comptet on f_docentete.do_tiers=f_comptet.ct_num where do_domaine=0 and do_type=6 and do_provenance=1';
->>>>>>> .r121
+						inner join f_comptet on f_docentete.do_tiers=f_comptet.ct_num where do_domaine=0 and do_type=6 and do_provenance=1 and f_docentete.de_no='.$depot.'';
+
 		                $rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
 							$d=date_create($rep['DO_Date']);
