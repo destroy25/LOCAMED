@@ -49,7 +49,8 @@ $item=$_GET['item'];
 									    <th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
-										<th>Prix Unitaire</th>
+										<th>Prix Unitaire (HT)</th>
+										<th>Montant TTC (HT)</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -82,8 +83,10 @@ $item=$_GET['item'];
 										<td><input type="checkbox" class="'.$dat['cbMarq'].'" value="'.$dat['cbMarq'].'" id="choix"/></td>
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
-										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
+										<td><input class="form-control" type="text" onchange="Modification_Qte_retour_2('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte']*(-1),0,',',' ').' /></td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
+										<td>'.number_format((($dat['DL_Qte'] * $dat['DL_PrixUnitaire'])-(($dat['DL_Qte'] * $dat['DL_PrixUnitaire']* $dat['DL_Remise01REM_Valeur'])/100)),2,',',' ').'</td>
+										
 										<td><a class="suppression_ligne_retour"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 										
@@ -128,7 +131,7 @@ $item=$_GET['item'];
 								<table>
 									<tr>
 										<td>Total Quantité :</td>
-										<td>'.$totalqte.'</td>
+										<td>'.($totalqte*(-1)).'</td>
 									</tr>
 									<tr>
 										<td>Total HT :</td>
@@ -152,11 +155,6 @@ $item=$_GET['item'];
 					</div>
 					</div>
 	
-	
-	
-	
-	
-	
 
 						</div>
 			
@@ -173,104 +171,7 @@ $item=$_GET['item'];
 	?>			
 
 
-				</div><!--.box-typical-->
-
-				
-	</div><!--.container-fluid-->
-	
-	
-	
-	
-	</div><!--.page-content-->
-
-
-	
-		<script src="js/lib/jquery/jquery.min.js"></script>
-	<script src="js/lib/tether/tether.min.js"></script>
-	<script src="js/lib/bootstrap/bootstrap.min.js"></script>
-	<script src="js/plugins.js"></script>
-
-		<script src="js/lib/bootstrap-select/bootstrap-select.min.js"></script>
-	<script src="js/lib/select2/select2.full.min.js"></script>
-
-	<script src="js/lib/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
-	<script>
-		$(document).ready(function() {
-			$("input[name='demo1']").TouchSpin({
-				min: 0,
-				max: 100,
-				step: 0.1,
-				decimals: 2,
-				boostat: 5,
-				maxboostedstep: 10,
-				postfix: '%'
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo2']").TouchSpin({
-				min: -1000000000,
-				max: 1000000000,
-				stepinterval: 50,
-				maxboostedstep: 10000000,
-				prefix: '$'
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo_vertical']").TouchSpin({
-				verticalbuttons: true
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo_vertical2']").TouchSpin({
-				verticalbuttons: true,
-				verticalupclass: 'glyphicon glyphicon-plus',
-				verticaldownclass: 'glyphicon glyphicon-minus'
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo3']").TouchSpin();
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo4']").TouchSpin({
-				postfix: "a button",
-				postfix_extraclass: "btn btn-default"
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo4_2']").TouchSpin({
-				postfix: "a button",
-				postfix_extraclass: "btn btn-default"
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo6']").TouchSpin({
-				buttondown_class: "btn btn-default-outline",
-				buttonup_class: "btn btn-default-outline"
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("input[name='demo5']").TouchSpin({
-				prefix: "pre",
-				postfix: "post"
-			});
-		});
-	</script>
+		
 	
 	
 	<script type="text/javascript">
@@ -341,3 +242,39 @@ jQuery('.suppression_list_lignes_retour').click(function(){
 } 
  // return false;
 });     </script>
+
+<script>	
+	function Modification_Qte_retour_2(y) {
+		    var Qte = document.getElementById(y).value; 
+			
+            var x = document.getElementById("num_piece").value;
+		
+			
+			
+			if (Qte>0)
+			{
+
+				Qte=Qte*(-1);
+ 
+/*                showLoadingImage();*/
+                $.ajax({
+					
+                    url: "ajax/Modification_Qte_retour_2.php?&Qte="+Qte+"&num="+x+"&item="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+                         $("#ligne_devis").html(responseText);
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                       /* hideLoadingImage();*/
+                    }
+                });
+			}
+			else 
+				alert ("Attention, vérifier la Quantité");
+            };
+</script>
