@@ -51,15 +51,15 @@ $qte=$_GET['quantity'];
 								<thead>
 									<tr>
 										<th width="10"><a  class="SelectModif" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>  <a class="suppression_list_lignes"><i class="fa fa-remove"></i></a></th>
-										<th align="center">Article</th>
-										<th align="center">Désignation</th>
-										<th align="center">Quantité</th>
-										<th align="center">Prix Unitaire (HT)</th>
-										<th align="center">Remise en %</th>
-										<th align="center">Montant</th>
-										<th align="center">Condition Enlevement</th>
-										<th align="center">Statut Stock</th>
-										<th align="center">Action</th>
+										<th>Article</th>
+										<th>Désignation</th>
+										<th width="110">Quantité</th>
+										<th width="150">Prix Unitaire (HT)</th>
+										<th width="110">Remise en %</th>
+										<th width="150">Montant (HT)</th>
+										<th width="150">Condition Enlevement</th>
+										<th>Statut Stock</th>
+										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>';
@@ -147,6 +147,7 @@ $qte=$_GET['quantity'];
 							</form>
 							</div>
 							<div class="modal-footer">
+							    <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
 								<button type="button" class="modifcondition btn btn-rounded btn-primary">Valider</button>
 							</div>
 						</div>
