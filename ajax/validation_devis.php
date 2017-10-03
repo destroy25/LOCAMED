@@ -17,10 +17,7 @@ set DO_Statut=2
  where DO_Piece=\''.$q.'\'';
  odbc_exec($connection,$sql);*/
  
- echo '<div class="alert alert-info" role="alert">
-							<strong>Succes !</strong><br>
-							Document Validé
-						</div>';
+ 
 						
  echo "<script type='text/javascript'>document.location.replace('devis.php?q=".$q."');</script>";
 
