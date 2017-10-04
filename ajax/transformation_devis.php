@@ -183,20 +183,17 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 		{
 		//		echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
 		//			$do_piece=$result;
-		echo 'Erreur test '.$result2;
+	//	echo 'Erreur test '.$result2;
 		}
 	}
 }
 
- echo '<div class="alert alert-info" role="alert">
-							<strong>Succes !</strong><br>
-							Document transformé avec succès
-						</div>';
-
+ echo "<script type='text/javascript'>alert('Succes ! Document transformé avec succès');</script>";
+							
 
 
  
-//echo "<script type='text/javascript'>document.location.replace('list_devis.php');</script>";
+echo "<script type='text/javascript'>document.location.replace('list_devis.php');</script>";
 
 				
 

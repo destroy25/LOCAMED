@@ -10,7 +10,6 @@ if(isset($_GET['q']))
 	{
 		
 	$client1=$_GET['client'];
-//die($client);
 	$souche=$_GET['souche'];
 	
 	$sqlsouche='select * from P_SOUCHEVENTE where CbIndice='.$souche;
@@ -35,17 +34,17 @@ if(isset($_GET['q']))
 			exit();
 	}
 	// Exécution de la Methode 
-	/*$result = $client->call('creation_document',
+	$result = $client->call('creation_document',
 	array('num'=>$client1,
 	'souche'=>$souche,
 	'type'=>0,
 	'depot'=>$depot
-	));*/
+	));
 	
-	$result = $client->call('creation_devis',
+	/*$result = $client->call('creation_devis',
 	array('num'=>$client1,
 	'souche'=>$souche
-	));
+	));*/
  
 	if ($client->fault) 
 	{

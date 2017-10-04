@@ -9,7 +9,7 @@ $num=$_GET['num'];
              $sql='update f_docentete set DO_Ref=\''.$ref.'\' where do_piece=\''.$num.'\'';
              $rq = odbc_exec($connection,$sql);
                     
-				echo '<script>alert("Bien Modification de la référence")</script>';
+				echo '<script>alert("Modification de l\'information avec succès !")</script>';
 					
 
 ?>
