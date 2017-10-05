@@ -53,11 +53,11 @@ $qte=$_GET['quantity'];
 										<th width="10"><a  class="SelectModif" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>  <a class="suppression_list_lignes"><i class="fa fa-remove"></i></a></th>
 										<th>Article</th>
 										<th>Désignation</th>
-										<th width="110">Quantité</th>
-										<th width="150">Prix Unitaire (HT)</th>
+										<th width="105">Quantité</th>
+										<th>Prix Unitaire</th>
 										<th width="110">Remise en %</th>
-										<th width="150">Montant (HT)</th>
-										<th width="150">Condition Enlevement</th>
+										<th>Montant</th>
+										<th width="180">Condition Enlevement</th>
 										<th>Statut Stock</th>
 										<th>Action</th>
 									</tr>
