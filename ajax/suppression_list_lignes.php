@@ -73,11 +73,11 @@ for ($i=0;$i <count($elements) ; $i++){
 										<th width="10"><a  class="SelectModif" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>  <a class="suppression_list_lignes"><i class="fa fa-remove"></i></a></th>
 										<th>Article</th>
 										<th>Désignation</th>
-										<th>Quantité</th>
+										<th width="105">Quantité</th>
 										<th>Prix Unitaire</th>
-										<th>Remise en %</th>
+										<th width="110">Remise en %</th>
 										<th>Montant</th>
-										<th>Condition Enlevement</th>
+										<th width="180">Condition Enlevement</th>
 										<th>Statut Stock</th>
 										<th>Action</th>
 									</tr>
