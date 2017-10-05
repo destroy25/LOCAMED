@@ -52,7 +52,7 @@ echo '
 										<th width="105">Quantité</th>
 										<th>Prix Unitaire</th>
 										<th width="110">Remise en %</th>
-										<th>Montant (HT)</th>
+										<th>Montant</th>
 										<th width="180">Condition Enlevement</th>
 										<th>Statut Stock</th>
 										<th>Action</th>
