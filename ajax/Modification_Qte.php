@@ -327,7 +327,7 @@ jQuery('.suppression_list_lignes').click(function(){
 });     </script>
 
 
-               <script type="text/javascript">
+                 <script type="text/javascript">
 // Fonction Modification Condition Devis
 jQuery('.modifcondition').click(function(){
  
@@ -336,7 +336,49 @@ jQuery('.modifcondition').click(function(){
   
    if (document.forms['modif_condition'].sur_place.checked == true) {
 	   str1='Remis sur place';
+	   var verif=1;
   }
+  else 
+  {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    var datePat = /^(\d{2,2})(\/)(\d{2,2})\2(\d{4}|\d{4})$/;
+    var verif=1;
+	dateStr=str1;
+    var matchArray = dateStr.match(datePat); // is the format ok?
+    if (matchArray == null) {
+       verif=0;
+    }
+ 
+    day = matchArray[1]; // parse date into variables
+    month = matchArray[3];
+    year = matchArray[4];
+    if (month < 1 || month > 12) { // check month range
+          verif=0;
+     }
+    if (day < 1 || day > 31) {
+          verif=0;
+    }
+	var now = new Date();
+	
+	if (year < now.getFullYear()-1 || year > now.getFullYear()+3) {
+         verif=0;
+    }
+    if ((month==4 || month==6 || month==9 || month==11) && day==31) {
+          verif=0;
+    }
+    if (month == 2) { // check for february 29th
+          var isleap = (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+          if (day>29 || (day==29 && !isleap)) {
+             verif=0;
+          }
+    }
+  }
+ 
+ 
+ if (verif==0)
+	 alert("vérifier le format de date")
+ else{
+   
    
 
  $.ajax({
@@ -367,9 +409,9 @@ jQuery('.modifcondition').click(function(){
                         // to do the non-conditional stuff, like hiding a loading image.
                     }
                 });
+ }
   // return false;*/
 });     </script>
-
 
 	<script>
 /*Fonction Validation Devis*/
