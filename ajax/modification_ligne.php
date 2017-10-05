@@ -6,9 +6,6 @@
 
 include('../connexion.php');
 
-
-
-
 if (isset($_GET['q']))
 $q=$_GET['q'];
 elseif (isset($_POST['checkbox_val']))
@@ -51,7 +48,7 @@ jQuery('.modifrow').click(function(){
 //		 var x = $(this).closest('tr').attr('id');
   str1=document.forms['modif_condition'].date_enlevement.value;
 
-  alert(str1);
+  
 /* 
  $.ajax({
                     url: "ajax/modification_ligne.php?&q="+y,
