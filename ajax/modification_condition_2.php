@@ -11,7 +11,15 @@ $q2=$_GET['q2']; //CbMarq ID Unique Table F_docligne
 if ($q =='Remis sur place')
 {
     $condition='Remis sur place';
-	$dateL=date("d-m-Y");
+	$sql='select ent.DO_Date from f_docligne as lgn, f_docentete as ent where lgn.DO_Piece=ent.DO_Piece and lgn.CbMarq=\''.$q2.'\'';
+	
+		                $rq = odbc_exec($connection,$sql);
+						if ($rep=odbc_fetch_array($rq)) {
+							
+						$dateL=$rep['DO_Date'];
+						
+					
+						}
 	
 }
 else
