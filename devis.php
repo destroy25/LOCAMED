@@ -240,11 +240,11 @@ echo '
 								  echo '<th width="10"><a class="SelectModif_2" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>  <a class="suppression_list_lignes_2"><i class="fa fa-remove"></i></a></th>';
 								  echo '<th>Article</th>
 										<th>Désignation</th>
-										<th>Quantité</th>
+										<th width="105">Quantité</th>
 										<th>Prix Unitaire</th>
-										<th>Remise en %</th>
+										<th width="110">Remise en %</th>
 										<th>Montant</th>
-										<th>Condition Enlevement</th>
+										<th width="180">Condition Enlevement</th>
 										<th>Statut Stock</th>';
 										if ($DO_Statut==1)
 										echo '<th>Action</th>';
@@ -341,14 +341,14 @@ echo '
 								<h4 class="modal-title" id="myModalLabel">Modification Condition Enlevement</h4>
 							</div>
 							<div class="modal-body">
-							<form id="modif_condition2">
+							<form id="modif_condition2" >
 							<div id="modif">
 							</div>
 							</form>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
-								<a class="modifcondition2"  class="btn btn-rounded btn-primary">Valider</a>
+							    <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="modifcondition2 btn btn-rounded btn-primary">Valider</button>
 							</div>
 						</div>
 					</div>
@@ -814,7 +814,47 @@ jQuery('.modifcondition2').click(function(){
   
    if (document.forms['modif_condition2'].sur_place.checked == true) {
 	   str1='Remis sur place';
+	    var verif=1;
   }
+  else 
+  {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    var datePat = /^(\d{2,2})(\/)(\d{2,2})\2(\d{4}|\d{4})$/;
+    var verif=1;
+	dateStr=str1;
+    var matchArray = dateStr.match(datePat); // is the format ok?
+    if (matchArray == null) {
+       verif=0;
+    }
+ 
+    day = matchArray[1]; // parse date into variables
+    month = matchArray[3];
+    year = matchArray[4];
+    if (month < 1 || month > 12) { // check month range
+          verif=0;
+     }
+    if (day < 1 || day > 31) {
+          verif=0;
+    }
+	var now = new Date();
+	
+	if (year < now.getFullYear()-1 || year > now.getFullYear()+3) {
+         verif=0;
+    }
+    if ((month==4 || month==6 || month==9 || month==11) && day==31) {
+          verif=0;
+    }
+    if (month == 2) { // check for february 29th
+          var isleap = (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+          if (day>29 || (day==29 && !isleap)) {
+             verif=0;
+          }
+    }
+  }
+   if (verif==0)
+	 alert("vérifier le format de date")
+ else{
+   
   
 
  $.ajax({
@@ -845,6 +885,7 @@ jQuery('.modifcondition2').click(function(){
                         // to do the non-conditional stuff, like hiding a loading image.
                     }
                 });
+ }
   // return false;*/
 });     </script>
 
