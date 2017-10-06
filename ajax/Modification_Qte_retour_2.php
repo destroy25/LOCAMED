@@ -39,8 +39,9 @@ $client = new nusoap_client($wsdl,true);
 echo '
 	
 
-<input type="hidden" id="num_piece" value="'.$num.'"/>
+
 <div id="ligne_devis">
+<input type="hidden" id="num_piece" value="'.$num.'"/>
 	<div class="col-lg-12">
 							<table class="table table-bordered">
 								<thead>
@@ -48,9 +49,9 @@ echo '
 										<th width="10"><a class="suppression_list_lignes_retour"><i class="fa fa-remove"></i></a></th>
 										<th>Article</th>
 										<th>Désignation</th>
-										<th>Quantité</th>
-										<th>Prix Unitaire (HT)</th>
-										<th>Montant TTC (HT)</th>
+										<th width="105">Quantité</th>
+										<th>Prix Unitaire</th>
+										<th>Montant HT</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -85,8 +86,7 @@ echo '
 										<td>'.$dat['DL_Design'].'</td>
 										<td><input class="form-control" type="text" onchange="Modification_Qte_retour_2('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte']*(-1),0,',',' ').' /></td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
-										<td>'.number_format((($dat['DL_Qte'] * $dat['DL_PrixUnitaire'])-(($dat['DL_Qte'] * $dat['DL_PrixUnitaire']* $dat['DL_Remise01REM_Valeur'])/100)),2,',',' ').'</td>
-										
+										<td>'.number_format($dat['DL_MontantHT'],2,',',' ').'</td>
 										<td><a class="suppression_ligne_retour"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 										
@@ -96,9 +96,6 @@ echo '
 								</tbody>
 							</table>
 
-				
-							
-						
 					</div>
 	                <div class="payment-details">
 								<strong>Récapitulatif</strong>
@@ -116,10 +113,9 @@ echo '
 										<td>'.number_format($totalttc,2,',',' ').'</td>
 									</tr>
 								</table>
-							</div>
-				<div class="row">
+					</div>
 					
-					
+				    <div class="row">
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
@@ -129,7 +125,7 @@ echo '
 						</div>
 					</div>
 					
-					</div>';
+</div>';
 
 
 
