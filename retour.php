@@ -247,9 +247,9 @@ echo '
 										<th width="10"><a class="suppression_list_lignes_retour"><i class="fa fa-remove"></i></a></th>
 										<th>Article</th>
 										<th>Désignation</th>
-										<th>Quantité</th>
+										<th width="105">Quantité</th>
 										<th>Prix Unitaire</th>
-										<th>Montant TTC</th>
+										<th>Montant HT</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -284,8 +284,7 @@ echo '
 										<td>'.$dat['DL_Design'].'</td>
 										<td><input class="form-control" type="text" onchange="Modification_Qte_retour_2('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte']*(-1),0,',',' ').' /></td>
 									    <td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
-										<td>'.number_format((($dat['DL_Qte'] * $dat['DL_PrixUnitaire'])-(($dat['DL_Qte'] * $dat['DL_PrixUnitaire']* $dat['DL_Remise01REM_Valeur'])/100)),2,',',' ').'</td>
-										
+										<td>'.number_format($dat['DL_MontantHT'],2,',',' ').'</td>
 										<td><a class="suppression_ligne_retour"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 										
@@ -323,8 +322,7 @@ echo '
 					</div>
 				</div><!--.modal-->
 							
-						</div>
-					</div>
+						
 	<div class="payment-details">
 								<strong>Récapitulatif</strong>
 								<table>
@@ -343,7 +341,6 @@ echo '
 								</table>
 							</div>
 					<div class="row">
-					
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">
@@ -352,7 +349,7 @@ echo '
 							</div>
 						</div>
 					</div>
-					</div>
+			</div>
 	
 	
 	
