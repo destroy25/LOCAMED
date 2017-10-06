@@ -46,8 +46,9 @@ echo '
 										<th width="10"><a class="suppression_list_lignes_retour"><i class="fa fa-remove"></i></a></th>
 										<th>Article</th>
 										<th>Désignation</th>
-										<th>Quantité</th>
+										<th width="105">Quantité</th>
 										<th>Prix Unitaire</th>
+										<th>Montant HT</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -70,6 +71,7 @@ echo '
 										<td>'.$repligne['DL_Design'].'</td>
 										<td><input class="form-control" type="text" onchange="Modification_Qte_retour('.$id.')" id="'.$id.'" value='.number_format($repligne['DL_Qte']*(-1),0,',',' ').' /></td>
 										<td>'.number_format($repligne['DL_PrixUnitaire'],2,',',' ').'</td>
+										<td>'.number_format($repligne['DL_MontantHT'],2,',',' ').'</td>
 			                            <td><a class="suppression_ligne_retour"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 		
