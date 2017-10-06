@@ -237,7 +237,9 @@ echo '
 								<thead>
 									<tr>';
 									if ($DO_Statut==1)
-								  echo '<th width="10"><a class="SelectModif_2" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>  <a class="suppression_list_lignes_2"><i class="fa fa-remove"></i></a></th>';
+								  echo '<th width="10"><a class="SelectModif_2" href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i></a>
+							            <a class="suppression_list_lignes_2"><i class="fa fa-remove"></i></a>
+										<input type="checkbox" onclick="cocherTout(this.checked);" /></th>';
 								  echo '<th>Article</th>
 										<th>Désignation</th>
 										<th width="105">Quantité</th>
@@ -1142,6 +1144,18 @@ if (confirm("Voulez vous annuler le devis N° "+a+" ?") == true) {
 } 
  // return false;
 }     </script>
+<script >
+function cocherTout(etat)
+{
+  var cases = document.getElementsByTagName('input');   // on recupere tous les INPUT
+   for(var i=1; i<cases.length; i++)     // on les parcourt
+     if(cases[i].type == 'checkbox')     // si on a une checkbox...
+         {cases[i].checked = etat;}
+             // ... on la coche ou non
+ 
+ 
+}
+</script>
 
 
 <script src="js/app.js"></script>
