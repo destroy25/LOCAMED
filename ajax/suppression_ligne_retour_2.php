@@ -49,8 +49,8 @@ $item=$_GET['item'];
 									    <th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
-										<th>Prix Unitaire (HT)</th>
-										<th>Montant TTC (HT)</th>
+										<th>Prix Unitaire</th>
+										<th>Montant HT</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -85,8 +85,7 @@ $item=$_GET['item'];
 										<td>'.$dat['DL_Design'].'</td>
 										<td><input class="form-control" type="text" onchange="Modification_Qte_retour_2('.$id.')" id="'.$id.'" value='.number_format($dat['DL_Qte']*(-1),0,',',' ').' /></td>
 										<td>'.number_format($dat['DL_PrixUnitaire'],2,',',' ').'</td>
-										<td>'.number_format((($dat['DL_Qte'] * $dat['DL_PrixUnitaire'])-(($dat['DL_Qte'] * $dat['DL_PrixUnitaire']* $dat['DL_Remise01REM_Valeur'])/100)),2,',',' ').'</td>
-										
+										<td>'.number_format($dat['DL_MontantHT'],2,',',' ').'</td>
 										<td><a class="suppression_ligne_retour"><i class="fa fa-remove"></i> </a></td>
 									</tr>';
 										
