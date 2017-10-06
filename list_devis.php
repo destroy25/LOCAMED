@@ -100,11 +100,12 @@ $depot=$_SESSION['depot'];
 				</div>
 			</header>
 			<div id="modif">
-										<id id="loading" style="text-align:center;display:none;">
+				<id id="loading" style="text-align:center;display:none;">
 				<img src="img/fancybox_loading@2x.gif" alt="loading"/>
 				</id>		
 
 			</div>
+			<form id="entete">
 			<section class="card">
 				<div class="card-block">
 					<table id="example" class="display table table-bordered" cellspacing="0" width="100%">
@@ -167,6 +168,7 @@ $depot=$_SESSION['depot'];
 					</table>
 				</div>
 			</section>
+			</form>
 		</div><!--.container-fluid-->
 	</div><!--.page-content-->
 
@@ -204,6 +206,7 @@ if (confirm("Voulez vous transformer le devis N° "+y+" en facture ?") == true) 
 
                         //$("#txtHint22").html(responseText);
                         $("#modif").html(responseText);
+						
 
                     },
                     complete: function() {
