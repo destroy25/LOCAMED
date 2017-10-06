@@ -244,7 +244,8 @@ echo '
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th width="10"><a class="suppression_list_lignes_retour"><i class="fa fa-remove"></i></a></th>
+										<th width="10"><a class="suppression_list_lignes_retour"><i class="fa fa-remove"></i></a>
+										<input type="checkbox" onclick="cocherTout(this.checked);" /></th>
 										<th>Article</th>
 										<th>Désignation</th>
 										<th width="105">Quantité</th>
@@ -576,6 +577,18 @@ jQuery('.suppression_list_lignes_retour').click(function(){
 			else 
 				alert ("Attention, vérifier la Quantité");
             };
+</script>
+<script >
+function cocherTout(etat)
+{
+  var cases = document.getElementsByTagName('input');   // on recupere tous les INPUT
+   for(var i=1; i<cases.length; i++)     // on les parcourt
+     if(cases[i].type == 'checkbox')     // si on a une checkbox...
+         {cases[i].checked = etat;}
+             // ... on la coche ou non
+ 
+ 
+}
 </script>
 
 
