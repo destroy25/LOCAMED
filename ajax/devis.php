@@ -11,6 +11,7 @@ if(isset($_GET['q']))
 		
 	$client1=$_GET['client'];
 	$souche=$_GET['souche'];
+			
 	
 	$sqlsouche='select * from P_SOUCHEVENTE where CbIndice='.$souche;
 				                    $rq = odbc_exec($connection,$sqlsouche);
@@ -33,12 +34,14 @@ if(isset($_GET['q']))
 			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
 			exit();
 	}
+	
 	// Exécution de la Methode 
 	$result = $client->call('creation_document',
 	array('num'=>$client1,
 	'souche'=>$souche,
 	'type'=>0,
-	'depot'=>$depot
+	'depot'=>$depot,
+	'i'=>$_SESSION['Objet_cnx']
 	));
 	
 	/*$result = $client->call('creation_devis',
