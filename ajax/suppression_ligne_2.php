@@ -17,7 +17,7 @@ $item=$_GET['item'];
 	}
 	// Exécution de la Methode 
 	$result = $client->call('suppression_ligne',
-	array('num'=>$num,'Type'=>0,'item'=>$item));
+	array('num'=>$num,'Type'=>0,'item'=>$item,'i'=>$_SESSION['Objet_cnx']));
  
 	if ($client->fault) 
 	{
