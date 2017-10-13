@@ -40,7 +40,7 @@ for ($i=0;$i <count($elements) ; $i++){
 	                                               // Exécution de la Methode 
 
 	                                               $result = $client->call('suppression_ligne',
-	                                               array('num'=>$num,'Type'=>0,'item'=>$j));
+	                                               array('num'=>$num,'Type'=>0,'item'=>$j,'i'=>$_SESSION['Objet_cnx']));
                                                    $j=-1;
 	                                               if ($client->fault) 
 	                                                  {
