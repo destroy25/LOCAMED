@@ -21,7 +21,7 @@ $q=$_GET['q']; //Num piece
 	// Exécution de la Methode 
 //	$result = $client->call('HelloUser',$theVariable);
 	$result = $client->call('validation_devis',
-array('num'=>$q));
+array('num'=>$q,'i'=>$_SESSION['Objet_cnx']));
  
 	if ($client->fault) 
 	{
@@ -38,7 +38,7 @@ array('num'=>$q));
 		{
 //		echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
 //			$do_piece=$result;
-echo $result;
+//echo $result;
 		}
 	}
 
