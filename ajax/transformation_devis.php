@@ -19,6 +19,12 @@ P_SOUCHEVENTE on F_DOCENTETE.DO_Souche=(P_SOUCHEVENTE.cbIndice-1) where do_piece
 						$devis=$repinfo['do_piece'];
 						
 						}
+						
+						$sqldepot='select * from f_depot where de_no='.$_SESSION['depot'];
+				                    $rqdepot = odbc_exec($connection,$sqldepot);
+                    if ($repdepot=odbc_fetch_array($rqdepot)) {
+						$depot=$repdepot['DE_Intitule'];
+					}
 
 						
 						/*Mise à Zero des livraisons*/
@@ -39,8 +45,8 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 	$err = $client->getError();
 			
 	// Création Facture
-	$result = $client->call('creation_facture',
-	array('num'=>$client1,'souche'=>$souche));
+	$result = $client->call('creation_document',
+	array('num'=>$client1,'type'=>6,'souche'=>$souche,'depot'=>$depot,'i'=>$_SESSION['Objet_cnx']));
  
 	if ($client->fault) 
 	{
@@ -56,6 +62,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 		else
 		{
 			$facture=$result;
+			
 		}
 	}
 
@@ -67,14 +74,14 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 		$err = $client->getError();
 	
 		// Création BL
-		$result = $client->call('creation_bl',
-		array('num'=>$client1,'souche'=>$souche));
-		if ($err) 
+		$result = $client->call('creation_document',
+		array('num'=>$client1,'type'=>3,'souche'=>$souche,'depot'=>$depot,'i'=>$_SESSION['Objet_cnx']));
+		/*if ($err) 
 		{
 			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
 			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
 			exit();
-		}
+		}*/
  
 		if ($client->fault) 
 		{
@@ -90,6 +97,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 			else
 			{
 			$bl=$result;
+			
 			}
 		}
 	
@@ -125,7 +133,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 	// Exécution de la Methode 
 //	$result = $client->call('HelloUser',$theVariable);
 	$result = $client->call('transformation_ligne',
-	array('bl'=>$bl,'devis'=>$devis,'item'=>1));
+	array('bl'=>$bl,'devis'=>$devis,'item'=>1,'i'=>$_SESSION['Objet_cnx']));
  
 	if ($client->fault) 
 	{
@@ -166,7 +174,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 	// Exécution de la Methode 
 //	$result = $client->call('HelloUser',$theVariable);
 	$result2 = $client2->call('transformation_bl_facture',
-	array('bl'=>$bl,'facture'=>$facture));
+	array('bl'=>$bl,'facture'=>$facture,'i'=>$_SESSION['Objet_cnx']));
  
 	if ($client2->fault) 
 	{
