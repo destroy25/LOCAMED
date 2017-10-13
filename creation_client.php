@@ -39,7 +39,8 @@ if (isset($_POST['MM_Insert'])) {
 	'adresse'=>$adresse,
 	'ville'=>$ville,
 	'telephone'=>$telephone,
-	'email'=>$email
+	'email'=>$email,
+	'i'=>$_SESSION['Objet_cnx']
 	));
  
 	if ($client->fault) 
