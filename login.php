@@ -15,6 +15,10 @@ if (isset($_POST['MM_Insert'])) {
 	}
 	// Exécution de la Methode : Création Document
 	$souche='N° Pièce';
+	
+	
+	
+	
 	$result = $client->call('connexion_om');
  
 	if ($client->fault) 
@@ -68,7 +72,8 @@ if (isset($_POST['MM_Insert'])) {
     $_SESSION['compte_login'] = $row['login'];
     $_SESSION['compte_profil'] = $row['id_profil'];
     $_SESSION['depot'] = $row['depot'];
-
+    $_SESSION['Objet_cnx']= $row['Objet_cnx'];
+	
 	
 	/*Evenement Historique - */
 
