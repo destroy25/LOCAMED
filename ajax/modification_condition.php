@@ -27,12 +27,16 @@ if (count($elements) ==1)
 	
 	if ($condition=='Remis sur place')
 	{
-		$sql='select ent.DO_Date from f_docligne as lgn, f_docentete as ent where lgn.DO_Piece=ent.DO_Piece and lgn.CbMarq=\''.$q2.'\'';
+		$sql="select FORMAT(ent.DO_Date, 'dd/MM/yyyy', 'en-US') as dt from f_docligne as lgn, f_docentete as ent where lgn.DO_Piece=ent.DO_Piece and lgn.CbMarq='".$q2."'";
 		                $rq = odbc_exec($connection,$sql);
 						if ($rep=odbc_fetch_array($rq)) {
-						$dateL=$rep['DO_Date'];
+						$dateL=$rep['dt'];
+						
 						}
 	}
+	
+	
+	
 	
 $sql='update f_docligne
 set condition_enlevement=\''.$condition.'\', DO_DateLivr=\''.$dateL.'\', statut_livraison=\'En instance de livraison\'
@@ -44,10 +48,10 @@ elseif (count($elements) >1)
 {
 	if ($condition == 'Remis sur place')
 	{
-		$sql='select ent.DO_Date from f_docligne as lgn, f_docentete as ent where lgn.DO_Piece=ent.DO_Piece and lgn.CbMarq=\''.$elements[0].'\'';
+		$sql="select FORMAT(ent.DO_Date, 'dd/MM/yyyy', 'en-US') as dt from f_docligne as lgn, f_docentete as ent where lgn.DO_Piece=ent.DO_Piece and lgn.CbMarq='".$elements[0]."'";
 		                $rq = odbc_exec($connection,$sql);
 						if ($rep=odbc_fetch_array($rq)) {
-						$dateL=$rep['DO_Date'];
+						$dateL=$rep['dt'];
 						}
 	}
 	
