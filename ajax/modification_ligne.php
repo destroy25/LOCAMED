@@ -23,7 +23,7 @@ $q=$_POST['checkbox_val'];
 								<label class="form-label" for="date-mask-input">Date Enlevement</label>
 								<input name="date_enlevement" type="text" class="form-control" id="date-mask-input">
 								<small class="text-muted">Format Date: dd/mm/yyyy</small><br>
-								<input type="checkbox" name="sur_place">&nbsp;&nbsp; Remis sur place</label>
+								<input type="checkbox" name="sur_place" onclick="activer()">&nbsp;&nbsp; Remis sur place</label>
 							</div>
 <input type="hidden" name="cbMarq" value="<?php 
 if (isset($_GET['q']))
@@ -68,3 +68,16 @@ jQuery('.modifrow').click(function(){
                 });
   // return false;*/
 });     </script>
+
+ <script type="text/javascript">
+function activer() {
+	if (document.forms['modif_condition'].sur_place.checked==true)
+	{
+		document.forms['modif_condition'].date_enlevement.value="";
+        document.forms['modif_condition'].date_enlevement.disabled=true;
+	}
+	else
+		document.forms['modif_condition'].date_enlevement.disabled=false;
+		
+}
+  </script>
