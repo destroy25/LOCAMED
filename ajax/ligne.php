@@ -159,15 +159,15 @@ $qte=$_GET['quantity'];
 								<table>
 									<tr>
 										<td>Total Quantité :</td>
-										<td>'.$totalqte.'</td>
+										<td><div align="right">'.$totalqte.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 									</tr>
 									<tr>
 										<td>Total HT :</td>
-										<td>'.number_format($totalht,2,',',' ').'</td>
+										<td><div align="right">'.number_format($totalht,2,',',' ').'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 									</tr>
 									<tr>
 										<td>Total TTC :</td>
-										<td>'.number_format($totalttc,2,',',' ').'</td>
+										<td><div align="right">'.number_format($totalttc,2,',',' ').'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 									</tr>
 								</table>
 							</div>
@@ -388,6 +388,7 @@ jQuery('.modifcondition').click(function(){
 						
 						var chaine=str2;
                         chaine = chaine.split(";");
+						
                         
 						for(var i= 0; i < chaine.length; i++)
                            {
