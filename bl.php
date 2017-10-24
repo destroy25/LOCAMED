@@ -198,7 +198,7 @@ echo '
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th width="10">#</th>
+										
 										<th>Article</th>
 										<th>Désignation</th>
 										<th>Quantité</th>
@@ -248,7 +248,7 @@ echo '
 						
 						echo'
 									<tr id="'.$dat['cbMarq'].'" >
-										<td>#</td>
+										
 										<td>'.$dat['AR_Ref'].'</td>
 										<td>'.$dat['DL_Design'].'</td>
 										<td>'.number_format($dat['DL_Qte'],2,',',' ').'</td>
