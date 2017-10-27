@@ -44,11 +44,7 @@ if(isset($_GET['q']))
 	'i'=>$_SESSION['Objet_cnx']
 	));
 	
-	/*$result = $client->call('creation_devis',
-	array('num'=>$client1,
-	'souche'=>$souche
-	));*/
- 
+	
 	if ($client->fault) 
 	{
 		echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
@@ -71,11 +67,6 @@ if(isset($_GET['q']))
 					
 					
 	
-	
-	
-	
-
-
 $sql='select * from F_Docentete where DO_Piece=\''.$do_piece.'\'';
 
 				                    $rq = odbc_exec($connection,$sql);
@@ -158,7 +149,7 @@ echo '
 								<div class="col-lg-4">
 						<fieldset class="form-group">
 							<label class="form-label" for="exampleInputEmail1">Article</label>
-							<input name="article" onchange="validation_article()" type="text" class="form-control" id="article"  >
+							<input name="article" onchange="validation_article()" type="text" class="typeahead form-control" id="article"  >
 						</fieldset>
 					</div>
 					<div id="designation" class="col-lg-4">
@@ -178,6 +169,7 @@ echo '
 					</div>
                             <a style="float:right;" class="btn btn-rounded btn-inline" onclick="validation_ligne()">Valider</a>
 					
+		
 
 					
 							<id id="loading" style="text-align:center;display:none;">
@@ -365,3 +357,31 @@ echo '
             }
 
         </script>
+		
+		
+		
+		
+<script type="text/javascript">
+
+
+	$('input.typeahead').typeahead({
+
+	    source:  function (query, process) {
+
+        return $.get('ajax/list_article.php', { query: query }, function (data) {
+
+        		console.log(data);
+
+        		data = $.parseJSON(data);
+
+	            return process(data);
+
+	        });
+
+	    }
+
+	});
+
+
+</script>
+		

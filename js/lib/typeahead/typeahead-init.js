@@ -59,13 +59,14 @@ $(document).ready(function() {
         "Yerevan", "Zagreb"
     ];
 
+	
+
     $.typeahead({
         input: "#typeahead-search-country-v1",
-        order: "asc",
-        minLength: 1,
-        source: {
-            data: countries
-        }
+		 remote: '/list_article.php?query=%QUERY',
+    minLength: 3, // send AJAX request only after user type in at least 3 characters
+    limit: 10 // limit to show only 10 results
+       
     });
 
     $('#typeahead-search-country-v2').on('keyup', function() {
@@ -237,6 +238,24 @@ $(document).ready(function() {
             "Seagram Iced Lemon Tea", "Seagram Lemon Lime", "Seagram Orange Mango", "Seagram Wildberry", "Seagram Wildberry Extra 6.9", "Twisted Tea", "Wellington Iron Duke"
         ]
     };
+	
+		$('#ctl').typeahead({
+
+	    source:  function (query, process) {
+
+        return $.get('/list_article.php', { query: query }, function (data) {
+
+        		console.log(data);
+
+        		data = $.parseJSON(data);
+
+	            return process(data);
+
+	        });
+
+	    }
+
+	});
 
     $('#categories').typeahead({
         minLength: 1,
@@ -294,7 +313,7 @@ $(document).ready(function() {
                 }],
                 url: [{
                     type: "GET",
-                    url: "http://themesanytime.com/startui/data/typeahead/users.php",
+                    url: "ajax/list_article.php",
 
                     data: {
                         q: "{{query}}"
@@ -320,7 +339,7 @@ $(document).ready(function() {
                 },
                 url: [{
                     type: "GET",
-                    url: "http://themesanytime.com/startui/data/typeahead/users.php",
+                    url: "ajax/list_article.php",
                     data: {
                         q: "{{query}}"
                     }

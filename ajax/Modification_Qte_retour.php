@@ -32,7 +32,7 @@ $client = new nusoap_client($wsdl,true);
 		else
 		{
 			$msg=$result;
-			echo '<script>alert("la Quantité est Bien Modifier")</script>';
+			echo '<script>alert("Mise à jour de la quantité effectué !")</script>';
 		}
 	}
 

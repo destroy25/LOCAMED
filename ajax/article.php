@@ -21,7 +21,7 @@ $sql='select * from f_article where ar_ref=\''.$article.'\'';
 
 					if(!isset($designation))
 					{
-						echo '<script>alert("Article '.$article.' Inexistant")</script>';
+//						echo '<script>alert("Article '.$article.' Inexistant")</script>';
 					}
 					else
 					{

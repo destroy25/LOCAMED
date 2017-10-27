@@ -148,7 +148,7 @@ echo '
 								<div class="col-lg-4">
 						<fieldset class="form-group">
 							<label class="form-label" for="exampleInputEmail1">Article</label>
-							<input name="article" onchange="validation_article()" type="text" class="form-control" id="article"  >
+							<input name="article" onchange="validation_article()" type="text" class="typeahead form-control" id="article"  >
 						</fieldset>
 					</div>
 					<div id="designation" class="col-lg-4">
@@ -167,6 +167,12 @@ echo '
                             <a style="float:right;" class="btn btn-rounded btn-inline" onclick="validation_ligne()">Valider</a>
 					
 </form>
+
+				<id id="loading" style="text-align:center;display:none;">
+				<img src="img/fancybox_loading@2x.gif" alt="loading"/>
+				</id>		
+
+
 <div id="ligne_retour">
 					
 						</div>
@@ -358,15 +364,13 @@ echo '
 
 
 	<script>
-
-	
 	function validation_ligne() {
 		                               str1=document.forms['ligne_form'].article.value;
 		                               str2=document.forms['ligne_form'].quantity.value;
 		                               str3=document.forms['ligne_form'].piece.value;
 
  
-/*                showLoadingImage();*/
+                showLoadingImage();
                 $.ajax({
                     url: "ajax/ligne_retour.php?q=1&article="+str1+"&quantity="+str2+"&piece="+str3,
                     context: document.body,
@@ -379,7 +383,7 @@ echo '
                         // no matter the result, complete will fire, so it's a good place
                         // to do the non-conditional stuff, like hiding a loading image.
 
-                       /* hideLoadingImage();*/
+                        hideLoadingImage();
                     }
                 });
             };
@@ -427,3 +431,28 @@ echo '
             }
 
         </script>
+		
+
+		<script type="text/javascript">
+
+
+	$('input.typeahead').typeahead({
+
+	    source:  function (query, process) {
+
+        return $.get('ajax/list_article.php', { query: query }, function (data) {
+
+        		console.log(data);
+
+        		data = $.parseJSON(data);
+
+	            return process(data);
+
+	        });
+
+	    }
+
+	});
+
+
+</script>
