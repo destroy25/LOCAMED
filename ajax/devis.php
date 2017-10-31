@@ -35,13 +35,16 @@ if(isset($_GET['q']))
 			exit();
 	}
 	
+	
 	// Exécution de la Methode 
 	$result = $client->call('creation_document',
 	array('num'=>$client1,
 	'souche'=>$souche,
 	'type'=>0,
 	'depot'=>$depot,
-	'i'=>$_SESSION['Objet_cnx']
+	'i'=>$_SESSION['Objet_cnx'],
+	'NameSage'=>$_SESSION['NameSage'],
+	'PwdSage'=>$_SESSION['PwdSage']
 	));
 	
 	
@@ -60,6 +63,7 @@ if(isset($_GET['q']))
 		{
 		//echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
 			$do_piece=$result;
+			
 		}
 	}
 	
