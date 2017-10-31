@@ -73,6 +73,8 @@ if (isset($_POST['MM_Insert'])) {
     $_SESSION['compte_profil'] = $row['id_profil'];
     $_SESSION['depot'] = $row['depot'];
     $_SESSION['Objet_cnx']= $row['Objet_cnx'];
+	$_SESSION['NameSage']= $row['NameSAGE'];
+	$_SESSION['PwdSage']= $row['PwdSAGE'];
 	
 	
 	/*Evenement Historique - */
