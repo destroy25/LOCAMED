@@ -1,0 +1,764 @@
+'Ajout des (nameSage et pwdSage) comme parametre pour toutes les fonctions
+
+
+Imports System.Web.Services
+Imports System.Web.Services.Protocols
+Imports System.ComponentModel
+Imports Objets100Lib
+
+' Pour autoriser l'appel de ce service Web depuis un script à l'aide d'ASP.NET AJAX, supprimez les marques de commentaire de la ligne suivante.
+' <System.Web.Script.Services.ScriptService()> _
+<System.Web.Services.WebService(Namespace:="http://tempuri.org/")> _
+<System.Web.Services.WebServiceBinding(ConformsTo:=WsiProfiles.None)> _
+<ToolboxItem(False)> _
+<SoapRpcService> _
+Public Class Service1
+    Inherits System.Web.Services.WebService
+
+    Private Shadows BCPTA1 As New BSCIALApplication3
+    Private Shadows BCPTA2 As New BSCIALApplication3
+    Private Shadows BCPTA3 As New BSCIALApplication3
+    Private Shadows BCPTA4 As New BSCIALApplication3
+    Private Shadows BCPTA5 As New BSCIALApplication3
+    Private Shadows BCPTA6 As New BSCIALApplication3
+    Private Shadows BCPTA7 As New BSCIALApplication3
+    Private Shadows BCPTA8 As New BSCIALApplication3
+    Private Shadows BCPTA9 As New BSCIALApplication3
+    Private Shadows BCPTA10 As New BSCIALApplication3
+    Private Shadows BCPTA11 As New BSCIALApplication3
+    Private Shadows BCPTA12 As New BSCIALApplication3
+    Private Shadows BCPTA13 As New BSCIALApplication3
+    Private Shadows BCPTA14 As New BSCIALApplication3
+    Private Shadows BCPTA15 As New BSCIALApplication3
+    Private Shadows BCPTA16 As New BSCIALApplication3
+    Private Shadows BCPTA17 As New BSCIALApplication3
+    Private Shadows BCPTA18 As New BSCIALApplication3
+    Private Shadows BCPTA19 As New BSCIALApplication3
+    Private Shadows BCPTA20 As New BSCIALApplication3
+
+    Private TableObjet(20) As BSCIALApplication3
+
+    <SoapRpcMethod> _
+    <WebMethod()> _
+    Public Function HelloWorld() As String
+        Return "Hello World"
+    End Function
+
+
+    '--------------------------------------------------------------------------------------
+
+    <SoapRpcMethod> _
+<WebMethod()> _
+    Public Function connexion_om(i As Integer, NameSage As String, PwdSage As String) As String
+
+        TableObjet(1) = BCPTA1
+        TableObjet(2) = BCPTA2
+        TableObjet(3) = BCPTA3
+        TableObjet(4) = BCPTA4
+        TableObjet(5) = BCPTA5
+        TableObjet(6) = BCPTA6
+        TableObjet(7) = BCPTA7
+        TableObjet(8) = BCPTA8
+        TableObjet(9) = BCPTA9
+        TableObjet(10) = BCPTA10
+        TableObjet(11) = BCPTA11
+        TableObjet(12) = BCPTA12
+        TableObjet(13) = BCPTA13
+        TableObjet(14) = BCPTA14
+        TableObjet(15) = BCPTA15
+        TableObjet(16) = BCPTA16
+        TableObjet(17) = BCPTA17
+        TableObjet(18) = BCPTA18
+        TableObjet(19) = BCPTA19
+        TableObjet(20) = BCPTA20
+
+        Try
+            If TableObjet(i).IsOpen Then
+                Return "OK"
+            Else
+
+                TableObjet(i).Name = "C:\sage\bijou.gcm"
+                TableObjet(i).Loggable.UserName = NameSage
+                TableObjet(i).Loggable.UserPwd = PwdSage
+                TableObjet(i).Open()
+                '   MsgBox("Connexion OK")
+                Return "OK"
+
+            End If
+
+        Catch ex As Exception
+            '  MsgBox("Erreur :" + ex.Message)
+            Return ex.Message
+        End Try
+
+    End Function
+
+
+    <SoapRpcMethod> _
+<WebMethod()> _
+    Public Function deconnexion_om(i As Integer) As String
+
+        TableObjet(1) = BCPTA1
+        TableObjet(2) = BCPTA2
+        TableObjet(3) = BCPTA3
+        TableObjet(4) = BCPTA4
+        TableObjet(5) = BCPTA5
+        TableObjet(6) = BCPTA6
+        TableObjet(7) = BCPTA7
+        TableObjet(8) = BCPTA8
+        TableObjet(9) = BCPTA9
+        TableObjet(10) = BCPTA10
+        TableObjet(11) = BCPTA11
+        TableObjet(12) = BCPTA12
+        TableObjet(13) = BCPTA13
+        TableObjet(14) = BCPTA14
+        TableObjet(15) = BCPTA15
+        TableObjet(16) = BCPTA16
+        TableObjet(17) = BCPTA17
+        TableObjet(18) = BCPTA18
+        TableObjet(19) = BCPTA19
+        TableObjet(20) = BCPTA20
+
+        Try
+            If TableObjet(i).IsOpen Then
+                TableObjet(i).Close()
+                Return "Close"
+            Else
+                Return "Already Close"
+
+            End If
+
+
+        Catch ex As Exception
+            '  MsgBox("Erreur :" + ex.Message)
+            Return ex.Message
+
+
+
+
+        End Try
+
+    End Function
+
+
+
+    'Création document
+    <SoapRpcMethod> _
+<WebMethod()> _
+    Public Function creation_document(num As String, souche As String, type As Integer, depot As String, i As Integer, NameSage As String, PwdSage As String) As String
+        'Type 0 : Devis
+        'Type 6 : Facture
+        'Type 3 : Bl
+        'type 4 : Retour
+
+
+        TableObjet(1) = BCPTA1
+        TableObjet(2) = BCPTA2
+        TableObjet(3) = BCPTA3
+        TableObjet(4) = BCPTA4
+        TableObjet(5) = BCPTA5
+        TableObjet(6) = BCPTA6
+        TableObjet(7) = BCPTA7
+        TableObjet(8) = BCPTA8
+        TableObjet(9) = BCPTA9
+        TableObjet(10) = BCPTA10
+        TableObjet(11) = BCPTA11
+        TableObjet(12) = BCPTA12
+        TableObjet(13) = BCPTA13
+        TableObjet(14) = BCPTA14
+        TableObjet(15) = BCPTA15
+        TableObjet(16) = BCPTA16
+        TableObjet(17) = BCPTA17
+        TableObjet(18) = BCPTA18
+        TableObjet(19) = BCPTA19
+        TableObjet(20) = BCPTA20
+
+        Try
+            If Not TableObjet(i).IsOpen Then
+                connexion_om(i, NameSage, PwdSage)
+            End If
+
+
+            Dim entete As IBODocumentVente3
+            Dim client As IBOClient3
+            Dim piece As String
+
+            If (type = 0) Then
+                entete = TableObjet(i).FactoryDocumentVente.CreateType(DocumentType.DocumentTypeVenteDevis)
+            ElseIf (type = 3) Then
+                entete = TableObjet(i).FactoryDocumentVente.CreateType(DocumentType.DocumentTypeVenteLivraison)
+            ElseIf (type = 6) Then
+                entete = TableObjet(i).FactoryDocumentVente.CreateType(DocumentType.DocumentTypeVenteFacture)
+            ElseIf (type = 4) Then
+                entete = TableObjet(i).FactoryDocumentVente.CreateFacture(DocumentProvenanceType.DocProvenanceRetour)
+            Else
+                entete = Nothing
+            End If
+
+
+            client = TableObjet(i).CptaApplication.FactoryClient.ReadNumero(num)
+            entete.SetDefaultClient(client)
+            entete.Souche = TableObjet(i).FactorySoucheVente.ReadIntitule(souche)
+            entete.DepotStockage = TableObjet(i).FactoryDepot.ReadIntitule(depot)
+
+            entete.SetDefaultDO_Piece()
+            entete.SetDefault()
+            '            entete.CouldModified()
+            entete.Write()
+            piece = entete.DO_Piece
+
+            Return piece
+
+        Catch ex As Exception
+
+            Return ex.Message
+        End Try
+
+    End Function
+
+
+
+
+    'Ligne Document
+    <SoapRpcMethod> _
+<WebMethod()> _
+    Public Function ligne_document(num As String, type As Integer, article As String, qte As Double, i As Integer, NameSage As String, PwdSage As String) As String
+        'Type 0 : Devis
+        'Type 6 : Facture
+        'Type 3 : Bl
+        'type 4 : Retour
+
+        TableObjet(1) = BCPTA1
+        TableObjet(2) = BCPTA2
+        TableObjet(3) = BCPTA3
+        TableObjet(4) = BCPTA4
+        TableObjet(5) = BCPTA5
+        TableObjet(6) = BCPTA6
+        TableObjet(7) = BCPTA7
+        TableObjet(8) = BCPTA8
+        TableObjet(9) = BCPTA9
+        TableObjet(10) = BCPTA10
+        TableObjet(11) = BCPTA11
+        TableObjet(12) = BCPTA12
+        TableObjet(13) = BCPTA13
+        TableObjet(14) = BCPTA14
+        TableObjet(15) = BCPTA15
+        TableObjet(16) = BCPTA16
+        TableObjet(17) = BCPTA17
+        TableObjet(18) = BCPTA18
+        TableObjet(19) = BCPTA19
+        TableObjet(20) = BCPTA20
+
+        Try
+            If Not TableObjet(i).IsOpen Then
+                connexion_om(i, NameSage, PwdSage)
+            End If
+
+
+
+            Dim entete As IBODocumentVente3
+            Dim art As IBOArticle3
+            Dim ligne As IBODocumentVenteLigne3
+
+
+            art = TableObjet(i).FactoryArticle.ReadReference(article)
+
+            If (type = 0) Then
+                entete = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteDevis, num)
+            ElseIf (type = 3) Then
+                entete = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteLivraison, num)
+            ElseIf (type = 6) Then
+                entete = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteFacture, num)
+            ElseIf (type = 4) Then
+                entete = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteFacture, num)
+                qte = qte * -1
+            Else
+                entete = Nothing
+            End If
+
+
+            entete.CouldModified()
+
+            ligne = entete.FactoryDocumentLigne.Create()
+            ligne.SetDefaultArticle(art, qte)
+            ligne.Write()
+
+            Return "OK"
+
+
+        Catch ex As Exception
+            '  MsgBox("Erreur :" + ex.Message)
+
+            Return ex.Message
+
+
+        End Try
+
+    End Function
+
+
+
+    'Suppression Ligne Document
+    <SoapRpcMethod> _
+<WebMethod()> _
+    Public Function suppression_ligne(num As String, Type As Integer, item As Integer, i As Integer, NameSage As String, PwdSage As String) As String
+
+        TableObjet(1) = BCPTA1
+        TableObjet(2) = BCPTA2
+        TableObjet(3) = BCPTA3
+        TableObjet(4) = BCPTA4
+        TableObjet(5) = BCPTA5
+        TableObjet(6) = BCPTA6
+        TableObjet(7) = BCPTA7
+        TableObjet(8) = BCPTA8
+        TableObjet(9) = BCPTA9
+        TableObjet(10) = BCPTA10
+        TableObjet(11) = BCPTA11
+        TableObjet(12) = BCPTA12
+        TableObjet(13) = BCPTA13
+        TableObjet(14) = BCPTA14
+        TableObjet(15) = BCPTA15
+        TableObjet(16) = BCPTA16
+        TableObjet(17) = BCPTA17
+        TableObjet(18) = BCPTA18
+        TableObjet(19) = BCPTA19
+        TableObjet(20) = BCPTA20
+
+        Try
+            If Not TableObjet(i).IsOpen Then
+                connexion_om(i, NameSage, PwdSage)
+            End If
+
+            Dim DOC_ORIG As IBODocumentVente3
+
+
+            If (Type = 0) Then
+                DOC_ORIG = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteDevis, num)
+            ElseIf (Type = 3) Then
+                DOC_ORIG = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteLivraison, num)
+            ElseIf (Type = 6) Then
+                DOC_ORIG = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteFacture, num)
+            ElseIf (Type = 4) Then
+                DOC_ORIG = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteFacture, num)
+            Else
+                DOC_ORIG = Nothing
+            End If
+
+            DOC_ORIG.FactoryDocumentLigne.List.Item(item).Remove()
+
+
+
+            Return "OK"
+
+        Catch ex As Exception
+            '  MsgBox("Erreur :" + ex.Message)
+
+            Return ex.Message
+
+
+        End Try
+
+    End Function
+
+
+    'MOdification Qte 
+    <SoapRpcMethod> _
+<WebMethod()> _
+    Public Function Modification_Qte(num As String, Type As Integer, item As Integer, Qte As Integer, i As Integer, NameSage As String, PwdSage As String) As String
+
+        TableObjet(1) = BCPTA1
+        TableObjet(2) = BCPTA2
+        TableObjet(3) = BCPTA3
+        TableObjet(4) = BCPTA4
+        TableObjet(5) = BCPTA5
+        TableObjet(6) = BCPTA6
+        TableObjet(7) = BCPTA7
+        TableObjet(8) = BCPTA8
+        TableObjet(9) = BCPTA9
+        TableObjet(10) = BCPTA10
+        TableObjet(11) = BCPTA11
+        TableObjet(12) = BCPTA12
+        TableObjet(13) = BCPTA13
+        TableObjet(14) = BCPTA14
+        TableObjet(15) = BCPTA15
+        TableObjet(16) = BCPTA16
+        TableObjet(17) = BCPTA17
+        TableObjet(18) = BCPTA18
+        TableObjet(19) = BCPTA19
+        TableObjet(20) = BCPTA20
+
+        Try
+            If Not TableObjet(i).IsOpen Then
+                connexion_om(i, NameSage, PwdSage)
+            End If
+
+            Dim DOC_ORIG As IBODocumentVente3
+
+
+            If (Type = 0) Then
+                DOC_ORIG = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteDevis, num)
+            ElseIf (Type = 3) Then
+                DOC_ORIG = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteLivraison, num)
+            ElseIf (Type = 6) Then
+                DOC_ORIG = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteFacture, num)
+            ElseIf (Type = 4) Then
+                DOC_ORIG = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteFacture, num)
+            Else
+                DOC_ORIG = Nothing
+            End If
+
+            Dim Ligne As IBODocumentLigne3
+
+            Ligne = DOC_ORIG.FactoryDocumentLigne.List.Item(item)
+            Ligne.DL_Qte = Qte
+            Ligne.WriteDefault()
+
+            Return "OK"
+
+
+        Catch ex As Exception
+            '  MsgBox("Erreur :" + ex.Message)
+
+            Return ex.Message
+
+
+        End Try
+
+    End Function
+
+
+    'MOdification Remise
+    <SoapRpcMethod> _
+<WebMethod()> _
+    Public Function Modification_Remise(num As String, Type As Integer, item As Integer, Remise As Integer, i As Integer, NameSage As String, PwdSage As String) As String
+
+        TableObjet(1) = BCPTA1
+        TableObjet(2) = BCPTA2
+        TableObjet(3) = BCPTA3
+        TableObjet(4) = BCPTA4
+        TableObjet(5) = BCPTA5
+        TableObjet(6) = BCPTA6
+        TableObjet(7) = BCPTA7
+        TableObjet(8) = BCPTA8
+        TableObjet(9) = BCPTA9
+        TableObjet(10) = BCPTA10
+        TableObjet(11) = BCPTA11
+        TableObjet(12) = BCPTA12
+        TableObjet(13) = BCPTA13
+        TableObjet(14) = BCPTA14
+        TableObjet(15) = BCPTA15
+        TableObjet(16) = BCPTA16
+        TableObjet(17) = BCPTA17
+        TableObjet(18) = BCPTA18
+        TableObjet(19) = BCPTA19
+        TableObjet(20) = BCPTA20
+
+        Try
+            If Not TableObjet(i).IsOpen Then
+                connexion_om(i, NameSage, PwdSage)
+            End If
+
+            Dim DOC_ORIG As IBODocumentVente3
+
+
+            If (Type = 0) Then
+                DOC_ORIG = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteDevis, num)
+            ElseIf (Type = 3) Then
+                DOC_ORIG = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteLivraison, num)
+            ElseIf (Type = 6) Then
+                DOC_ORIG = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteFacture, num)
+            ElseIf (Type = 4) Then
+                DOC_ORIG = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteFacture, num)
+            Else
+                DOC_ORIG = Nothing
+            End If
+
+            Dim Ligne As IBODocumentVenteLigne3
+
+            Ligne = DOC_ORIG.FactoryDocumentLigne.List.Item(item)
+            Ligne.Remise.FromString(Remise & "%")
+            'Ligne.DL_ = Remise
+            Ligne.WriteDefault()
+
+            Return "OK"
+
+
+        Catch ex As Exception
+            '  MsgBox("Erreur :" + ex.Message)
+
+            Return ex.Message
+
+
+        End Try
+
+    End Function
+
+
+
+
+    'Création Client
+    <SoapRpcMethod> _
+<WebMethod()> _
+    Public Function creation_client(num As String, intitule As String, compteg As String, adresse As String, ville As String, telephone As String,
+                                    email As String, i As Integer, NameSage As String, PwdSage As String) As String
+
+        TableObjet(1) = BCPTA1
+        TableObjet(2) = BCPTA2
+        TableObjet(3) = BCPTA3
+        TableObjet(4) = BCPTA4
+        TableObjet(5) = BCPTA5
+        TableObjet(6) = BCPTA6
+        TableObjet(7) = BCPTA7
+        TableObjet(8) = BCPTA8
+        TableObjet(9) = BCPTA9
+        TableObjet(10) = BCPTA10
+        TableObjet(11) = BCPTA11
+        TableObjet(12) = BCPTA12
+        TableObjet(13) = BCPTA13
+        TableObjet(14) = BCPTA14
+        TableObjet(15) = BCPTA15
+        TableObjet(16) = BCPTA16
+        TableObjet(17) = BCPTA17
+        TableObjet(18) = BCPTA18
+        TableObjet(19) = BCPTA19
+        TableObjet(20) = BCPTA20
+
+        Try
+            If Not TableObjet(i).IsOpen Then
+                connexion_om(i, NameSage, PwdSage)
+            End If
+
+
+            Dim client As IBOClient3
+
+
+
+            If Not TableObjet(i).CptaApplication.FactoryClient.ExistNumero(num) Then
+                client = TableObjet(i).CptaApplication.FactoryClient.Create
+                With client
+                    .CT_Num = num
+                    .CT_Intitule = intitule
+                    .Adresse.Adresse = adresse
+                    .Adresse.Ville = ville
+                    .Telecom.Telephone = telephone
+                    .Telecom.EMail = email
+                    .CompteGPrinc = TableObjet(i).CptaApplication.FactoryCompteG.ReadNumero(compteg)
+                    .SetDefault()
+                    .Write()
+                End With
+            End If
+
+            Return "Client Crée avec succès !"
+
+        Catch ex As Exception
+
+            Return ex.Message
+        End Try
+
+    End Function
+
+
+    'Validation Devis
+    <SoapRpcMethod> _
+<WebMethod()> _
+    Public Function validation_devis(num As String, i As Integer, NameSage As String, PwdSage As String) As String
+
+        TableObjet(1) = BCPTA1
+        TableObjet(2) = BCPTA2
+        TableObjet(3) = BCPTA3
+        TableObjet(4) = BCPTA4
+        TableObjet(5) = BCPTA5
+        TableObjet(6) = BCPTA6
+        TableObjet(7) = BCPTA7
+        TableObjet(8) = BCPTA8
+        TableObjet(9) = BCPTA9
+        TableObjet(10) = BCPTA10
+        TableObjet(11) = BCPTA11
+        TableObjet(12) = BCPTA12
+        TableObjet(13) = BCPTA13
+        TableObjet(14) = BCPTA14
+        TableObjet(15) = BCPTA15
+        TableObjet(16) = BCPTA16
+        TableObjet(17) = BCPTA17
+        TableObjet(18) = BCPTA18
+        TableObjet(19) = BCPTA19
+        TableObjet(20) = BCPTA20
+
+        Try
+            If Not TableObjet(i).IsOpen Then
+                connexion_om(i, NameSage, PwdSage)
+            End If
+
+            Dim entete As IBODocumentVente3
+
+            entete = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteDevis, num)
+            'entete.CouldModified()
+            entete.DO_Statut = DocumentStatutType.DocumentStatutTypeAPrepare
+            entete.Write()
+
+
+
+            Return "OK"
+        Catch ex As Exception
+
+            Return ex.Message
+        End Try
+
+    End Function
+
+
+
+
+    'Transformation Ligne
+    <SoapRpcMethod> _
+<WebMethod()> _
+    Public Function transformation_ligne(bl As String, devis As String, item As Integer, i As Integer, NameSage As String, PwdSage As String) As String
+
+        TableObjet(1) = BCPTA1
+        TableObjet(2) = BCPTA2
+        TableObjet(3) = BCPTA3
+        TableObjet(4) = BCPTA4
+        TableObjet(5) = BCPTA5
+        TableObjet(6) = BCPTA6
+        TableObjet(7) = BCPTA7
+        TableObjet(8) = BCPTA8
+        TableObjet(9) = BCPTA9
+        TableObjet(10) = BCPTA10
+        TableObjet(11) = BCPTA11
+        TableObjet(12) = BCPTA12
+        TableObjet(13) = BCPTA13
+        TableObjet(14) = BCPTA14
+        TableObjet(15) = BCPTA15
+        TableObjet(16) = BCPTA16
+        TableObjet(17) = BCPTA17
+        TableObjet(18) = BCPTA18
+        TableObjet(19) = BCPTA19
+        TableObjet(20) = BCPTA20
+
+        Try
+            If Not TableObjet(i).IsOpen Then
+                connexion_om(i, NameSage, PwdSage)
+            End If
+
+
+            Dim DOC_ORIG1 As IBODocumentVente3
+            Dim DOC_FINAL As IBODocumentVente3
+            Dim X As IBODocumentLigne3
+            Dim PROC_TRANS As IPMDocTransformer
+
+
+
+            DOC_ORIG1 = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteDevis, devis)
+            DOC_ORIG1.Refresh()
+            'DOC_ORIG1.CouldModified()
+
+            ' X = DOC_ORIG1.FactoryDocumentLigne.List(item)
+            DOC_FINAL = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteLivraison, bl)
+            PROC_TRANS = TableObjet(i).Transformation.Vente.CreateProcess_Livrer
+            PROC_TRANS.AddDocument(DOC_ORIG1)
+
+            PROC_TRANS.AddDocumentDestination(DOC_FINAL)
+            'PROC_TRANS.AddDocumentLigne(X)
+
+            If PROC_TRANS.CanProcess Then
+                PROC_TRANS.Process()
+
+            End If
+
+            Return "OK"
+
+
+            ' DOC_ORIG1 = basecial.FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteDevis, devis)
+            'DOC_ORIG1.CouldModified()
+            'X = DOC_ORIG1.FactoryDocumentLigne.List.Item(item)
+            'PROC_TRANS = basecial.Transformation.Vente.CreateProcess_Livrer
+            'DOC_FINAL.CouldModified()
+            'PROC_TRANS.AddDocumentDestination(DOC_FINAL)
+
+
+            '            PROC_TRANS.AddDocumentLigne(X)
+
+
+            'If PROC_TRANS.CanProcess Then
+            'PROC_TRANS.Process()
+            'Return "Doc Transformé"
+            'Else
+            'Return PROC_TRANS.Errors.Item(1).Text
+            'End If
+
+
+
+        Catch ex As Exception
+            '  MsgBox("Erreur :" + ex.Message)
+
+            Return ex.Message
+
+
+        End Try
+
+    End Function
+
+
+    'Transformation Ligne
+    <SoapRpcMethod> _
+<WebMethod()> _
+    Public Function transformation_bl_facture(bl As String, facture As String, i As Integer, NameSage As String, PwdSage As String) As String
+
+        TableObjet(1) = BCPTA1
+        TableObjet(2) = BCPTA2
+        TableObjet(3) = BCPTA3
+        TableObjet(4) = BCPTA4
+        TableObjet(5) = BCPTA5
+        TableObjet(6) = BCPTA6
+        TableObjet(7) = BCPTA7
+        TableObjet(8) = BCPTA8
+        TableObjet(9) = BCPTA9
+        TableObjet(10) = BCPTA10
+        TableObjet(11) = BCPTA11
+        TableObjet(12) = BCPTA12
+        TableObjet(13) = BCPTA13
+        TableObjet(14) = BCPTA14
+        TableObjet(15) = BCPTA15
+        TableObjet(16) = BCPTA16
+        TableObjet(17) = BCPTA17
+        TableObjet(18) = BCPTA18
+        TableObjet(19) = BCPTA19
+        TableObjet(20) = BCPTA20
+
+        Try
+            If Not TableObjet(i).IsOpen Then
+                connexion_om(i, NameSage, PwdSage)
+            End If
+
+
+            Dim DOC_ORIG1 As IBODocumentVente3
+            Dim DOC_FINAL As IBODocumentVente3
+            Dim PROC_TRANS As IPMDocTransformer
+
+
+
+            DOC_ORIG1 = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteLivraison, bl)
+
+            DOC_FINAL = TableObjet(i).FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteFacture, facture)
+            PROC_TRANS = TableObjet(i).Transformation.Vente.CreateProcess_Facturer
+            PROC_TRANS.AddDocument(DOC_ORIG1)
+
+
+            PROC_TRANS.AddDocumentDestination(DOC_FINAL)
+
+            If PROC_TRANS.CanProcess Then
+                PROC_TRANS.Process()
+            End If
+
+            Return "OK"
+
+        Catch ex As Exception
+            '  MsgBox("Erreur :" + ex.Message)
+
+            Return ex.Message
+
+
+        End Try
+
+    End Function
+End Class
