@@ -46,7 +46,7 @@ Public Class Service1
 
     <SoapRpcMethod> _
 <WebMethod()> _
-    Public Function connexion_om(i As Integer) As String
+    Public Function connexion_om(i As Integer, NameSage As String, PwdSage As String) As String
 
         TableObjet(1) = BCPTA1
         TableObjet(2) = BCPTA2
@@ -69,29 +69,23 @@ Public Class Service1
         TableObjet(19) = BCPTA19
         TableObjet(20) = BCPTA20
 
-
         Try
             If TableObjet(i).IsOpen Then
                 Return "OK"
             Else
 
                 TableObjet(i).Name = "C:\sage\bijou.gcm"
-                TableObjet(i).Loggable.UserName = "<Administrateur>"
-                TableObjet(i).Loggable.UserPwd = ""
+                TableObjet(i).Loggable.UserName = NameSage
+                TableObjet(i).Loggable.UserPwd = PwdSage
                 TableObjet(i).Open()
                 '   MsgBox("Connexion OK")
                 Return "OK"
 
             End If
 
-
         Catch ex As Exception
             '  MsgBox("Erreur :" + ex.Message)
             Return ex.Message
-
-
-
-
         End Try
 
     End Function
@@ -148,7 +142,7 @@ Public Class Service1
     'Création document
     <SoapRpcMethod> _
 <WebMethod()> _
-    Public Function creation_document(num As String, souche As String, type As Integer, depot As String, i As Integer) As String
+    Public Function creation_document(num As String, souche As String, type As Integer, depot As String, i As Integer, NameSage As String, PwdSage As String) As String
         'Type 0 : Devis
         'Type 6 : Facture
         'Type 3 : Bl
@@ -178,7 +172,7 @@ Public Class Service1
 
         Try
             If Not TableObjet(i).IsOpen Then
-                connexion_om(i)
+                connexion_om(i, NameSage, PwdSage)
             End If
 
 
@@ -209,23 +203,23 @@ Public Class Service1
             '            entete.CouldModified()
             entete.Write()
             piece = entete.DO_Piece
-            deconnexion_om(i)
+
             Return piece
 
         Catch ex As Exception
-            deconnexion_om(i)
+
             Return ex.Message
         End Try
 
     End Function
 
 
-    
+
 
     'Ligne Document
     <SoapRpcMethod> _
 <WebMethod()> _
-    Public Function ligne_document(num As String, type As Integer, article As String, qte As Double, i As Integer) As String
+    Public Function ligne_document(num As String, type As Integer, article As String, qte As Double, i As Integer, NameSage As String, PwdSage As String) As String
         'Type 0 : Devis
         'Type 6 : Facture
         'Type 3 : Bl
@@ -254,7 +248,7 @@ Public Class Service1
 
         Try
             If Not TableObjet(i).IsOpen Then
-                connexion_om(i)
+                connexion_om(i, NameSage, PwdSage)
             End If
 
 
@@ -285,13 +279,13 @@ Public Class Service1
             ligne = entete.FactoryDocumentLigne.Create()
             ligne.SetDefaultArticle(art, qte)
             ligne.Write()
-            deconnexion_om(i)
+
             Return "OK"
 
 
         Catch ex As Exception
             '  MsgBox("Erreur :" + ex.Message)
-            deconnexion_om(i)
+
             Return ex.Message
 
 
@@ -304,7 +298,7 @@ Public Class Service1
     'Suppression Ligne Document
     <SoapRpcMethod> _
 <WebMethod()> _
-    Public Function suppression_ligne(num As String, Type As Integer, item As Integer, i As Integer) As String
+    Public Function suppression_ligne(num As String, Type As Integer, item As Integer, i As Integer, NameSage As String, PwdSage As String) As String
 
         TableObjet(1) = BCPTA1
         TableObjet(2) = BCPTA2
@@ -329,7 +323,7 @@ Public Class Service1
 
         Try
             If Not TableObjet(i).IsOpen Then
-                connexion_om(i)
+                connexion_om(i, NameSage, PwdSage)
             End If
 
             Dim DOC_ORIG As IBODocumentVente3
@@ -347,20 +341,15 @@ Public Class Service1
                 DOC_ORIG = Nothing
             End If
 
-
-
             DOC_ORIG.FactoryDocumentLigne.List.Item(item).Remove()
-            deconnexion_om(i)
+
 
 
             Return "OK"
 
-
-
-
         Catch ex As Exception
             '  MsgBox("Erreur :" + ex.Message)
-            deconnexion_om(i)
+
             Return ex.Message
 
 
@@ -372,7 +361,7 @@ Public Class Service1
     'MOdification Qte 
     <SoapRpcMethod> _
 <WebMethod()> _
-    Public Function Modification_Qte(num As String, Type As Integer, item As Integer, Qte As Integer, i As Integer) As String
+    Public Function Modification_Qte(num As String, Type As Integer, item As Integer, Qte As Integer, i As Integer, NameSage As String, PwdSage As String) As String
 
         TableObjet(1) = BCPTA1
         TableObjet(2) = BCPTA2
@@ -397,7 +386,7 @@ Public Class Service1
 
         Try
             If Not TableObjet(i).IsOpen Then
-                connexion_om(i)
+                connexion_om(i, NameSage, PwdSage)
             End If
 
             Dim DOC_ORIG As IBODocumentVente3
@@ -420,13 +409,13 @@ Public Class Service1
             Ligne = DOC_ORIG.FactoryDocumentLigne.List.Item(item)
             Ligne.DL_Qte = Qte
             Ligne.WriteDefault()
-            deconnexion_om(i)
+
             Return "OK"
 
 
         Catch ex As Exception
             '  MsgBox("Erreur :" + ex.Message)
-            deconnexion_om(i)
+
             Return ex.Message
 
 
@@ -438,7 +427,7 @@ Public Class Service1
     'MOdification Remise
     <SoapRpcMethod> _
 <WebMethod()> _
-    Public Function Modification_Remise(num As String, Type As Integer, item As Integer, Remise As Integer, i As Integer) As String
+    Public Function Modification_Remise(num As String, Type As Integer, item As Integer, Remise As Integer, i As Integer, NameSage As String, PwdSage As String) As String
 
         TableObjet(1) = BCPTA1
         TableObjet(2) = BCPTA2
@@ -463,7 +452,7 @@ Public Class Service1
 
         Try
             If Not TableObjet(i).IsOpen Then
-                connexion_om(i)
+                connexion_om(i, NameSage, PwdSage)
             End If
 
             Dim DOC_ORIG As IBODocumentVente3
@@ -487,13 +476,13 @@ Public Class Service1
             Ligne.Remise.FromString(Remise & "%")
             'Ligne.DL_ = Remise
             Ligne.WriteDefault()
-            deconnexion_om(i)
+
             Return "OK"
 
 
         Catch ex As Exception
             '  MsgBox("Erreur :" + ex.Message)
-            deconnexion_om(i)
+
             Return ex.Message
 
 
@@ -508,7 +497,7 @@ Public Class Service1
     <SoapRpcMethod> _
 <WebMethod()> _
     Public Function creation_client(num As String, intitule As String, compteg As String, adresse As String, ville As String, telephone As String,
-                                    email As String, i As Integer) As String
+                                    email As String, i As Integer, NameSage As String, PwdSage As String) As String
 
         TableObjet(1) = BCPTA1
         TableObjet(2) = BCPTA2
@@ -533,7 +522,7 @@ Public Class Service1
 
         Try
             If Not TableObjet(i).IsOpen Then
-                connexion_om(i)
+                connexion_om(i, NameSage, PwdSage)
             End If
 
 
@@ -555,11 +544,11 @@ Public Class Service1
                     .Write()
                 End With
             End If
-            deconnexion_om(i)
+
             Return "Client Crée avec succès !"
 
         Catch ex As Exception
-            deconnexion_om(i)
+
             Return ex.Message
         End Try
 
@@ -569,7 +558,7 @@ Public Class Service1
     'Validation Devis
     <SoapRpcMethod> _
 <WebMethod()> _
-    Public Function validation_devis(num As String, i As Integer) As String
+    Public Function validation_devis(num As String, i As Integer, NameSage As String, PwdSage As String) As String
 
         TableObjet(1) = BCPTA1
         TableObjet(2) = BCPTA2
@@ -594,7 +583,7 @@ Public Class Service1
 
         Try
             If Not TableObjet(i).IsOpen Then
-                connexion_om(i)
+                connexion_om(i, NameSage, PwdSage)
             End If
 
             Dim entete As IBODocumentVente3
@@ -604,11 +593,11 @@ Public Class Service1
             entete.DO_Statut = DocumentStatutType.DocumentStatutTypeAPrepare
             entete.Write()
 
-            deconnexion_om(i)
+
 
             Return "OK"
         Catch ex As Exception
-            deconnexion_om(i)
+
             Return ex.Message
         End Try
 
@@ -620,7 +609,7 @@ Public Class Service1
     'Transformation Ligne
     <SoapRpcMethod> _
 <WebMethod()> _
-    Public Function transformation_ligne(bl As String, devis As String, item As Integer, i As Integer) As String
+    Public Function transformation_ligne(bl As String, devis As String, item As Integer, i As Integer, NameSage As String, PwdSage As String) As String
 
         TableObjet(1) = BCPTA1
         TableObjet(2) = BCPTA2
@@ -645,7 +634,7 @@ Public Class Service1
 
         Try
             If Not TableObjet(i).IsOpen Then
-                connexion_om(i)
+                connexion_om(i, NameSage, PwdSage)
             End If
 
 
@@ -672,7 +661,7 @@ Public Class Service1
                 PROC_TRANS.Process()
 
             End If
-            deconnexion_om(i)
+
             Return "OK"
 
 
@@ -698,7 +687,7 @@ Public Class Service1
 
         Catch ex As Exception
             '  MsgBox("Erreur :" + ex.Message)
-            deconnexion_om(i)
+
             Return ex.Message
 
 
@@ -710,7 +699,7 @@ Public Class Service1
     'Transformation Ligne
     <SoapRpcMethod> _
 <WebMethod()> _
-    Public Function transformation_bl_facture(bl As String, facture As String, i As Integer) As String
+    Public Function transformation_bl_facture(bl As String, facture As String, i As Integer, NameSage As String, PwdSage As String) As String
 
         TableObjet(1) = BCPTA1
         TableObjet(2) = BCPTA2
@@ -735,7 +724,7 @@ Public Class Service1
 
         Try
             If Not TableObjet(i).IsOpen Then
-                connexion_om(i)
+                connexion_om(i, NameSage, PwdSage)
             End If
 
 
@@ -757,14 +746,12 @@ Public Class Service1
             If PROC_TRANS.CanProcess Then
                 PROC_TRANS.Process()
             End If
-            deconnexion_om(i)
+
             Return "OK"
-
-
 
         Catch ex As Exception
             '  MsgBox("Erreur :" + ex.Message)
-            deconnexion_om(i)
+
             Return ex.Message
 
 
