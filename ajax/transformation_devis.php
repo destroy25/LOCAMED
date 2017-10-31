@@ -46,7 +46,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 			
 	// Création Facture
 	$result = $client->call('creation_document',
-	array('num'=>$client1,'type'=>6,'souche'=>$souche,'depot'=>$depot,'i'=>$_SESSION['Objet_cnx']));
+	array('num'=>$client1,'type'=>6,'souche'=>$souche,'depot'=>$depot,'i'=>$_SESSION['Objet_cnx'],'NameSage'=>$_SESSION['NameSage'],'PwdSage'=>$_SESSION['PwdSage']));
  
 	if ($client->fault) 
 	{
@@ -75,7 +75,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 	
 		// Création BL
 		$result = $client->call('creation_document',
-		array('num'=>$client1,'type'=>3,'souche'=>$souche,'depot'=>$depot,'i'=>$_SESSION['Objet_cnx']));
+		array('num'=>$client1,'type'=>3,'souche'=>$souche,'depot'=>$depot,'i'=>$_SESSION['Objet_cnx'],'NameSage'=>$_SESSION['NameSage'],'PwdSage'=>$_SESSION['PwdSage']));
 		/*if ($err) 
 		{
 			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
@@ -133,7 +133,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 	// Exécution de la Methode 
 //	$result = $client->call('HelloUser',$theVariable);
 	$result = $client->call('transformation_ligne',
-	array('bl'=>$bl,'devis'=>$devis,'item'=>1,'i'=>$_SESSION['Objet_cnx']));
+	array('bl'=>$bl,'devis'=>$devis,'item'=>1,'i'=>$_SESSION['Objet_cnx'],'NameSage'=>$_SESSION['NameSage'],'PwdSage'=>$_SESSION['PwdSage']));
  
 	if ($client->fault) 
 	{
@@ -174,7 +174,7 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 	// Exécution de la Methode 
 //	$result = $client->call('HelloUser',$theVariable);
 	$result2 = $client2->call('transformation_bl_facture',
-	array('bl'=>$bl,'facture'=>$facture,'i'=>$_SESSION['Objet_cnx']));
+	array('bl'=>$bl,'facture'=>$facture,'i'=>$_SESSION['Objet_cnx'],'NameSage'=>$_SESSION['NameSage'],'PwdSage'=>$_SESSION['PwdSage']));
  
 	if ($client2->fault) 
 	{
