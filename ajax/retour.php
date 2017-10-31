@@ -43,7 +43,7 @@ if(isset($_GET['q']))
 	// Exécution de la Methode 
 //	$result = $client->call('HelloUser',$theVariable);
 	$result = $client->call('creation_document',
-	array('num'=>$client1,'souche'=>$souche,'type'=>4,'depot'=>$depot,'i'=>$_SESSION['Objet_cnx']));
+	array('num'=>$client1,'souche'=>$souche,'type'=>4,'depot'=>$depot,'i'=>$_SESSION['Objet_cnx'],'NameSage'=>$_SESSION['NameSage'],'PwdSage'=>$_SESSION['PwdSage']));
  
 	if ($client->fault) 
 	{
