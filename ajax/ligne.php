@@ -20,7 +20,7 @@ $qte=$_GET['quantity'];
 	}
 	// Exécution de la Methode : Création Ligne document
 	$result = $client->call('ligne_document',
-	array('num'=>$num_piece,'type'=>0,'article'=>$article,'qte'=>$qte,'i'=>$_SESSION['Objet_cnx']));
+	array('num'=>$num_piece,'type'=>0,'article'=>$article,'qte'=>$qte,'i'=>$_SESSION['Objet_cnx'],'NameSage'=>$_SESSION['NameSage'],'PwdSage'=>$_SESSION['PwdSage']));
  
 	if ($client->fault) 
 	{
