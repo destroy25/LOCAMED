@@ -18,7 +18,7 @@ $client = new nusoap_client($wsdl,true);
 	}
 	// Exécution de la Methode 
 	$result = $client->call('Modification_Qte',
-	array('num'=>$num,'Type'=>0,'item'=>$item,'Qte'=>$Qte,'i'=>$_SESSION['Objet_cnx']));
+	array('num'=>$num,'Type'=>0,'item'=>$item,'Qte'=>$Qte,'i'=>$_SESSION['Objet_cnx'],'NameSage'=>$_SESSION['NameSage'],'PwdSage'=>$_SESSION['PwdSage']));
 
 	if ($client->fault) 
 	{
