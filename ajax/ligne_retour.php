@@ -22,7 +22,7 @@ $qte=$_GET['quantity'];
 	}
 	// Exécution de la Methode Ligne Document : Voir Documentaion OM
 	$result = $client->call('ligne_document',
-	array('num'=>$num_piece,'type'=>4,'article'=>$article,'qte'=>$qte,'i'=>$_SESSION['Objet_cnx']));
+	array('num'=>$num_piece,'type'=>4,'article'=>$article,'qte'=>$qte,'i'=>$_SESSION['Objet_cnx'],'NameSage'=>$_SESSION['NameSage'],'PwdSage'=>$_SESSION['PwdSage']));
  
 	if ($client->fault) 
 	{
