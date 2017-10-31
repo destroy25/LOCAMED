@@ -1,6 +1,6 @@
 <?php 
 include('../connexion.php');
-
+ 
 if(isset($_GET['q']))
 {
 	$q=$_GET['q'];	
