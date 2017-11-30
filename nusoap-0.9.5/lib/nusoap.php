@@ -19,7 +19,7 @@ Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+Foundation, Inc., 59 Temple Place, Suite 3200, Boston, MA  02111-1307  USA
 
 The NuSOAP project home is:
 http://sourceforge.net/projects/nusoap/
@@ -2328,7 +2328,7 @@ class soap_transport_http extends nusoap_base {
 	* @return	boolean true if connected, false if not
 	* @access   private
 	*/
-	function connect($connection_timeout=0,$response_timeout=30){
+	function connect($connection_timeout=0,$response_timeout=200){
 	  	// For PHP 4.3 with OpenSSL, change https scheme to ssl, then treat like
 	  	// "regular" socket.
 	  	// TODO: disabled for now because OpenSSL must be *compiled* in (not just
@@ -2564,7 +2564,7 @@ class soap_transport_http extends nusoap_base {
 	* @return	string data
 	* @access   public
 	*/
-	function send($data, $timeout=0, $response_timeout=30, $cookies=NULL) {
+	function send($data, $timeout=0, $response_timeout=200, $cookies=NULL) {
 		
 		$this->debug('entered send() with data of length: '.strlen($data));
 
@@ -2605,7 +2605,7 @@ class soap_transport_http extends nusoap_base {
 	* @access   public
 	* @deprecated
 	*/
-	function sendHTTPS($data, $timeout=0, $response_timeout=30, $cookies) {
+	function sendHTTPS($data, $timeout=0, $response_timeout=200, $cookies) {
 		return $this->send($data, $timeout, $response_timeout, $cookies);
 	}
 	
@@ -4628,7 +4628,7 @@ class wsdl extends nusoap_base {
 	var $proxyusername = '';
 	var $proxypassword = '';
 	var $timeout = 0;
-	var $response_timeout = 30;
+	var $response_timeout = 200;
 	var $curl_options = array();	// User-specified cURL options
 	var $use_curl = false;			// whether to always try to use cURL
 	// for HTTP authentication
@@ -4651,7 +4651,7 @@ class wsdl extends nusoap_base {
 	 * @param boolean $use_curl try to use cURL
      * @access public 
      */
-    function wsdl($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30,$curl_options=null,$use_curl=false){
+    function wsdl($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=200,$curl_options=null,$use_curl=false){
 		parent::nusoap_base();
 		$this->debug("ctor wsdl=$wsdl timeout=$timeout response_timeout=$response_timeout");
         $this->proxyhost = $proxyhost;
@@ -7200,7 +7200,7 @@ class nusoap_client extends nusoap_base  {
     var $xml_encoding = '';			// character set encoding of incoming (response) messages
 	var $http_encoding = false;
 	var $timeout = 0;				// HTTP connection timeout
-	var $response_timeout = 30;		// HTTP response timeout
+	var $response_timeout = 200;		// HTTP response timeout
 	var $endpointType = '';			// soap|wsdl, empty for WSDL initialization error
 	var $persistentConnection = false;
 	var $defaultRpcParams = false;	// This is no longer used
@@ -7252,7 +7252,7 @@ class nusoap_client extends nusoap_base  {
 	* @param	string $portName optional portName in WSDL document
 	* @access   public
 	*/
-	function nusoap_client($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = ''){
+	function nusoap_client($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 200, $portName = ''){
 		parent::nusoap_base();
 		$this->endpoint = $endpoint;
 		$this->proxyhost = $proxyhost;
@@ -7568,7 +7568,7 @@ class nusoap_client extends nusoap_base  {
 	* @return	mixed native PHP types.
 	* @access   private
 	*/
-	function send($msg, $soapaction = '', $timeout=0, $response_timeout=30) {
+	function send($msg, $soapaction = '', $timeout=0, $response_timeout=200) {
 		$this->checkCookies();
 		// detect transport
 		switch(true){
