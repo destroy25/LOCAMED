@@ -3,8 +3,8 @@ include('connexion.php');
 require_once('TCPDF-master/tcpdf.php');
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetTitle('TCPDF Example 001');
-$pdf->SetHeaderData('', '', PDF_HEADER_TITLE, PDF_HEADER_STRING);
+$pdf->SetTitle('Bon de livraison - LOCAMED');
+$pdf->SetHeaderData('', '', 'Bon de Livraison - LOCAMED', PDF_HEADER_STRING);
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -100,6 +100,9 @@ $sql='select distinct(DL_PieceBL) as BL,DO_Piece as Facture,f_docligne.CT_Num,DO
 						$date=$rep['DO_Date'];
 						$client1=$rep['CT_Num'];
 						$DateLivr=$rep['DO_DateLivr'];
+						
+						$date2 = date_create($date);
+$date= date_format($date2, 'd/m/Y');
 		
 					}
 					
@@ -203,6 +206,7 @@ return int2str((int)($a/1000)).' '.int2str(1000).' '.int2str($a%1000);
 				<div>
 					<div id="conteneur">
 						<p id="colonne1">
+						<h4>Client</h4>
 							<h5>'.$client1.'</h5>
 							
 								'.utf8_encode($adresse_client).'
@@ -210,11 +214,11 @@ return int2str((int)($a/1000)).' '.int2str(1000).' '.int2str($a%1000);
 								'.utf8_encode($ville_client).'
 													
 						</p>
-						<p id="colonne2">
-								<h5>FACTURE #'.$q.'</h5>
-								Date: '.$date.'<br>
+						<p style="float:right;" id="colonne2">
+								<h5>Bon de Livraison #'.$q.'</h5>
+								Date Document : '.$date.'<br>
 								Date de livraison: '.$DateLivr.'
-								<p><img style="margin-top:20px;height:30px;"  src="http://localhost:82/LOCAMED/trunk/barcode128.php?text='.$q.'"/></p>
+								<p><img style="margin-top:20px;height:30px;"  src="http://localhost:8080/interface_locamed/trunk/barcode128.php?text='.$q.'"/></p>
 						</p>
 					</div>
 					
@@ -228,10 +232,10 @@ return int2str((int)($a/1000)).' '.int2str(1000).' '.int2str($a%1000);
 	<div class="col-lg-12">
 							<table class="table">
 								<thead>
-									<tr class="t1">
-										<th class="t2">Article</th>
-										<th class="t2">Désignation</th>
-										<th class="t2">Quantité</th>
+									<tr class="t3">
+										<th class="t3">Article</th>
+										<th class="t3">Désignation</th>
+										<th class="t3">Quantité</th>
 									</tr>
 								</thead>
 								';
@@ -309,14 +313,14 @@ return int2str((int)($a/1000)).' '.int2str(1000).' '.int2str($a%1000);
 										<td>Total Quantité :</td>
 										<td>'.$totalqte.'</td>
 									</tr>
-									<tr>
+<!--									<tr>
 										<td>Total HT :</td>
 										<td>'.number_format($totalht,2,',',' ').'</td>
 									</tr>
 									<tr>
 										<td>Total TTC :</td>
 										<td>'.number_format($totalttc,2,',',' ').'<br> '.$chiffre.'</td>
-									</tr>
+									</tr>-->
 								</table>
 							</div>
 							</div>
