@@ -40,7 +40,7 @@ $qte=$_GET['quantity'];
 	}
 
 	/*Mise à jour condition_enlevement*/
-	$sqlligne='update f_docligne set condition_enlevement=\'Remis sur place\',statut_livraison=\'Livré\' where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\' and DL_Ligne=(select max(DL_Ligne) from f_docligne where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\') ';
+	$sqlligne='update f_docligne set Utilisateur=\''.$_SESSION['compte_login'].'\' , condition_enlevement=\'Remis sur place\',statut_livraison=\'Livré\' where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\' and DL_Ligne=(select max(DL_Ligne) from f_docligne where DO_Piece=\''.$num_piece.'\' and AR_Ref=\''.$article.'\') ';
 	odbc_exec($connection,$sqlligne);
 	
 	echo '			

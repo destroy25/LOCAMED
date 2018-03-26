@@ -1,4 +1,7 @@
+
+
 						<?php
+						
 			$query = 'SELECT * FROM INTERFACE_MENU 
 			inner join INTERFACE_MENU_DROIT on INTERFACE_MENU.id_menu=INTERFACE_MENU_DROIT.id_menu
 			where id_parent=0 and active=1 and id_profil='.$_SESSION['compte_profil'].'';

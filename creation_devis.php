@@ -2,6 +2,15 @@
 include('verif.php');
 include('connexion.php');
 
+/*Récuperétion des infos*/
+$depot=$_SESSION['depot'];
+
+$sql='select DE_Region from f_depot where de_no='.$depot;
+
+		                $rq = odbc_exec($connection,$sql);
+						if ($rep=odbc_fetch_array($rq)) {
+							$branche_client=$rep['DE_Region'];
+						}
 
 
 ?>
@@ -132,10 +141,10 @@ include('connexion.php');
 							<label class="form-label semibold" for="exampleInput">Client</label>
 
 				<select name="client" class="select2">
-				<?php $sqlclient='select CT_Num,CT_Intitule from F_COMPTET where CT_Type=0';
+				<?php $sqlclient='select CT_Num,CT_Intitule from F_COMPTET where CT_Type=0 and CT_Num like \''.$branche_client.'%\'';
 				                    $rq = odbc_exec($connection,$sqlclient);
                     while ($rep=odbc_fetch_array($rq)) {
-								echo '<option value="'.$rep['CT_Num'].'">'.utf8_encode($rep['CT_Intitule']).'</option>';
+								echo '<option value="'.$rep['CT_Num'].'">'.$rep['CT_Num'].' - '.utf8_encode($rep['CT_Intitule']).'</option>';
 		
 					}
 					?>

@@ -1,0 +1,5 @@
+id_user,login,mdp,nom,prenom,email,depot,compteg,id_profil
+1,boutique1_commercial,e10adc3949ba59abbe56e057f20f883e,test,test,,1,34210000,1
+2,boutique1_caissier,e10adc3949ba59abbe56e057f20f883e,Caissier,Caisser,,1,34210000,2
+3,boutique1_magasinier,e10adc3949ba59abbe56e057f20f883e,Magasinier,Magasinier,,1,34210000,3
+4,boutique1_responsable,e10adc3949ba59abbe56e057f20f883e,Responsable,Magasin,,1,34210000,4

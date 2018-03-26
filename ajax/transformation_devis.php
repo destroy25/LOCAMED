@@ -150,8 +150,8 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 		{
 //		echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
 //			$do_piece=$result;
-		//echo 'Transformation : '. $result;
-		
+	//	echo 'Transformation : '. $result;
+	
 		}
 	}
 	
@@ -196,12 +196,12 @@ $sql='select distinct(condition_enlevement) as condition from f_docligne where D
 	}
 }
 
- //echo "<script type='text/javascript'>alert('Succes ! Document transformé avec succès');</script>";
+echo "<script type='text/javascript'>alert('Succes ! Document transformé avec succès');</script>";
 							
 
 
  
-echo "<script type='text/javascript'>document.location.replace('list_devis.php');</script>";
+echo "<script type='text/javascript'>document.location.replace('facture.php?q=".$facture."');</script>";
 
 				
 

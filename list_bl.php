@@ -4,6 +4,29 @@ include('connexion.php');
 /*Récuperétion des infos*/
 $depot=$_SESSION['depot'];
 
+$sql='select DE_Region from f_depot where de_no='.$depot;
+
+		                $rq = odbc_exec($connection,$sql);
+						if ($rep=odbc_fetch_array($rq)) {
+							$branche_client=$rep['DE_Region'];
+						}
+
+if(isset($_GET['client']))
+{
+$client=$_GET['client'];
+
+						$sql='select ct_intitule from f_comptet where ct_num=\''.$client.'\' ';
+		                $rq = odbc_exec($connection,$sql);
+						if ($rep=odbc_fetch_array($rq)) {
+							$nom_client=$rep['ct_intitule'];
+						}
+						
+	$date_debut=$_GET['debut'];
+	$date_fin=$_GET['fin'];
+
+
+}
+
 
 
 ?>
@@ -93,8 +116,10 @@ $depot=$_SESSION['depot'];
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h2>Bon de Livraison</h2>
-							<div class="subtitle">Bon de livraison en cours</div>
+							<h2>Bon de Livraison - <?php echo $nom_client;?></h2>	<a  style="float:right;" href="recherche_bl_date.php" class="btn btn-rounded btn-inline">Nouvelle Recherche</a>
+							<h4>Bon de livraison du <?php echo $date_debut;?> au <?php echo $date_fin;?></h4>
+							
+				
 						</div>
 					</div>
 				</div>
@@ -111,8 +136,8 @@ $depot=$_SESSION['depot'];
 						<tr>
 							<th>N° BL</th>
 							<th>N° Facture</th>
-							<th>Client</th>
-							<th>Date</th>
+							<th>Date BL</th>
+							<th>Date Facture</th>
 							<th>Condition Enlevement</th>
 							<th>Statut</th>
 							<th>Action</th>
@@ -121,32 +146,32 @@ $depot=$_SESSION['depot'];
 											
 						<tbody>
 						<?php
-						$sql='select distinct(DL_PieceBL) as BL,DO_Piece as Facture,CT_Intitule,DO_Date,condition_enlevement,statut_livraison from f_docligne 
-						inner join f_comptet on f_docligne.ct_num=f_comptet.ct_num where do_type=6 and DL_PieceBL<>\'\'	 and f_docligne.de_no='.$depot.'	';
-		                $rq = odbc_exec($connection,$sql);
+						$sql='select distinct(DL_PieceBL) as BL,DO_Piece as Facture,DL_DateBL,
+						CT_Intitule,DO_Date,condition_enlevement,statut_livraison from f_docligne 
+						inner join f_comptet on f_docligne.ct_num=f_comptet.ct_num 
+						where f_comptet.ct_num=\''.$client.'\' and do_type=6 and DL_DateBL between \''.$date_debut.'\' and \''.$date_fin.'\' 
+						and DL_PieceBL<>\'\'	 and f_docligne.de_no='.$depot.'	';
+		                
+						$rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
 							
 							if($rep['statut_livraison']=='En instance de livraison')
 							{
 								$statut='<span class="label label-warning">En instance de livraison</span>';
 							}
-							//elseif($rep['statut_livraison']=='Livré')
-							//{
-							//	$statut='<span class="label label-success">Livré</span>';
-	
-							//}
 							else
 							{
 								$statut='<span class="label label-success">Livré</span>';
 							}
 
 							
-							$d=date_create($rep['DO_Date']);
+							$d=date_create($rep['DL_DateBL']);
+							$d1=date_create($rep['DO_Date']);
 								echo '<tr id="'.$rep['BL'].'">
 								<td>'.$rep['BL'].'</td>
 								<td>'.$rep['Facture'].'</td>
-								<td>'.$rep['CT_Intitule'].'</td>
 								<td>'.date_format($d,'d/m/Y').'</td>
+								<td>'.date_format($d1,'d/m/Y').'</td>
 								<td>'.$rep['condition_enlevement'].'</td>
 								<td>'.$statut.'</td>
 								<td>	<a title="Consultation BL" href="bl.php?q='.$rep['BL'].'"><span class="fa fa-eye"></span></a>

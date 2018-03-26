@@ -101,6 +101,9 @@ $sql='select distinct(DL_PieceBL) as BL,DO_Piece as Facture,f_docligne.CT_Num,DO
 						$client1=$rep['CT_Num'];
 						$DateLivr=$rep['DO_DateLivr'];
 						
+						$DateLivr2 = date_create($DateLivr);
+$DateLivr= date_format($DateLivr2, 'd/m/Y');
+
 						$date2 = date_create($date);
 $date= date_format($date2, 'd/m/Y');
 		
@@ -205,21 +208,17 @@ return int2str((int)($a/1000)).' '.int2str(1000).' '.int2str($a%1000);
 				</header>
 				<div>
 					<div id="conteneur">
-						<p id="colonne1">
+						
 						<h4>Client</h4>
 							<h5>'.$client1.'</h5>
-							
-								'.utf8_encode($adresse_client).'
-								'.utf8_encode($complement_client).'
-								'.utf8_encode($ville_client).'
-													
-						</p>
-						<p style="float:right;" id="colonne2">
+								<h6>'.utf8_encode($adresse_client).'</h6>
+								<h6>'.utf8_encode($complement_client).'</h6>
+								<h6>'.utf8_encode($ville_client).'</h6>
+
 								<h5>Bon de Livraison #'.$q.'</h5>
-								Date Document : '.$date.'<br>
-								Date de livraison: '.$DateLivr.'
-								<p><img style="margin-top:20px;height:30px;"  src="http://localhost:8080/interface_locamed/trunk/barcode128.php?text='.$q.'"/></p>
-						</p>
+								<h4>Date Document : '.$date.'</h4>
+								<h4>Date de livraison: '.$DateLivr.'</h4>
+								<p><img style="margin-top:20px;height:30px;"  src="http://localhost/interface_locamed/barcode128.php?text='.$q.'"/></p>
 					</div>
 					
 					
@@ -232,10 +231,10 @@ return int2str((int)($a/1000)).' '.int2str(1000).' '.int2str($a%1000);
 	<div class="col-lg-12">
 							<table class="table">
 								<thead>
-									<tr class="t3">
-										<th class="t3">Article</th>
-										<th class="t3">Désignation</th>
-										<th class="t3">Quantité</th>
+									<tr  class="t3">
+										<th style="border:1px solid black" class="t3">Article</th>
+										<th style="border:1px solid black" class="t3">Désignation</th>
+										<th style="border:1px solid black" class="t3">Quantité</th>
 									</tr>
 								</thead>
 								';
@@ -281,11 +280,11 @@ return int2str((int)($a/1000)).' '.int2str(1000).' '.int2str($a%1000);
 						/*Fin Statut du Stock */
 						
 						 $content .=  '<tbody class="table">
-									<tr id="'.$dat['cbMarq'].'" >
+									<tr style="font-size:10px;">
 										
-										<td class="t2" style="border:1px solid black" >'.$dat['AR_Ref'].'</td>
-										<td class="t2" style="border:1px solid black" >'.$dat['DL_Design'].'</td>
-										<td class="t2" style="border:1px solid black" >'.number_format($dat['DL_Qte'],0,',',' ').'</td>
+										<td class="t1" style="border:1px solid black" >'.$dat['AR_Ref'].'</td>
+										<td class="t1" style="border:1px solid black" >'.$dat['DL_Design'].'</td>
+										<td class="t1" style="border:1px solid black" >'.number_format($dat['DL_Qte'],0,',',' ').'</td>
 										
 									</tr>';
 										

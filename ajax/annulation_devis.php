@@ -12,12 +12,12 @@ $sqlinfo='update F_DOCENTETE set DO_Statut=1 where DO_Piece=\''.$q.'\'';
 						echo "<script type='text/javascript'>alert('Document annulé avec succès');</script>";
 						
 						
-						echo "<script type='text/javascript'>document.location.replace('list_devis.php');</script>";
+						echo "<script type='text/javascript'>document.location.replace('devis.php?q=".$q.");</script>";
 							
 						
-						echo '<div class="alert alert-info" role="alert">
+						/*echo '<div class="alert alert-info" role="alert">
 							<strong>Succes !</strong><br>
 							Document annulé avec succès
-						</div>';
+						</div>';*/
 	
 ?>

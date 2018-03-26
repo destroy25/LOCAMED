@@ -139,7 +139,7 @@ if(isset($_POST['aa']))
 					else 
 						echo '<div class="alert alert-info" role="alert">
 							<strong>Attention !</strong><br>
-							Ce document n\'exist pas 
+							Ce document n\'existe pas 
 						    </div>';
 	
 	

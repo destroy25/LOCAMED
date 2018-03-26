@@ -12,92 +12,6 @@ $sql='select DE_Region from f_depot where de_no='.$depot;
 							$branche_client=$rep['DE_Region'];
 						}
 
-$sql='select max(CT_NUM) as ct from F_COMPTET where CT_Num like \''.$branche_client.'%\'';
-		                $rq = odbc_exec($connection,$sql);
-						if ($rep=odbc_fetch_array($rq)) {
-							$num_client=$rep['ct'];
-							$n_client=++$num_client;
-						}
-
-if (isset($_POST['MM_Insert'])) {
-	
-
-		$num=$_POST['num'];
-		$intitule=$_POST['intitule'];
-		$adresse=$_POST['adresse'];
-		$ville=$_POST['ville'];
-		$telephone=$_POST['telephone'];
-		$email=$_POST['email'];
-		$compteg='3421'.$branche_client.'000'; // A récuperer de la base de données dépôt
-
-		
-		
-	
-/*Début méthode création Client Webservice OM*/  
-
-
-
-					
-	$client = new nusoap_client($wsdl,true);
-	$err = $client->getError();
-	if ($err) 
-	{
-			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
-			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
-			exit();
-	}
-	
-	
-	//die(0);
-
-	// Exécution de la Methode creation_client
-//	$result = $client->call('HelloUser',$theVariable);
-	$result = $client->call('creation_client',
-	array('num'=>$num,
-	'intitule'=>$intitule,
-	'compteg'=>$compteg,
-	'adresse'=>$adresse,
-	'ville'=>$ville,
-	'telephone'=>$telephone,
-	'email'=>$email,
-	'i'=>$_SESSION['Objet_cnx'],
-	'NameSage'=>$_SESSION['NameSage'],
-	'PwdSage'=>$_SESSION['PwdSage']
-	));
- 
-	if ($client->fault) 
-	{
-		echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
-	} 
-	else 
-	{
-		$err = $client->getError();
-		if ($err) 
-		{			
-			$msg='<div class="alert alert-danger" role="alert">
-							<strong>Error !</strong><br>
-							'.$err.'
-						</div>';
-		} 
-		else
-		{
-		//echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
-			$msg='<div class="alert alert-info" role="alert">
-							<strong>Succes !</strong><br>
-							'.utf8_encode($result).'
-						</div>';
-		}
-	}
-
-							$n_client=++$n_client;
-	
-
-/*Fin méthode création Client Webservice OM*/  
-
-
-
-}
-
 
 
 ?>
@@ -153,8 +67,8 @@ if (isset($_POST['MM_Insert'])) {
 	
 	                    <div class="dropdown user-menu">
 	                        <button class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                            	                            <?php echo $_SESSION['compte_login'];?>
-								<img src="img/avatar-2-64.png" alt="">
+							<?php echo $_SESSION['compte_login'];?>
+	                            <img src="img/avatar-2-64.png" alt="">
 	                        </button>
 	                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
 	                            <a class="dropdown-item" href="delog.php"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
@@ -189,83 +103,66 @@ if (isset($_POST['MM_Insert'])) {
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h3>Création Client</h3>
+							<h3>Recherche Factures</h3>
 							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="#">Gestion Clients</a></li>
-								<li><a href="#">Création Client</a></li>
+								<li><a href="#">Gestion Factures</a></li>
+								<li><a href="#">Recherche Factures</a></li>
 							</ol>
 						</div>
 					</div>
 				</div>
 			</header>
 
+			<div class="box-typical box-typical-padding">
 			
-			
-					<div class="box-typical box-typical-padding">
-			
-			<!--Message de Validation -->
-			<?php if(isset($msg))
-			{
-				echo $msg;
-			}?>
-			
-          <form action="creation_client.php" method="post">
 
-										<div class="">
-						<fieldset class="form-group">
-							<label class="form-label semibold" for="exampleInput">Numéro Client</label>
-						<input type="text" name="num" value="<?php echo $n_client;?>" readonly class="form-control" id="inputPassword" placeholder="Text Disabled">
-						</fieldset>
-					</div>
-					<div class="">
-						<fieldset class="form-group">
-							<label class="form-label semibold" for="exampleInput">Intitulé Client</label>
-							<input type="text" name="intitule" required="required" class="form-control" id="exampleInput">
-						</fieldset>
-					</div>
+				
+
+
+				<div class="row">
+				                            <form action="#" method="post" class="main" enctype="multipart/form-data" id="entete">
+
+
+						
+							<div class="col-lg-4">
+							<label class="form-label semibold" for="exampleInput">Client</label>
+
+				<select name="client" class="select2">
+<?php $sqlclient='select CT_Num,CT_Intitule from F_COMPTET where CT_Type=0 and CT_Num like \''.$branche_client.'%\'';
+				                    $rq = odbc_exec($connection,$sqlclient);
+                    while ($rep=odbc_fetch_array($rq)) {
+								echo '<option value="'.$rep['CT_Num'].'">'.$rep['CT_Num'].' - '.utf8_encode($rep['CT_Intitule']).'</option>';
+		
+					}
+					?>
+							</select>
+							<br/>
+							<br/>
+						</div>
 					
-									<div class="">
-						<fieldset class="form-group">
-							<label class="form-label semibold" for="exampleInput">Adresse</label>
-							<input name="adresse" type="text" class="form-control" id="exampleInput">
-						</fieldset>
-					</div>
 					
-														<div class="">
+					<div class="col-lg-8">
 						<fieldset class="form-group">
-							<label class="form-label semibold" for="exampleInput">Ville</label>
-							<input name="ville" type="text" class="form-control" id="exampleInput">
-						</fieldset>
-					</div>
-					
-																			<div class="">
-						<fieldset class="form-group">
-							<label class="form-label semibold" for="exampleInput">Téléphone</label>
-							<input name="telephone" type="text" class="form-control" id="exampleInput">
-						</fieldset>
-					</div>
-					
-																								<div class="">
-						<fieldset class="form-group">
-							<label class="form-label semibold" for="exampleInput">Email</label>
-							<input name="email" type="text" class="form-control" id="exampleInput">
-						</fieldset>
-					</div>
-
-						  <input type="hidden" name="MM_Insert" />
-
-					
-                    <input type="submit" class="btn btn-rounded" value="Valider">
-
-
-				</form>
-
-
-			</div><!--.box-typical-->
-		</div><!--.container-fluid-->
+		<label class="form-label semibold" for="exampleInput">&nbsp;</label>
+                            <a style="float:right;" class="btn btn-rounded btn-inline" onclick="recherche_devis()">Rechercher</a>
 	
-			
+						</fieldset>
+					</div>
+					</form>
+				</div><!--.row-->
+
+
+				<div id="box">
+				
+				<id id="loading" style="text-align:center;display:none;">
+				<img src="img/fancybox_loading@2x.gif" alt="loading"/>
+				</id>
+				
+				</div>
 	
+
+				</div><!--.box-typical-->
+
 				
 	</div><!--.container-fluid-->
 	
@@ -365,13 +262,16 @@ if (isset($_POST['MM_Insert'])) {
 	<script>
 
 	
-	function validation_entete() {
-                               str=document.forms['entete'].souche.value;
+	function recherche_devis() {
+                            
                                str1=document.forms['entete'].client.value;
  
                 showLoadingImage();
-                $.ajax({
-                    url: "ajax/devis.php?q=1&client="+str1+"&souche="+str,
+				
+				window.location.replace("list_factures.php?client="+str1);
+				
+                /*$.ajax({
+                    url: "ajax/recherche_devis.php?client="+str1,
                     context: document.body,
                     success: function(responseText) {
 
@@ -381,10 +281,10 @@ if (isset($_POST['MM_Insert'])) {
                     complete: function() {
                         // no matter the result, complete will fire, so it's a good place
                         // to do the non-conditional stuff, like hiding a loading image.
-                $("#entete").css("display", "none");
+                
                         hideLoadingImage();
                     }
-                });
+                });*/
             };
 </script>
 <script src="js/app.js"></script>
@@ -404,6 +304,10 @@ if (isset($_POST['MM_Insert'])) {
             }
 
         </script>
+		
+		
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>  
 
 </body>
 </html>

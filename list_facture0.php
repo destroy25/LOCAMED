@@ -15,9 +15,6 @@ $client=$_GET['client'];
 							$nom_client=$rep['ct_intitule'];
 						}
 
-$date_debut=$_GET['debut'];
-$date_fin=$_GET['fin'];
-						
 }
 
 ?>
@@ -108,8 +105,8 @@ $date_fin=$_GET['fin'];
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h2>Devis - <?php echo $nom_client;?></h2>	<a  style="float:right;" href="recherche_devis_date.php" class="btn btn-rounded btn-inline">Nouvelle Recherche</a>
-							<h4>Devis du <?php echo $date_debut;?> au <?php echo $date_fin;?></h3>
+							<h2>Factures - <?php echo $nom_client;?></h2><a  style="float:right;" href="recherche_devis_client.php" class="btn btn-rounded btn-inline">Nouvelle Recherche</a>
+							<div class="subtitle">Factures en cours</div>
 						</div>
 					</div>
 				</div>
@@ -136,9 +133,8 @@ $date_fin=$_GET['fin'];
 						<?php
 						$sql='select DO_Piece,DO_Date,CT_Intitule,DO_Statut,CT_Intitule,DO_Statut,do_tiers from f_docentete 
 						inner join f_comptet on f_docentete.do_tiers=f_comptet.ct_num 
-						where do_domaine=0 and do_type=0 and DO_Date between \''.$date_debut.'\' and \''.$date_fin.'\' and do_tiers=\''.$client.'\' and f_docentete.de_no='.$depot.'
+						where do_domaine=0 and do_type=0 and do_tiers=\''.$client.'\' and f_docentete.de_no='.$depot.'
 						';
-						
 		                $rq = odbc_exec($connection,$sql);
 						while ($rep=odbc_fetch_array($rq)) {
 							
@@ -195,8 +191,7 @@ $date_fin=$_GET['fin'];
 	<script>
 		$(function() {
 			$('#example').DataTable({
-				responsive: true,
-				deferRender: true
+				responsive: true
 			});
 		});
 	</script>

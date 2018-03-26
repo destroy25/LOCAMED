@@ -4,6 +4,20 @@ include('connexion.php');
 /*Récuperétion des infos*/
 $depot=$_SESSION['depot'];
 
+if(isset($_GET['client']))
+{
+	$client=$_GET['client'];
+
+						$sql='select ct_intitule from f_comptet where ct_num=\''.$client.'\' ';
+		                $rq = odbc_exec($connection,$sql);
+						if ($rep=odbc_fetch_array($rq)) {
+							$nom_client=$rep['ct_intitule'];
+						}
+						
+	$date_debut=$_GET['debut'];
+	$date_fin=$_GET['fin'];
+
+}
 
 
 
@@ -90,8 +104,8 @@ $depot=$_SESSION['depot'];
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h2>Factures</h2>
-							<div class="subtitle">Facture en cours</div>
+							<h2>Factures - <?php echo $nom_client;?></h2>	<a  style="float:right;" href="recherche_factures_date.php" class="btn btn-rounded btn-inline">Nouvelle Recherche</a>
+							<h4>Factures du <?php echo $date_debut;?> au <?php echo $date_fin;?></h4>
 						</div>
 					</div>
 				</div>
@@ -105,7 +119,6 @@ $depot=$_SESSION['depot'];
 						<tr>
 							<th>N° Facture</th>
 							<th>Date</th>
-							<th>Client</th>
 							<th>Montant TTC</th>
 							<th>Statut</th>
 							<th>Solde</th>
@@ -120,7 +133,7 @@ $depot=$_SESSION['depot'];
 						select distinct F_Docligne.DO_Piece,sum(DL_MontantTTC) as MontantTTC,F_Docligne.DO_Date,CT_Intitule,DO_Statut,CT_Intitule 
 from f_docligne inner join f_comptet on f_docligne.ct_num=f_comptet.ct_num 
 inner join f_docentete on F_DOCLIGNE.DO_Piece=F_DOCENTETE.DO_Piece
-where f_docligne.do_domaine=0 and f_docligne.do_type=6 and do_provenance=0 and f_docentete.de_no='.$depot.'
+where f_docligne.do_domaine=0 and f_docligne.do_type=6 and do_provenance=0 and F_Docligne.do_date between \''.$date_debut.'\' and \''.$date_fin.'\' and do_tiers=\''.$client.'\' and f_docentete.de_no='.$depot.'
 group by F_docligne.DO_Piece,F_DOCLIGNE.DO_Date,f_comptet.ct_intitule,f_docentete.do_statut';
 					
 		                $rq = odbc_exec($connection,$sql);
@@ -158,13 +171,12 @@ group by F_docligne.DO_Piece,F_DOCLIGNE.DO_Date,f_comptet.ct_intitule,f_docentet
 								echo '<tr id="'.$dat['DO_Piece'].'">
 								<td>'.$dat['DO_Piece'].'</td>
 								<td>'.date_format($d,'d/m/Y').'</td>
-								<td>'.$dat['CT_Intitule'].'</td>
 								<td>'.number_format($dat['MontantTTC'],2,',',' ').'</td>
 								<td>'.$solde.'</td>
 								<td>'.number_format($dat['MontantTTC'],2,',',' ').'</td>
 								<td>
 								<a title="Consultation Facture" href="facture.php?q='.$dat['DO_Piece'].'"><span class="fa fa-eye"></span></a>
-								<a title="Saisie Règlement" href="saisie_reglement.php?q='.$dat['DO_Piece'].'" ><span class="fa fa-pencil"></span></a>
+<!--								<a title="Saisie Règlement" href="saisie_reglement.php?q='.$dat['DO_Piece'].'" ><span class="fa fa-pencil"></span></a>-->
 								<a title="Impression Facture" href="impression_facture.php?q='.$dat['DO_Piece'].'"><span class="fa fa-print"></span></a></td>
 								</tr>';
 		

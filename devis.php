@@ -2,6 +2,8 @@
 include('verif.php');
 include('connexion.php');
 
+/*Récuperétion des infos*/
+$depot=$_SESSION['depot'];
 
 
 ?>
@@ -111,7 +113,12 @@ $sql='select * from F_Docentete where DO_Piece=\''.$q.'\'';
 
 				                    $rq = odbc_exec($connection,$sql);
                     if ($rep=odbc_fetch_array($rq)) {
-						$date=$rep['DO_Date'];
+						
+$date=$rep['DO_Date'];
+												$DateL = date_create($date);
+$DateL= date_format($DateL, 'd/m/Y');
+						
+						
 						$client1=$rep['DO_Tiers'];
 						$DO_Statut=$rep['DO_Statut'];
 		
@@ -172,7 +179,7 @@ echo '
 						<div class="col-lg-6 clearfix invoice-info">
 							<div class="text-lg-right">
 								<h5>DEVIS #'.$q.'</h5>
-								<div>Date: '.$date.'</div>';
+								<div>Date: '.$DateL.'</div>';
 								if ($DO_Statut==1)
 									echo '<h5>Non Validé</h5>';
 								elseif ($DO_Statut==2)
@@ -254,7 +261,8 @@ echo '
 						$totalht=0;			//Totat HT
 						$totalttc=0;		//Tota TTC
 								$sqlligne='select AR_Ref,DL_Design,DL_Qte,DL_PrixUnitaire,DL_Remise01REM_Valeur,DL_MontantHT,DL_MontantTTC,condition_enlevement,cbMarq
-								from f_docligne where DO_Piece=\''.$q.'\'';
+								from f_docligne where DO_Piece=\''.$q.'\' order by DL_Ligne';
+								
 								    $rqligne = odbc_exec($connection,$sqlligne);
 									while ($data[] = odbc_fetch_array($rqligne));
 									
@@ -274,7 +282,7 @@ echo '
 						//odbc_close($connection);
 						/*Statut du Stock */
 						$stock=0;
-						$sqlstock='select * from f_artstock where de_no=1 and ar_ref=\''.$dat['AR_Ref'].'\'';
+						$sqlstock='select * from f_artstock where de_no='.$depot.' and ar_ref=\''.$dat['AR_Ref'].'\'';
 						$rqstock = odbc_exec($connection,$sqlstock);
 						if ($repstock=odbc_fetch_array($rqstock)) {
 						$stock=$repstock['AS_QteSto'];
@@ -482,8 +490,9 @@ echo '
 						$totalqte=0;		//Total Quantité
 						$totalht=0;			//Totat HT
 						$totalttc=0;		//Tota TTC
+						$livrable=0;
 								$sqlligne='select AR_Ref,DL_Design,DL_Qte,DL_PrixUnitaire,DL_Remise01REM_Valeur,DL_MontantHT,DL_MontantTTC,condition_enlevement,cbMarq
-								from f_docligne where DO_Piece=\''.$q.'\'';
+								from f_docligne where DO_Piece=\''.$q.'\' order by dl_ligne';
 								    $rqligne = odbc_exec($connection,$sqlligne);
 									while ($data[] = odbc_fetch_array($rqligne));
 									
@@ -503,7 +512,7 @@ echo '
 						//odbc_close($connection);
 						/*Statut du Stock */
 						$stock=0;
-						$sqlstock='select * from f_artstock where de_no=1 and ar_ref=\''.$dat['AR_Ref'].'\'';
+						$sqlstock='select * from f_artstock where de_no='.$depot.' and ar_ref=\''.$dat['AR_Ref'].'\'';
 						$rqstock = odbc_exec($connection,$sqlstock);
 						if ($repstock=odbc_fetch_array($rqstock)) {
 						$stock=$repstock['AS_QteSto'];
@@ -512,6 +521,7 @@ echo '
 						if($dat['DL_Qte']<=$stock)
 						{
 							$infostock='<span class="label label-success">Livrable</span>';
+							$livrable=1;
 						}
 						else
 						{
@@ -586,17 +596,29 @@ echo '
 									</tr>
 								</table>
 							</div>
+							
+							
+			<id id="loading" style="text-align:center;display:none;">
+				<img src="img/fancybox_loading@2x.gif" alt="loading"/>
+				</id>		
+							
 					<div class="row">
 					
 						<div class="col-lg-12 clearfix">
 							<div class="total-amount">
 								<div class="actions">';
+
+								if ($DO_Statut==2 )
+									echo '<a  onclick="transformation_devis(\''.$q.'\',\''.$livrable.'\');"  class="btn btn-inline btn-primary btn-rounded">Transformer</a>';
 								
 									echo '<a  onclick="annulation_devis(\''.$q.'\');" class="btn btn-rounded btn-inline">Annulation</a>';
 								
-									
+;									
 									
 									echo '<a  href="impression_devis.php?q='.$q.'" class="btn btn-inline btn-secondary btn-rounded">Imprimer</a>
+									
+									
+			
 								</div>
 							</div>
 						</div>
@@ -1152,6 +1174,51 @@ function cocherTout(etat)
  
 }
 </script>
+
+                <script type="text/javascript">
+// delete row in a table
+function transformation_devis(a,b){
+ var y = a;
+ var z = b;
+if (confirm("Voulez vous transformer le devis N° "+y+" en facture ?") == true) {
+		
+		if(z==1)
+		{
+//		 var x = $(this).closest('tr').attr('id');
+                showLoadingImage();
+ 
+ $.ajax({
+                    url: "ajax/transformation_devis.php?&q="+y,
+                    context: document.body,
+                    success: function(responseText) {
+
+
+                        //$("#txtHint22").html(responseText);
+                        $("#modif").html(responseText);
+						
+
+                    },
+                    complete: function() {
+                        // no matter the result, complete will fire, so it's a good place
+                        // to do the non-conditional stuff, like hiding a loading image.
+
+                    }			
+		});
+		
+		}
+		else
+		{
+			alert("Ce Devis ne peut être transformé en raison de lindisponibilité du stock pour lensemble des articles");
+		}
+
+                
+ 
+} 
+ // return false;
+}     </script>
+
+
+
 
 
 <script src="js/app.js"></script>

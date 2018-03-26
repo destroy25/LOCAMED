@@ -86,7 +86,159 @@ include('connexion.php');
 		<div class="container-fluid">
 
 		<div>
-					<div class="row">
+		
+		<?php if($_SESSION['compte_profil']==1)
+		{/*Commercial*/
+			echo '	<div class="row">
+						<div class="col-xs-3">
+							<a href="creation_devis.php"><section class="widget widget-simple-sm-fill">
+								<div class="widget-simple-sm-icon">
+									<i class="fa fa-pencil"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Création Devis</div>
+							</section></a>
+						</div><!--.widget-simple-sm-fill-->
+						
+				<a href="recherche_devis_date.php"><div class="col-xs-3">
+							<section class="widget widget-simple-sm-fill green">
+								<div class="widget-simple-sm-icon">
+									<i class="font-icon font-icon-search"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Recherche Devis par client</div>
+							</section><!--.widget-simple-sm-fill-->
+						</div></a>
+						
+				<a href="recherche_devis_num.php"><div class="col-xs-3">
+							<section class="widget widget-simple-sm-fill purple">
+								<div class="widget-simple-sm-icon">
+									<i class="font-icon font-icon-search"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Recherche Devis par Numéro</div>
+							</section><!--.widget-simple-sm-fill-->
+						</div></a>
+					
+					<a href="recherche_factures_date.php"><div class="col-xs-3">
+							<section class="widget widget-simple-sm-fill red">
+								<div class="widget-simple-sm-icon">
+									<i class="font-icon font-icon-search"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Recherche Facture par client</div>
+							</section><!--.widget-simple-sm-fill-->
+						</div></a>
+						
+											<a href="recherche_facture_client.php"><div class="col-xs-3">
+							<section class="widget widget-simple-sm-fill orange">
+								<div class="widget-simple-sm-icon">
+									<i class="font-icon font-icon-search"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Recherche Facture par client</div>
+							</section><!--.widget-simple-sm-fill-->
+						</div></a>
+						
+					</div><!--.row-->
+					
+
+
+				</div>';
+
+		}
+		elseif($_SESSION['compte_profil']==2)
+		{
+		echo '	<div class="row">
+
+						<a href="recherche_devis_date.php"><div class="col-xs-3">
+							<section class="widget widget-simple-sm-fill green">
+								<div class="widget-simple-sm-icon">
+									<i class="font-icon font-icon-search"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Recherche Devis par client</div>
+							</section><!--.widget-simple-sm-fill-->
+						</div></a>
+						
+				<a href="recherche_devis_num.php"><div class="col-xs-3">
+							<section class="widget widget-simple-sm-fill purple">
+								<div class="widget-simple-sm-icon">
+									<i class="font-icon font-icon-search"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Recherche Devis par Numéro</div>
+							</section><!--.widget-simple-sm-fill-->
+						</div></a>
+
+				
+					
+										<a href="recherche_factures_date.php"><div class="col-xs-3">
+							<section class="widget widget-simple-sm-fill red">
+								<div class="widget-simple-sm-icon">
+									<i class="font-icon font-icon-search"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Recherche Facture par client</div>
+							</section><!--.widget-simple-sm-fill-->
+						</div></a>
+						
+											<a href="recherche_facture_client.php"><div class="col-xs-3">
+							<section class="widget widget-simple-sm-fill orange">
+								<div class="widget-simple-sm-icon">
+									<i class="font-icon font-icon-search"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Recherche Facture par client</div>
+							</section><!--.widget-simple-sm-fill-->
+						</div></a>
+
+
+				</div>';
+	
+		}
+		elseif($_SESSION['compte_profil']==3)
+		{
+			echo '	<div class="row">
+
+									<!--.widget-simple-sm-fill-->
+								<a href="livraison_encours.php"><div class="col-xs-3">
+							<section class="widget widget-simple-sm-fill blue">
+								<div class="widget-simple-sm-icon">
+									<i class="fa fa-truck"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Livraison en cours</div>
+							</section><!--.widget-simple-sm-fill-->
+						</div></a>
+			
+						<!--.widget-simple-sm-fill-->
+								<a href="validation_livraison.php"><div class="col-xs-3">
+							<section class="widget widget-simple-sm-fill green">
+								<div class="widget-simple-sm-icon">
+									<i class="fa fa-check-square"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Validation Réception</div>
+							</section><!--.widget-simple-sm-fill-->
+						</div></a>
+						
+						<a href="recherche_bl_date.php"><div class="col-xs-3">
+							<section class="widget widget-simple-sm-fill red">
+								<div class="widget-simple-sm-icon">
+									<i class="font-icon font-icon-search"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Recherche BL par client</div>
+							</section><!--.widget-simple-sm-fill-->
+						</div></a>
+						
+											<a href="recherche_bl_num.php"><div class="col-xs-3">
+							<section class="widget widget-simple-sm-fill orange">
+								<div class="widget-simple-sm-icon">
+									<i class="font-icon font-icon-search"></i>
+								</div>
+								<div class="widget-simple-sm-fill-caption">Recherche BL par Numéro</div>
+							</section><!--.widget-simple-sm-fill-->
+						</div></a>
+				
+					</div><!--.row-->
+
+
+				</div>';
+
+		}
+		elseif($_SESSION['compte_profil']==4)
+		{
+			echo '	<div class="row">
 						<div class="col-xs-3">
 							<a href="creation_devis.php"><section class="widget widget-simple-sm-fill">
 								<div class="widget-simple-sm-icon">
@@ -158,9 +310,11 @@ include('connexion.php');
 						</div>
 					</div><!--.row-->
 
-				</div>
+				</div>';
 
+		}
 				
+				?>
 		</div><!--.container-fluid-->
 	</div><!--.page-content-->
 

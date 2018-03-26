@@ -4,40 +4,7 @@ if (isset($_POST['MM_Insert'])) {
 	
 	
 	
-		/*Login */
-	$client = new nusoap_client($wsdl,true);
-	$err = $client->getError();
-	if ($err) 
-	{
-			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
-			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
-			exit();
-	}
-	// Exécution de la Methode : Création Document
-	$souche='N° Pièce';
 	
-	
-	
-	
-	$result = $client->call('connexion_om');
- 
-	if ($client->fault) 
-	{
-		echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
-	} 
-	else 
-	{
-		$err = $client->getError();
-		if ($err) 
-		{
-			echo '<h2>Error</h2><pre>' . $err . '</pre>';
-		} 
-		else
-		{
-	//	echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
-//			echo $result;
-		}
-	}
 	
  // $loginUsername=mysql_real_escape_string($_POST['login']);
   
@@ -75,6 +42,46 @@ if (isset($_POST['MM_Insert'])) {
     $_SESSION['Objet_cnx']= $row['Objet_cnx'];
 	$_SESSION['NameSage']= $row['NameSAGE'];
 	$_SESSION['PwdSage']= $row['PwdSAGE'];
+	
+	
+	
+		/*Login */
+	$client = new nusoap_client($wsdl,true);
+	$err = $client->getError();
+	if ($err) 
+	{
+			echo '<h2>Constructor error</h2><pre>' . $err . '</pre>';
+			echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
+			exit();
+	}
+	// Exécution de la Methode : Création Document
+	$souche='N° Pièce';
+	
+	
+	
+	
+
+ 		$result = $client->call('connexion_om',
+					array('i'=>$_SESSION['Objet_cnx'],'NameSage'=>$_SESSION['NameSage'],'PwdSage'=>$_SESSION['PwdSage']));
+	if ($client->fault) 
+	{
+		echo '<h2>Fault (Expect - The request contains an invalid SOAP body)</h2><pre>'; print_r($result); echo '</pre>';
+	} 
+	else 
+	{
+		$err = $client->getError();
+		if ($err) 
+		{
+			echo '<h2>Error</h2><pre>' . $err . '</pre>';
+		} 
+		else
+		{
+	//	echo '<h2>Result</h2><pre>'; print_r($result); echo '</pre>';
+//			echo $result;
+		}
+	}
+	
+	
 	
 	
 	/*Evenement Historique - */
@@ -140,6 +147,7 @@ if (isset($_POST['MM_Insert'])) {
 
     <div class="page-center">
         <div class="page-center-in">
+		            
 
 		<div class="container-fluid">
                 <form class="sign-box" action="login.php" method="post">
